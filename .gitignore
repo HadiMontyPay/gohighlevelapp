@@ -1,18 +1,18 @@
-# # Environment Configuration
-# .env
+# Environment Configuration
+.env
 
-# # Dependency directory
-# node_modules
+# Dependency directory
+node_modules
 
-# # Test coverage directory
-# coverage
+# Test coverage directory
+coverage
 
-# # Ignore Apple macOS Desktop Services Store
-# .DS_Store
+# Ignore Apple macOS Desktop Services Store
+.DS_Store
 
-# # build folders
-# dist
+# build folders
+dist
 
-# # Logs
-# logs
-# *.log
+# Logs
+logs
+*.log
