@@ -6,7 +6,7 @@ const sequelize = new Sequelize(
   "FunnelFusion",
   "FunnelFusion@123",
   {
-    host: "44.226.145.213",
+    host: "92.205.1.205",
     dialect: "mysql",
   }
 );
