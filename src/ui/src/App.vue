@@ -1,20 +1,27 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   <div>
-    <p>hiiiii2222222 !!!!!</p>
-    <h1>Hello Me</h1>
+    <h1>MontyPay Configuration</h1>
+    <form>
+      <fieldset>
+        <legend>Merchant Info</legend>
+        <label>
+          Merchant Key:
+          <input type="text" placeholder="Merchant Key" />
+        </label>
+        <label>
+          Merchant Password:
+          <input type="password" placeholder="Merchant Password" />
+        </label>
+      </fieldset>
+      <button type="submit">Save</button>
+    </form>
   </div>
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
   name: "App",
-  components: {
-    // HelloWorld,
-  },
+  components: {},
   async mounted() {
     const data = await window.ghl.getUserData();
     console.log("user-details", data);
@@ -23,12 +30,12 @@ export default {
 </script>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
+} */
 </style>

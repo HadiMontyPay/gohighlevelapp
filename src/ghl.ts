@@ -12,13 +12,13 @@ export class GHL {
     this.model = new Model();
   }
 
-/**
- * The `authorizationHandler` function handles the authorization process by generating an access token
- * and refresh token pair.
- * @param {string} code - The code parameter is a string that represents the authorization code
- * obtained from the authorization server. It is used to exchange for an access token and refresh token
- * pair.
- */
+  /**
+   * The `authorizationHandler` function handles the authorization process by generating an access token
+   * and refresh token pair.
+   * @param {string} code - The code parameter is a string that represents the authorization code
+   * obtained from the authorization server. It is used to exchange for an access token and refresh token
+   * pair.
+   */
   async authorizationHandler(code: string) {
     if (!code) {
       console.warn(
@@ -28,18 +28,21 @@ export class GHL {
     await this.generateAccessTokenRefreshTokenPair(code);
   }
 
-  decryptSSOData(key: string){
-    const data = CryptoJS.AES.decrypt(key, process.env.GHL_APP_SSO_KEY as string).toString(CryptoJS.enc.Utf8)
-    return JSON.parse(data)
+  decryptSSOData(key: string) {
+    const data = CryptoJS.AES.decrypt(
+      key,
+      process.env.GHL_APP_SSO_KEY as string
+    ).toString(CryptoJS.enc.Utf8);
+    return JSON.parse(data);
   }
 
-/**
- * The function creates an instance of Axios with a base URL and interceptors for handling
- * authorization and refreshing access tokens.
- * @param {string} resourceId - The `resourceId` parameter is a string that represents the locationId or companyId you want
- * to make api call for.
- * @returns an instance of the Axios library with some custom request and response interceptors.
- */
+  /**
+   * The function creates an instance of Axios with a base URL and interceptors for handling
+   * authorization and refreshing access tokens.
+   * @param {string} resourceId - The `resourceId` parameter is a string that represents the locationId or companyId you want
+   * to make api call for.
+   * @returns an instance of the Axios library with some custom request and response interceptors.
+   */
   requests(resourceId: string) {
     const baseUrl = process.env.GHL_API_DOMAIN;
 
@@ -86,23 +89,23 @@ export class GHL {
     return axiosInstance;
   }
 
-/**
- * The function checks if an installation exists for a given resource ID i.e locationId or companyId.
- * @param {string} resourceId - The `resourceId` parameter is a string that represents the ID of a
- * resource.
- * @returns a boolean value.
- */
-  checkInstallationExists(resourceId: string){
-    return !!this.model.getAccessToken(resourceId)
+  /**
+   * The function checks if an installation exists for a given resource ID i.e locationId or companyId.
+   * @param {string} resourceId - The `resourceId` parameter is a string that represents the ID of a
+   * resource.
+   * @returns a boolean value.
+   */
+  checkInstallationExists(resourceId: string) {
+    return !!this.model.getAccessToken(resourceId);
   }
 
-/**
- * The function `getLocationTokenFromCompanyToken` retrieves a location token from a company token and
- * saves the installation information.
- * @param {string} companyId - A string representing the ID of the company.
- * @param {string} locationId - The `locationId` parameter is a string that represents the unique
- * identifier of a location within a company.
- */
+  /**
+   * The function `getLocationTokenFromCompanyToken` retrieves a location token from a company token and
+   * saves the installation information.
+   * @param {string} companyId - A string representing the ID of the company.
+   * @param {string} locationId - The `locationId` parameter is a string that represents the unique
+   * identifier of a location within a company.
+   */
   async getLocationTokenFromCompanyToken(
     companyId: string,
     locationId: string
@@ -120,6 +123,10 @@ export class GHL {
       }
     );
     this.model.saveInstallationInfo(res.data);
+  }
+
+  getAll() {
+    return this.model.getAll();
   }
 
   private async refreshAccessToken(resourceId: string) {
