@@ -1,6 +1,6 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your MontyPay - GoHighLevel App"/> -->
+  <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your MontyPay - GoHighLevel App"/>
   <div>
     <p>hiiiii2222222 !!!!!</p>
   </div>
