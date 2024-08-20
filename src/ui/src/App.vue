@@ -20,16 +20,20 @@
 </template>
 
 <script>
-import { ref } from "vue";
-const user = ref({});
+import { ref, onMounted } from "vue";
 
 export default {
   name: "App",
-  components: {},
-  async mounted() {
-    const data = await window.ghl.getUserData();
-    console.log("user-details", data);
-    user.value = data;
+  setup() {
+    const user = ref({}); // Define user as a reactive reference
+
+    onMounted(async () => {
+      const data = await window.ghl.getUserData();
+      console.log("user-details", data);
+      user.value = data; // Update the user reference with the fetched data
+    });
+
+    return { user }; // Return the reactive reference for use in the template
   },
 };
 </script>
