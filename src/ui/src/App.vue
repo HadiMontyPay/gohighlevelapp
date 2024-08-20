@@ -15,47 +15,50 @@
       </fieldset>
       <button type="submit">Save</button>
     </form>
-    <p style="color: white">{{ JSON.stringify(user, null, 4) }}</p>
+    <!-- <p style="color: white">{{ JSON.stringify(user, null, 4) }}</p> -->
+    <p>User: {{ data }}</p>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-
 export default {
-  name: "App",
-  setup() {
-    const user = ref({}); // Define user as a reactive reference
-
-    const getUserData = async () => {
+  data() {
+    return {
+      data: [],
+    };
+  },
+  async created() {
+    await this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      const res = await this.getUserData();
+      this.data = res;
+      console.log(res);
+    },
+    async getUserData() {
       const key = await new Promise((resolve) => {
         window.parent.postMessage({ message: "REQUEST_USER_DATA" }, "*");
         window.addEventListener("message", ({ data }) => {
           if (data.message === "REQUEST_USER_DATA_RESPONSE") {
             resolve(data.payload);
-            console.log("User data:", data.payload);
           }
         });
       });
-      const res = await fetch("/decrypt-sso", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ key }),
-      });
-      const data = await res.json();
-      return data;
-    };
-
-    onMounted(async () => {
-      const data = await getUserData();
-      console.log("user-details", data);
-      user.value = data; // Update the user reference with the fetched data
-    });
-
-    return { user }; // Return the reactive reference for use in the template
+      const res = await fetch(
+        `${process.env.VUE_APP_BACKEND_URL}/decrypt-sso`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ key }),
+        }
+      );
+      const data_1 = await res.json();
+      return await data_1;
+    },
   },
 };
 </script>
