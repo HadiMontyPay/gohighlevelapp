@@ -10,6 +10,7 @@ export class GHL {
       window.parent.postMessage({ message: "REQUEST_USER_DATA" }, "*");
       window.addEventListener("message", ({ data }) => {
         if (data.message === "REQUEST_USER_DATA_RESPONSE") {
+          console.log("data", data.payload);
           resolve(data.payload);
         }
       });

@@ -15,38 +15,24 @@
       </fieldset>
       <button type="submit">Save</button>
     </form>
-    <p>
+    <div>
       {{ JSON.stringify(user, null, 4) }}
-    </p>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from "vue";
 
-const user = ref({}); // Define user as a reactive reference
-export default {
-  name: "App",
-  setup() {
-    onMounted(async () => {
-      const data = await window.ghl.getUserData();
-      console.log("user-details", data);
-      user.value = data; // Update the user reference with the fetched data
-    });
+const user = ref({});
+async function getUserData() {
+  const data = await window.ghl.getUserData();
+  user.value = data;
+}
 
-    return { user }; // Return the reactive reference for use in the template
-  },
-};
-
-// const user = ref({});
-// async function getUserData() {
-//   const data = await window.ghl.getUserData();
-//   user.value = data;
-// }
-
-// onMounted(() => {
-//   getUserData();
-// });
+onMounted(() => {
+  getUserData();
+});
 </script>
 
 <style>
