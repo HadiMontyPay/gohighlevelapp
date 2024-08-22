@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div></div>
 </template>
 
@@ -21,9 +21,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-</style>
+</style> -->
 
-<!-- <template>
+<template>
   <div>
     <h1>MontyPay Configuration</h1>
     <form>
@@ -72,4 +72,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 } */
-</style> -->
+</style>
