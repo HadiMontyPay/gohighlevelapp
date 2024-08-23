@@ -129,6 +129,14 @@ export class GHL {
     return this.model.getAll();
   }
 
+  saveMerchantInfo(
+    merchantKey: string,
+    merchantPass: string,
+    locationId: string
+  ) {
+    return this.model.saveMerchantInfo(merchantKey, merchantPass, locationId);
+  }
+
   private async refreshAccessToken(resourceId: string) {
     try {
       const resp = await axios.post(

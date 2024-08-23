@@ -132,6 +132,16 @@ app.get("/getAll", async (req: Request, res: Response) => {
 });
 // Adjust path if necessary
 
+app.post("/save-merchant-info", async (req: Request, res: Response) => {
+  const { merchantKey, merchantPass, locationId } = req.body;
+  const info = await ghl.saveMerchantInfo(
+    merchantKey,
+    merchantPass,
+    locationId
+  );
+  return res.status(200).json({ message: "Merchant Info Added" });
+});
+
 const syncDatabase = async () => {
   try {
     await sequelize.sync(); // This will create the table if it doesn't exist

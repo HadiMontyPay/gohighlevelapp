@@ -12,6 +12,8 @@ interface InstallationDetailsAttributes {
   userType: string;
   companyId?: string;
   locationId?: string;
+  merchantKey?: string;
+  merchantPass?: string;
 }
 
 // Define the model
@@ -28,6 +30,8 @@ class InstallationDetails
   public userType!: string;
   public companyId?: string;
   public locationId?: string;
+  public merchantKey?: string;
+  public merchantPass?: string;
 }
 
 // Initialize the model
@@ -67,6 +71,14 @@ InstallationDetails.init(
       allowNull: true,
     },
     locationId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    merchantKey: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    merchantPass: {
       type: DataTypes.STRING,
       allowNull: true,
     },

@@ -45,4 +45,15 @@ export class Model {
   async getAll() {
     await InstallationDetails.findAll();
   }
+
+  async saveMerchantInfo(
+    merchantKey: string,
+    merchantPass: string,
+    locationId: string
+  ) {
+    await InstallationDetails.update(
+      { merchantKey: merchantKey, merchantPass: merchantPass },
+      { where: { locationId: locationId } }
+    );
+  }
 }
