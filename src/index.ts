@@ -8,7 +8,7 @@ import { json } from "body-parser";
 import sequelize from "./database"; // Adjust path if necessary
 import InstallationDetails from "./installationDetailsModel";
 
-const path = __dirname + "/ui/dist/";
+const path = __dirname + "/ui/build/";
 
 dotenv.config();
 const app: Express = express();
