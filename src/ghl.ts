@@ -1,6 +1,6 @@
 import qs from "qs";
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
-
+import CryptoJS from "crypto-js";
 import { Model, TokenType } from "./model";
 
 /* The GHL class is responsible for handling authorization, making API requests, and managing access
