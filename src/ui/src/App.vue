@@ -6,6 +6,7 @@
         <legend>Merchant Info</legend>
         <label>
           Merchant Key:
+
           <input type="text" placeholder="Merchant Key" />
         </label>
         <label>
