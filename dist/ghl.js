@@ -112,8 +112,8 @@ class GHL {
         return this.model.getAll();
     }
     refreshAccessToken(resourceId) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             try {
                 const resp = yield axios_1.default.post(`${process.env.GHL_API_DOMAIN}/oauth/token`, qs_1.default.stringify({
                     client_id: process.env.GHL_APP_CLIENT_ID,
@@ -130,8 +130,8 @@ class GHL {
         });
     }
     generateAccessTokenRefreshTokenPair(code) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             try {
                 const resp = yield axios_1.default.post(`${process.env.GHL_API_DOMAIN}/oauth/token`, qs_1.default.stringify({
                     client_id: process.env.GHL_APP_CLIENT_ID,

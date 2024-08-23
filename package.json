@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/GoHighLevel/ghl-marketplace-app-template#readme",
   "dependencies": {
-    "@types/sequelize": "^4.28.20",
     "axios": "^1.5.1",
     "body-parser": "^1.20.2",
     "crypto-js": "^4.1.1",
@@ -37,8 +36,8 @@
   "devDependencies": {
     "@types/crypto-js": "^4.1.2",
     "@types/express": "^4.17.18",
-    "@types/node": "^20.14.15",
+    "@types/node": "^20.8.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.2.2"
   }
 }

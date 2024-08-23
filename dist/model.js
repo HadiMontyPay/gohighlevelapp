@@ -30,8 +30,8 @@ class Model {
         });
     }
     getAccessToken(resourceId) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             const record = yield installationDetailsModel_1.default.findOne({
                 where: { companyId: resourceId },
             });
@@ -44,8 +44,8 @@ class Model {
         });
     }
     getRefreshToken(resourceId) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             const record = yield installationDetailsModel_1.default.findOne({
                 where: { companyId: resourceId },
             });

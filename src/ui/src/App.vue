@@ -1,38 +1,22 @@
 <template>
-  <div>
-    <h1>MontyPay Configuration</h1>
-    <form>
-      <fieldset>
-        <legend>Merchant Info</legend>
-        <label>
-          Merchant Key:
-          <input type="text" placeholder="Merchant Key" />
-        </label>
-        <label>
-          Merchant Password:
-          <input type="password" placeholder="Merchant Password" />
-        </label>
-      </fieldset>
-      <button type="submit">Save</button>
-    </form>
-    <div>
-      {{ JSON.stringify(user, null, 4) }}
-    </div>
-  </div>
+  <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script>
+import HelloWorld from './components/HelloWorld.vue'
 
-const user = ref({});
-async function getUserData() {
-  const data = await window.ghl.getUserData();
-  user.value = data;
+export default {
+  name: 'App',
+  components: {
+    HelloWorld
+  },
+  async mounted(){
+    
+    const data = await window.ghl.getUserData();
+    console.log("user-details", data)
+  }
 }
-
-onMounted(() => {
-  getUserData();
-});
 </script>
 
 <style>
