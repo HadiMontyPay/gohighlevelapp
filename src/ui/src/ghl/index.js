@@ -33,11 +33,11 @@ export class GHL {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         merchantKey: merchantKey,
         merchantPassword: merchantPassword,
         locationId: locationId,
-      },
+      }),
     });
     const data = await res.json();
     return data;
