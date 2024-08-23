@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Model = exports.TokenType = exports.AppUserType = void 0;
+const installationDetailsModel_1 = __importDefault(require("./installationDetailsModel")); // Adjust path if necessary
 var AppUserType;
 (function (AppUserType) {
     AppUserType["Company"] = "Company";
@@ -19,77 +23,44 @@ var TokenType;
 (function (TokenType) {
     TokenType["Bearer"] = "Bearer";
 })(TokenType || (exports.TokenType = TokenType = {}));
-/* The Model class is responsible for saving and retrieving installation details, access tokens, and
-refresh tokens. */
 class Model {
-    constructor() {
-        this.installationObjects = {};
-    }
-    /**
-     * The function saves installation information based on either the location ID or the company ID.
-     * @param {InstallationDetails} details - The `details` parameter is an object of type
-     * `InstallationDetails`.
-     */
     saveInstallationInfo(details) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(details);
-            if (details.locationId) {
-                this.installationObjects[details.locationId] = details;
-            }
-            else if (details.companyId) {
-                this.installationObjects[details.companyId] = details;
-            }
+            yield installationDetailsModel_1.default.upsert(details); // Upsert will create or update the record
         });
     }
-    /**
-     * The function `getAccessToken` returns the access token associated with a given resource ID i.e companyId or locationId from the
-     * `installationObjects` object.
-     * @param {string} resourceId - The `resourceId` parameter is a string that represents either locationId or companyId
-     * It is used to retrieve the access token associated with that resource.
-     * @returns The access token associated with the given resourceId.
-     */
     getAccessToken(resourceId) {
-        var _a;
-        return (_a = this.installationObjects[resourceId]) === null || _a === void 0 ? void 0 : _a.access_token;
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            const record = yield installationDetailsModel_1.default.findOne({
+                where: { companyId: resourceId },
+            });
+            return (_a = record === null || record === void 0 ? void 0 : record.access_token) !== null && _a !== void 0 ? _a : null;
+        });
     }
-    /**
-     * The function sets an access token for a specific resource ID in an installation object.
-     * @param {string} resourceId - The resourceId parameter is a string that represents the unique
-     * identifier of a resource. It is used to identify a specific installation object in the
-     * installationObjects array.
-     * @param {string} token - The "token" parameter is a string that represents the access token that you
-     * want to set for a specific resource.
-     */
     setAccessToken(resourceId, token) {
-        if (this.installationObjects[resourceId]) {
-            this.installationObjects[resourceId].access_token = token;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            yield installationDetailsModel_1.default.update({ access_token: token }, { where: { companyId: resourceId } });
+        });
     }
-    /**
-     * The function `getRefreshToken` returns the refresh_token associated with a given location or company from the
-     * installationObjects object.
-     * @param {string} resourceId - The resourceId parameter is a string that represents the unique
-     * identifier of a resource.
-     * @returns The companyId associated with the installation object for the given resourceId.
-     */
     getRefreshToken(resourceId) {
-        var _a;
-        return (_a = this.installationObjects[resourceId]) === null || _a === void 0 ? void 0 : _a.refresh_token;
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            const record = yield installationDetailsModel_1.default.findOne({
+                where: { companyId: resourceId },
+            });
+            return (_a = record === null || record === void 0 ? void 0 : record.refresh_token) !== null && _a !== void 0 ? _a : null;
+        });
     }
-    /**
-     * The function saves the refresh token for a specific resource i.e. location or company.
-     * @param {string} resourceId - The resourceId parameter is a string that represents the unique
-     * identifier of a resource. It is used to identify a specific installation object in the
-     * installationObjects array.
-     * @param {string} token - The "token" parameter is a string that represents the refresh token. A
-     * refresh token is a credential used to obtain a new access token when the current access token
-     * expires. It is typically used in authentication systems to maintain a user's session without
-     * requiring them to re-enter their credentials.
-     */
     setRefreshToken(resourceId, token) {
-        if (this.installationObjects[resourceId]) {
-            this.installationObjects[resourceId].refresh_token = token;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            yield installationDetailsModel_1.default.update({ refresh_token: token }, { where: { companyId: resourceId } });
+        });
+    }
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield installationDetailsModel_1.default.findAll();
+        });
     }
 }
 exports.Model = Model;

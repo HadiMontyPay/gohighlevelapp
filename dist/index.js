@@ -18,10 +18,11 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const ghl_1 = require("./ghl");
 const body_parser_1 = require("body-parser");
-const path = __dirname + "/ui/dist/";
+const database_1 = __importDefault(require("./database")); // Adjust path if necessary
+const path = __dirname + "/ui/build/";
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-app.use((0, body_parser_1.json)({ type: 'application/json' }));
+app.use((0, body_parser_1.json)({ type: "application/json" }));
 /*`app.use(express.static(path));` is setting up a middleware in the Express server. The
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
 app.use(express_1.default.static(path));
@@ -126,6 +127,21 @@ app.post("/decrypt-sso", (req, res) => __awaiter(void 0, void 0, void 0, functio
 app.get("/", function (req, res) {
     res.sendFile(path + "index.html");
 });
+app.get("/getAll", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const all = yield ghl.getAll();
+    return res.send(all);
+}));
+// Adjust path if necessary
+const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield database_1.default.sync(); // This will create the table if it doesn't exist
+        console.log("Database synchronized.");
+    }
+    catch (error) {
+        console.error("Error synchronizing the database:", error);
+    }
+});
+syncDatabase();
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */

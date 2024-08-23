@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GHL = void 0;
 const qs_1 = __importDefault(require("qs"));
 const axios_1 = __importDefault(require("axios"));
+const crypto_js_1 = __importDefault(require("crypto-js"));
 const model_1 = require("./model");
 /* The GHL class is responsible for handling authorization, making API requests, and managing access
 tokens and refresh tokens for a specific resource. */
@@ -38,7 +39,7 @@ class GHL {
         });
     }
     decryptSSOData(key) {
-        const data = CryptoJS.AES.decrypt(key, process.env.GHL_APP_SSO_KEY).toString(CryptoJS.enc.Utf8);
+        const data = crypto_js_1.default.AES.decrypt(key, process.env.GHL_APP_SSO_KEY).toString(crypto_js_1.default.enc.Utf8);
         return JSON.parse(data);
     }
     /**
@@ -107,9 +108,12 @@ class GHL {
             this.model.saveInstallationInfo(res.data);
         });
     }
+    getAll() {
+        return this.model.getAll();
+    }
     refreshAccessToken(resourceId) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 const resp = yield axios_1.default.post(`${process.env.GHL_API_DOMAIN}/oauth/token`, qs_1.default.stringify({
                     client_id: process.env.GHL_APP_CLIENT_ID,
@@ -126,8 +130,8 @@ class GHL {
         });
     }
     generateAccessTokenRefreshTokenPair(code) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 const resp = yield axios_1.default.post(`${process.env.GHL_API_DOMAIN}/oauth/token`, qs_1.default.stringify({
                     client_id: process.env.GHL_APP_CLIENT_ID,
