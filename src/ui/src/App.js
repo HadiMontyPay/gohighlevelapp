@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const [user, setUser] = useState({});
@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     const data = getUserData();
-    setUser(data);
+    setUser(JSON.stringify(data, null, 4));
   }, []);
   return (
     <div className="App">
@@ -49,7 +49,7 @@ function App() {
           <button type="submit">Save</button>
         </form>
         <div>{/* {{ JSON.stringify(user, null, 4) }} */}</div>
-        <div>{user}</div>
+        <div>{user.activeLocation}</div>
       </div>
     </div>
   );
