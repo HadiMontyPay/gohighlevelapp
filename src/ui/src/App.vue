@@ -74,7 +74,7 @@ async function getUserData() {
 
 async function association() {
   await axios
-    .get(`/api-call-location?locationId=${locationId}`)
+    .get(`/api-call-location?locationId=${locationId.value}`)
     .then((resp) => {
       found.value = resp.data;
     });
