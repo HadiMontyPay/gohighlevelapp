@@ -46,6 +46,7 @@
       {{ JSON.stringify(user, null, 4) }}
     </div>
     <div>
+      <button v-on:click="association()">Test</button>
       {{ JSON.stringify(found, null, 4) }}
     </div>
   </div>
@@ -70,7 +71,6 @@ async function getUserData() {
   const data = await window.ghl.getUserData();
   user.value = data;
   locationId.value = data.activeLocation;
-  await association();
 }
 
 async function association() {
