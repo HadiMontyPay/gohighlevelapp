@@ -11,7 +11,7 @@
         <label>
           Merchant Password:
           <input
-            v-model="merchantPassword"
+            v-model="merchantPass"
             type="password"
             placeholder="Merchant Password"
           />
@@ -30,7 +30,7 @@ import { ref, onMounted } from "vue";
 
 const user = ref({});
 const merchantKey = ref("");
-const merchantPassword = ref("");
+const merchantPass = ref("");
 const locationId = ref("");
 
 async function getUserData() {
@@ -53,7 +53,7 @@ async function saveMerchantInfo() {
   }
   const data = await window.ghl.saveMerchantInfo(
     merchantKey.value,
-    merchantPassword.value,
+    merchantPass.value,
     locationId.value
   );
   if (!data) {

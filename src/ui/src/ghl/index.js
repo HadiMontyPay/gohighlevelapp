@@ -26,7 +26,7 @@ export class GHL {
     return data;
   }
 
-  async saveMerchantInfo(merchantKey, merchantPassword, locationId) {
+  async saveMerchantInfo(merchantKey, merchantPass, locationId) {
     const res = await fetch("/save-merchant-info", {
       method: "POST",
       headers: {
@@ -35,7 +35,7 @@ export class GHL {
       },
       body: JSON.stringify({
         merchantKey: merchantKey,
-        merchantPassword: merchantPassword,
+        merchantPass: merchantPass,
         locationId: locationId,
       }),
     });
