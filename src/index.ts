@@ -62,7 +62,7 @@ app.get("/api-call-location", async (req: Request, res: Response) => {
     there is an existing installation for the provided locationId and returns a boolean value
     indicating whether the installation exists or not. */
   try {
-    if (ghl.checkInstallationExists(req.params.locationId)) {
+    if (ghl.checkInstallationExists(req.query.locationId as string)) {
       const request = await ghl
         .requests(req.query.locationId as string)
         .get(`/contacts/?locationId=${req.query.locationId}`, {
