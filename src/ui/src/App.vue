@@ -77,6 +77,9 @@ async function getUserData() {
 async function association() {
   await axios
     .get(`/get-by-locationId?locationId=${locationId.value}`)
+    .then((resp) => {
+      found.value = resp.data;
+    })
     .then(async (resp) => {
       await axios.post(
         `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${resp.data.locationId}`,
