@@ -141,7 +141,7 @@ export class GHL {
     TestmerchantPass: string,
     locationId: string
   ) {
-    return this.model.saveMerchantInfo(
+    return this.model.saveTestMerchantInfo(
       TestmerchantKey,
       TestmerchantPass,
       locationId

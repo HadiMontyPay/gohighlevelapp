@@ -143,7 +143,7 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
 });
 app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
   const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
-  const info = await ghl.saveMerchantInfo(
+  const info = await ghl.saveTestMerchantInfo(
     TestmerchantKey,
     TestmerchantPass,
     locationId
