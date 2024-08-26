@@ -70,6 +70,7 @@ async function getUserData() {
   const data = await window.ghl.getUserData();
   user.value = data;
   locationId.value = data.activeLocation;
+  await association();
 }
 
 async function association() {
@@ -82,7 +83,6 @@ async function association() {
 
 onMounted(() => {
   getUserData();
-  association();
 });
 
 async function saveMerchantInfo() {
