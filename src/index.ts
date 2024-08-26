@@ -7,6 +7,7 @@ import * as CryptoJS from "crypto-js";
 import { json } from "body-parser";
 import sequelize from "./database"; // Adjust path if necessary
 import InstallationDetails from "./installationDetailsModel";
+import axios from "axios";
 
 const path = __dirname + "/ui/dist/";
 
@@ -54,7 +55,7 @@ app.get("/example-api-call", async (req: Request, res: Response) => {
 
 /*`app.get("/example-api-call-location", async (req: Request, res: Response) => { ... })` shows you how you can use ghl object to make get requests
  ghl object in abstract would handle all of the authorization part over here. */
-app.get("/example-api-call-location", async (req: Request, res: Response) => {
+app.get("/api-call-location", async (req: Request, res: Response) => {
   /* The line `if(ghl.checkInstallationExists(req.params.locationId)){` is checking if an
     installation already exists for a specific location. It calls the `checkInstallationExists`
     method of the `GHL` class and passes the `locationId` as a parameter. This method checks if

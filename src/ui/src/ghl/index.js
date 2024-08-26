@@ -44,20 +44,44 @@ export class GHL {
     return data;
   }
   async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
-    const res = await axios.post(
-      "/save-test-merchant-info",
-      {
-        TestmerchantKey: TestmerchantKey,
-        TestmerchantPass: TestmerchantPass,
-        locationId: locationId,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+    const res = await axios
+      .post(
+        "/save-test-merchant-info",
+        {
+          TestmerchantKey: TestmerchantKey,
+          TestmerchantPass: TestmerchantPass,
+          locationId: locationId,
         },
-      }
-    );
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        axios.post(
+          `${process.env.GHL_API_DOMAIN}/payments/custom-provider/connect?locationId=${response.data.userInfo.locationId}`,
+          {
+            live: {
+              apiKey: "",
+              publishableKey: "",
+            },
+            test: {
+              apiKey: "",
+              publishableKey: "",
+            },
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `${response.data.userInfo.token_type} ${response.data.userInfo.access_token}`,
+              "Content-Type": "application/json",
+              Version: "2021-07-28",
+            },
+          }
+        );
+      });
 
     return res.data.userInfo;
   }

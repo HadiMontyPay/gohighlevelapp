@@ -52,6 +52,7 @@
 </template>
 
 <script setup>
+import axios from "axios";
 import { ref, onMounted } from "vue";
 
 const user = ref({});
@@ -71,8 +72,17 @@ async function getUserData() {
   locationId.value = data.activeLocation;
 }
 
+async function association() {
+  await axios
+    .get(`/api-call-location?locationId=${locationId}`)
+    .then((resp) => {
+      found.value = resp.data;
+    });
+}
+
 onMounted(() => {
   getUserData();
+  association();
 });
 
 async function saveMerchantInfo() {
@@ -100,7 +110,7 @@ async function saveTestMerchantInfo() {
     TestmerchantPass.value,
     locationId.value
   );
-  found.value = data;
+  // found.value = data;
   if (!data) {
     console.log("error:", data);
   }
