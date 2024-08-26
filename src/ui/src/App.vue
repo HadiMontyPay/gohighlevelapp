@@ -90,7 +90,7 @@ async function association() {
               "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps. Offering features like online and mobile checkouts, payment links, smart routing, fraud prevention, and advanced reporting, MontyPay is designed to address your payment challenges. In addition, our unified dashboard and mobile app provide real-time transaction insights on the go. We know that integration can be complex, with high transaction rates and low acceptance, but MontyPay simplifies the process. With our global reach, we can onboard businesses worldwide with a single payment gateway, making global transactions smoother than ever.",
             paymentsUrl: `${process.env.VUE_APP_BACKEND_URL}`,
             queryUrl: `${process.env.VUE_APP_BACKEND_URL}`,
-            queryUrl: `${process.env.VUE_APP_BACKEND_URL}/logo.png`,
+            imageUrl: `${process.env.VUE_APP_BACKEND_URL}/logo.png`,
           },
           {
             headers: {
