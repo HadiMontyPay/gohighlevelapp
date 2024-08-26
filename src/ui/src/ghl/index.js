@@ -1,5 +1,6 @@
 /* The above class is a JavaScript GHL helper class that retrieves user data by sending a request to a server and
 decrypting the response using a key. */
+import axios from "axios";
 export class GHL {
   appId;
 
@@ -43,19 +44,21 @@ export class GHL {
     return data;
   }
   async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
-    const res = await fetch("/save-test-merchant-info", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const res = await axios.post(
+      "/save-test-merchant-info",
+      {
         TestmerchantKey: TestmerchantKey,
         TestmerchantPass: TestmerchantPass,
         locationId: locationId,
-      }),
-    });
-    const data = await res.json();
-    return data;
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.data;
   }
 }
