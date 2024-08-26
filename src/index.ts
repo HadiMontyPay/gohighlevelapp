@@ -62,7 +62,7 @@ app.get("/api-call-location", async (req: Request, res: Response) => {
     there is an existing installation for the provided locationId and returns a boolean value
     indicating whether the installation exists or not. */
   try {
-    if (ghl.checkInstallationExists(req.query.locationId as string)) {
+    if (ghl.checkInstallationExists(req.params.locationId)) {
       const request = await ghl
         .requests(req.query.locationId as string)
         .get(`/contacts/?locationId=${req.query.locationId}`, {
@@ -152,6 +152,12 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
   return res
     .status(200)
     .json({ message: "Merchant Info Added", userInfo: info });
+});
+
+app.get("/get-by-locationId", async (req: Request, res: Response) => {
+  const locationId = req.query.locationId;
+  const info = await ghl.getByLocationId(locationId as string);
+  return res.status(200).json(info);
 });
 
 const syncDatabase = async () => {

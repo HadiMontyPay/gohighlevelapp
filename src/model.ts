@@ -71,4 +71,10 @@ export class Model {
       },
     });
   }
+
+  async getByLocationId(locationId: string) {
+    return await InstallationDetails.findOne({
+      where: { locationId: locationId },
+    });
+  }
 }

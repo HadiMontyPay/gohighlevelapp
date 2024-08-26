@@ -147,6 +147,9 @@ export class GHL {
       locationId
     );
   }
+  getByLocationId(locationId: string) {
+    return this.model.getByLocationId(locationId);
+  }
 
   private async refreshAccessToken(resourceId: string) {
     try {
