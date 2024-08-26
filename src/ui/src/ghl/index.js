@@ -42,4 +42,20 @@ export class GHL {
     const data = await res.json();
     return data;
   }
+  async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
+    const res = await fetch("/save-test-merchant-info", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        TestmerchantKey: TestmerchantKey,
+        TestmerchantPass: TestmerchantPass,
+        locationId: locationId,
+      }),
+    });
+    const data = await res.json();
+    return data;
+  }
 }

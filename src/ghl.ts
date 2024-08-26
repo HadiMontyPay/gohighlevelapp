@@ -136,6 +136,17 @@ export class GHL {
   ) {
     return this.model.saveMerchantInfo(merchantKey, merchantPass, locationId);
   }
+  saveTestMerchantInfo(
+    TestmerchantKey: string,
+    TestmerchantPass: string,
+    locationId: string
+  ) {
+    return this.model.saveMerchantInfo(
+      TestmerchantKey,
+      TestmerchantPass,
+      locationId
+    );
+  }
 
   private async refreshAccessToken(resourceId: string) {
     try {

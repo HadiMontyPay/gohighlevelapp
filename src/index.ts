@@ -141,6 +141,15 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
   );
   return res.status(200).json({ message: "Merchant Info Added" });
 });
+app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
+  const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
+  const info = await ghl.saveMerchantInfo(
+    TestmerchantKey,
+    TestmerchantPass,
+    locationId
+  );
+  return res.status(200).json({ message: "Merchant Info Added" });
+});
 
 const syncDatabase = async () => {
   try {

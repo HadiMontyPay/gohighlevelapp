@@ -56,4 +56,14 @@ export class Model {
       { where: { locationId: locationId } }
     );
   }
+  async saveTestMerchantInfo(
+    TestmerchantKey: string,
+    TestmerchantPass: string,
+    locationId: string
+  ) {
+    await InstallationDetails.update(
+      { TestmerchantKey: TestmerchantKey, TestmerchantPass: TestmerchantPass },
+      { where: { locationId: locationId } }
+    );
+  }
 }
