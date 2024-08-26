@@ -45,6 +45,9 @@
     <div>
       {{ JSON.stringify(user, null, 4) }}
     </div>
+    <div>
+      {{ JSON.stringify(found, null, 4) }}
+    </div>
   </div>
 </template>
 
@@ -59,6 +62,8 @@ const locationId = ref("");
 
 const TestmerchantKey = ref("");
 const TestmerchantPass = ref("");
+
+const found = ref({});
 
 async function getUserData() {
   const data = await window.ghl.getUserData();
@@ -95,6 +100,7 @@ async function saveTestMerchantInfo() {
     TestmerchantPass.value,
     locationId.value
   );
+  found.value = data;
   if (!data) {
     console.log("error:", data);
   }

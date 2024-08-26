@@ -65,5 +65,10 @@ export class Model {
       { TestmerchantKey: TestmerchantKey, TestmerchantPass: TestmerchantPass },
       { where: { locationId: locationId } }
     );
+    return await InstallationDetails.findOne({
+      where: {
+        locationId: locationId,
+      },
+    });
   }
 }

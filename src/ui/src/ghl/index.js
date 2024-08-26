@@ -59,6 +59,6 @@ export class GHL {
       }
     );
 
-    return res.data;
+    return res.data.userInfo;
   }
 }

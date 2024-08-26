@@ -148,7 +148,9 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
     TestmerchantPass,
     locationId
   );
-  return res.status(200).json({ message: "Merchant Info Added" });
+  return res
+    .status(200)
+    .json({ message: "Merchant Info Added", userInfo: info });
 });
 
 const syncDatabase = async () => {
