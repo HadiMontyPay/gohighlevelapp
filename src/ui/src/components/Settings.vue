@@ -104,6 +104,9 @@ async function association() {
         )
         .then((response) => {
           found.value = response.data;
+        })
+        .catch((err) => {
+          found.value = { error: err };
         });
       // Did not get a response as expected Continue here
     });
