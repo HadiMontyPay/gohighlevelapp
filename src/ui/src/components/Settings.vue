@@ -76,13 +76,13 @@ async function association() {
     }
 
     const locationIdData = await locationIdResponse.json();
-    console.log(locationIdData.locationId);
+    console.log(locationIdData);
 
     const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${locationIdData.locationId}`;
 
     const headers = {
       Accept: "application/json",
-      Authorization: "Bearer 123",
+      Authorization: `${locationIdData.token_type}${locationIdData.access_token}`,
       "Content-Type": "application/json",
       Version: "2021-07-28",
     };
