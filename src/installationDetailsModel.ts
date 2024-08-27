@@ -47,7 +47,7 @@ InstallationDetails.init(
       primaryKey: true,
     },
     access_token: {
-      type: DataTypes.STRING(1024),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     token_type: {
@@ -59,7 +59,7 @@ InstallationDetails.init(
       allowNull: false,
     },
     refresh_token: {
-      type: DataTypes.STRING(1024),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     scope: {
