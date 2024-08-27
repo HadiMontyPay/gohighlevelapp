@@ -78,41 +78,32 @@ async function association() {
     const locationIdData = await locationIdResponse.json();
     console.log(locationIdData.locationId);
 
-    const postData = {
+    const url = `${process.env.GHL_API_DOMAIN}/payments/custom-provider/provider?locationId=${locationIdData.locationId}`;
+
+    const headers = {
+      Accept: "application/json",
+      Authorization: "Bearer 123",
+      "Content-Type": "application/json",
+      Version: "2021-07-28",
+    };
+
+    const data = {
       name: "MontyPay Payment",
       description:
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-      paymentsUrl: `${process.env.VUE_APP_BACKEND_URL}/payment`,
-      queryUrl: `${process.env.VUE_APP_BACKEND_URL}`,
-      imageUrl: `${process.env.VUE_APP_BACKEND_URL}/logo.png`,
+      paymentsUrl: "https://funnnel-fusion.onrender.com/payment",
+      queryUrl: "https://funnnel-fusion.onrender.com",
+      imageUrl: "https://funnnel-fusion.onrender.com/logo.png",
     };
 
-    const postHeaders = {
-      "content-type": "application/x-www-form-urlencoded",
-      Authorization: `${locationIdData.token_type} ${locationIdData.access_token}`,
-      Version: "2021-07-28",
-      Accept: "application/json",
-    };
-
-    const postResponse = await fetch(
-      `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${locationIdData.locationId}`,
-      {
-        method: "POST",
-        headers: postHeaders,
-        body: JSON.stringify(postData),
-      }
-    );
-
-    // Check if the response is okay
-    if (!postResponse.ok) {
-      const errorText = await postResponse.text();
-      throw new Error(
-        `Error posting data: ${postResponse.status} ${errorText}`
-      );
-    }
-
-    const postResponseData = await postResponse.json();
-    console.log(postResponseData);
+    fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.error("Error:", error));
   } catch (err) {
     console.error({ Error: err.message });
   }
