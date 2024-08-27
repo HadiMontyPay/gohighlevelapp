@@ -45,6 +45,7 @@
 </template>
 
 <script setup>
+import axios from "axios";
 import { ref, onMounted } from "vue";
 
 const merchantKey = ref("");
@@ -58,10 +59,10 @@ const TestmerchantPass = ref("");
 async function getUserData() {
   const data = await window.ghl.getUserData();
   locationId.value = data.activeLocation;
-  await association();
+  await CreateNewIntegration();
 }
 
-async function association() {
+async function CreateNewIntegration() {
   try {
     const locationIdResponse = await fetch(
       `/get-by-locationId?locationId=${locationId.value}`
@@ -102,7 +103,19 @@ async function association() {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => {
+        axios
+          .post("/add-providerConfig", {
+            providerConfig: result.providerConfig,
+            locationId: locationIdData.locationId,
+          })
+          .then((resp) => {
+            console.log("Provider config Added");
+          });
+      })
+      .catch((err) => {
+        console.log("Provider Config Error:", err);
+      })
       .catch((error) => console.error("Error:", error));
   } catch (err) {
     console.error({ Error: err });

@@ -151,6 +151,10 @@ export class GHL {
     return this.model.getByLocationId(locationId);
   }
 
+  addProviderConfig(providerConfig: object, locationId: string) {
+    return this.model.addProviderConfig(providerConfig, locationId);
+  }
+
   private async refreshAccessToken(resourceId: string) {
     try {
       const resp = await axios.post(

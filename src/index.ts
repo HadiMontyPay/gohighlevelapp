@@ -140,8 +140,38 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
     merchantPass,
     locationId
   );
-  return res.status(200).json({ message: "Merchant Info Added" });
+  const row = await ghl.getByLocationId(locationId as string);
+  if (!row) {
+    return res.status(500).json({ message: "Merchant Info Not Added" });
+  }
+  axios
+    .post(
+      `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
+      {
+        live: {
+          apiKey: merchantKey,
+          publishableKey: merchantPass,
+        },
+        test: {
+          apiKey: "",
+          publishableKey: "",
+        },
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${row.access_token}`,
+          "Content-Type": "application/json",
+          Version: "2021-07-28",
+        },
+      }
+    )
+    .then(() => {
+      return res.status(200).json({ message: "Merchant Info Added" });
+    });
+  // return res.status(200).json({ message: "Merchant Info Added" });
 });
+
 app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
   const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
   const info = await ghl.saveTestMerchantInfo(
@@ -149,15 +179,51 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
     TestmerchantPass,
     locationId
   );
-  return res
-    .status(200)
-    .json({ message: "Merchant Info Added", userInfo: info });
+  const row = await ghl.getByLocationId(locationId as string);
+  if (!row) {
+    return res.status(500).json({ message: "Merchant Info Not Added" });
+  }
+  axios
+    .post(
+      `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
+      {
+        live: {
+          apiKey: "",
+          publishableKey: "",
+        },
+        test: {
+          apiKey: TestmerchantKey,
+          publishableKey: TestmerchantPass,
+        },
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${row.access_token}`,
+          "Content-Type": "application/json",
+          Version: "2021-07-28",
+        },
+      }
+    )
+    .then(() => {
+      return res
+        .status(200)
+        .json({ message: "Merchant Info Added", userInfo: info });
+    });
 });
 
 app.get("/get-by-locationId", async (req: Request, res: Response) => {
   const locationId = req.query.locationId;
   const info = await ghl.getByLocationId(locationId as string);
   return res.status(200).json(info);
+});
+
+app.post("/add-providerConfig", async (req: Request, res: Request) => {
+  const { providerConfig, locationId } = req.body;
+  const info = await ghl.addProviderConfig(
+    providerConfig as object,
+    locationId as string
+  );
 });
 
 const syncDatabase = async () => {

@@ -77,4 +77,11 @@ export class Model {
       where: { locationId: locationId },
     });
   }
+
+  async addProviderConfig(providerConfig: object, locationId: string) {
+    return await InstallationDetails.update(
+      { providerConfig: providerConfig },
+      { where: { locationId: locationId } }
+    );
+  }
 }

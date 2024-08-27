@@ -16,6 +16,7 @@ interface InstallationDetailsAttributes {
   merchantPass?: string;
   TestmerchantKey?: string;
   TestmerchantPass?: string;
+  providerConfig?: object;
 }
 
 // Define the model
@@ -36,6 +37,7 @@ class InstallationDetails
   public merchantPass?: string;
   public TestmerchantKey?: string;
   public TestmerchantPass?: string;
+  public providerConfig?: object;
 }
 
 // Initialize the model
@@ -92,6 +94,10 @@ InstallationDetails.init(
     },
     TestmerchantPass: {
       type: DataTypes.STRING,
+      allowNull: true,
+    },
+    providerConfig: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
   },
