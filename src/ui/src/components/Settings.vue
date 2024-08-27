@@ -95,7 +95,7 @@ async function association() {
     };
 
     const postResponse = await fetch(
-      `${process.env.GHL_API_DOMAIN}/payments/custom-provider/provider?locationId=${locationIdData.locationId}`,
+      `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${locationIdData.locationId}`,
       {
         method: "POST",
         headers: postHeaders,
