@@ -45,7 +45,6 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { ref, onMounted } from "vue";
 
 const merchantKey = ref("");
@@ -63,37 +62,44 @@ async function getUserData() {
 }
 
 async function association() {
-  await axios
-    .get(`/get-by-locationId?locationId=${locationId.value}`)
-    .then((resp) => {
-      console.log(resp.data.locationId);
-      axios
-        .post(
-          `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${resp.data.locationId}`,
-          {
-            name: "MontyPay Payment",
-            description:
-              "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-            paymentsUrl: `${process.env.VUE_APP_BACKEND_URL}/payment`,
-            queryUrl: `${process.env.VUE_APP_BACKEND_URL}`,
-            imageUrl: `${process.env.VUE_APP_BACKEND_URL}/logo.png`,
-          },
-          {
-            headers: {
-              "content-type": "application/x-www-form-urlencoded",
-              Authorization: `${resp.data.token_type} ${resp.data.access_token}`,
-              Version: "2021-07-28",
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((err) => {
-          console.log({ Error: err });
-        });
-    });
+  const locationIdResponse = await fetch(
+    `/get-by-locationId?locationId=${locationId.value}`
+  );
+  const locationIdData = await locationIdResponse.json();
+
+  console.log(locationIdData);
+
+  const postData = {
+    name: "MontyPay Payment",
+    description:
+      "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
+    paymentsUrl: `${process.env.VUE_APP_BACKEND_URL}/payment`,
+    queryUrl: `${process.env.VUE_APP_BACKEND_URL}`,
+    imageUrl: `${process.env.VUE_APP_BACKEND_URL}/logo.png`,
+  };
+
+  const postHeaders = {
+    "content-type": "application/x-www-form-urlencoded",
+    Authorization: `${locationIdData.token_type} ${locationIdData.access_token}`,
+    Version: "2021-07-28",
+    Accept: "application/json",
+  };
+
+  try {
+    const postResponse = await fetch(
+      `${process.env.GHL_API_DOMAIN}/payments/custom-provider/provider?locationId=${locationIdData.locationId}`,
+      {
+        method: "POST",
+        headers: postHeaders,
+        body: JSON.stringify(postData),
+      }
+    );
+
+    const postResponseData = await postResponse.json();
+    console.log(postResponseData);
+  } catch (err) {
+    console.log({ Error: err });
+  }
 }
 
 onMounted(() => {
