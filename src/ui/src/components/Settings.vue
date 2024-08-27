@@ -105,7 +105,7 @@ async function association() {
       .then((result) => console.log(result))
       .catch((error) => console.error("Error:", error));
   } catch (err) {
-    console.error({ Error: err.message });
+    console.error({ Error: err });
   }
 }
 
