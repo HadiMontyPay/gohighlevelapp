@@ -81,7 +81,7 @@ async function association() {
 
     const headers = {
       Accept: "application/json",
-      Authorization: `${locationIdData.token_type} ${locationIdData.access_token}`,
+      Authorization: `${locationIdData.userType} ${locationIdData.access_token}`,
       "Content-Type": "application/json",
       Version: "2021-07-28",
     };
