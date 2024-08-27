@@ -78,9 +78,7 @@ async function association() {
     const locationIdData = await locationIdResponse.json();
     console.log(locationIdData.locationId);
 
-    const baseUrl = process.env.GHL_API_DOMAIN;
-
-    const url = `${baseUrl}/payments/custom-provider/provider?locationId=${locationIdData.locationId}`;
+    const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${locationIdData.locationId}`;
 
     const headers = {
       Accept: "application/json",
