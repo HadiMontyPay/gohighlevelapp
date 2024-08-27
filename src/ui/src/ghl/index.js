@@ -61,7 +61,7 @@ export class GHL {
       )
       .then((response) => {
         axios.post(
-          `${process.env.GHL_API_DOMAIN}/payments/custom-provider/connect?locationId=${response.data.userInfo.locationId}`,
+          `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${response.data.userInfo.locationId}`,
           {
             live: {
               apiKey: "",

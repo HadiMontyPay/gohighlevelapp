@@ -76,6 +76,7 @@ async function association() {
     }
 
     const locationIdData = await locationIdResponse.json();
+    console.log(locationIdData);
 
     const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${locationIdData.locationId}`;
 
