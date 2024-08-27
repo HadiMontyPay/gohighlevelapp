@@ -101,7 +101,7 @@ async function association() {
       headers: headers,
       body: JSON.stringify(data),
     })
-      .then((response) => console.log(response.json()))
+      .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.error("Error:", error));
   } catch (err) {
