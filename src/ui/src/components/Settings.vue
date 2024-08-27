@@ -45,10 +45,10 @@
     <!-- <div>
         {{ JSON.stringify(user, null, 4) }}
       </div> -->
-    <div>
-      <!-- <button v-on:click="association()">Test</button> -->
-      {{ JSON.stringify(found, null, 4) }}
-    </div>
+    <!-- <div> -->
+    <!-- <button v-on:click="association()">Test</button> -->
+    <!-- {{ JSON.stringify(found, null, 4) }}
+    </div> -->
   </div>
 </template>
 
@@ -65,7 +65,7 @@ const locationId = ref("");
 const TestmerchantKey = ref("");
 const TestmerchantPass = ref("");
 
-const found = ref({});
+// const found = ref({});
 
 async function getUserData() {
   const data = await window.ghl.getUserData();
@@ -103,10 +103,10 @@ async function association() {
           }
         )
         .then((response) => {
-          found.value = response.data;
+          console.log(response.data);
         })
         .catch((err) => {
-          found.value = { error: err };
+          console.log({ Error: err });
         });
       // Did not get a response as expected Continue here
     });
