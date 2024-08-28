@@ -210,7 +210,11 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
         },
       }
     )
-    .then(() => {
+    .then(async (resp) => {
+      const updateProviderConfig = await ghl.updateProviderConfig(
+        locationId as string,
+        resp.data.providerConfig as object
+      );
       console.log("Merchant Info Added");
       return res
         .status(200)
