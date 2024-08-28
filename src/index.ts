@@ -29,7 +29,65 @@ const port = process.env.PORT;
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
-  await ghl.authorizationHandler(code as string);
+  const installation = await ghl.authorizationHandler(code as string);
+  try {
+    // const locationIdResponse = await fetch(
+    //   `/get-by-locationId?locationId=${installation.locationId}`
+    // );
+
+    // // Check if the response is okay (status 200-299)
+    // if (!locationIdResponse.ok) {
+    //   const errorText = await locationIdResponse.text(); // Get the text to understand what the error is
+    //   throw new Error(
+    //     `Error fetching locationId: ${locationIdResponse.status} ${errorText}`
+    //   );
+    // }
+
+    // const locationIdData = await locationIdResponse.json();
+    // console.log(locationIdData);
+
+    const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${installation.locationId}`;
+
+    const headers = {
+      Accept: "application/json",
+      Authorization: `Bearer ${installation.access_token}`,
+      "Content-Type": "application/json",
+      Version: "2021-07-28",
+    };
+
+    const data = {
+      name: "MontyPay Payment",
+      description:
+        "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
+      paymentsUrl: "https://funnnel-fusion.onrender.com/payment",
+      queryUrl: "https://funnnel-fusion.onrender.com",
+      imageUrl: "https://funnnel-fusion.onrender.com/logo.png",
+    };
+
+    fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        axios
+          .post("/add-providerConfig", {
+            providerConfig: result.providerConfig,
+            locationId: installation.locationId,
+          })
+          .then((resp) => {
+            console.log("Provider config Added");
+          });
+      })
+      .catch((err) => {
+        console.log("Provider Config Error:", err);
+      })
+      .catch((error) => console.error("Error:", error));
+  } catch (err) {
+    console.error({ Error: err });
+  }
+
   res.redirect("https://app.gohighlevel.com/");
 });
 
