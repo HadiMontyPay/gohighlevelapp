@@ -234,6 +234,10 @@ app.post("/add-providerConfig", async (req: Request, res: Request) => {
   );
 });
 
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path + "index.html");
+});
+
 const syncDatabase = async () => {
   try {
     await sequelize.sync(); // This will create the table if it doesn't exist
