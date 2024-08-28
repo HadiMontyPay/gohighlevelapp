@@ -31,21 +31,6 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
   const installation = await ghl.authorizationHandler(code as string);
   try {
-    // const locationIdResponse = await fetch(
-    //   `/get-by-locationId?locationId=${installation.locationId}`
-    // );
-
-    // // Check if the response is okay (status 200-299)
-    // if (!locationIdResponse.ok) {
-    //   const errorText = await locationIdResponse.text(); // Get the text to understand what the error is
-    //   throw new Error(
-    //     `Error fetching locationId: ${locationIdResponse.status} ${errorText}`
-    //   );
-    // }
-
-    // const locationIdData = await locationIdResponse.json();
-    // console.log(locationIdData);
-
     const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${installation.locationId}`;
 
     const headers = {
@@ -84,11 +69,10 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
         console.log("Provider Config Error:", err);
       })
       .catch((error) => console.error("Error:", error));
+    res.redirect("https://app.gohighlevel.com/");
   } catch (err) {
     console.error({ Error: err });
   }
-
-  res.redirect("https://app.gohighlevel.com/");
 });
 
 /*`app.get("/example-api-call", async (req: Request, res: Response) => { ... })` shows you how you can use ghl object to make get requests
