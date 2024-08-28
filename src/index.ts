@@ -1,13 +1,11 @@
 /*you provided is a TypeScript code that sets up an Express server and defines several routes
 for handling HTTP requests. */
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import { GHL } from "./ghl";
-import * as CryptoJS from "crypto-js";
-import { json } from "body-parser";
-import sequelize from "./database"; // Adjust path if necessary
-import InstallationDetails from "./installationDetailsModel";
 import axios from "axios";
+import { json } from "body-parser";
+import dotenv from "dotenv";
+import express, { Express, Request, Response } from "express";
+import sequelize from "./database"; // Adjust path if necessary
+import { GHL } from "./ghl";
 
 const path = __dirname + "/ui/dist/";
 
