@@ -28,86 +28,37 @@ export class GHL {
   }
 
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
-    const res = await axios
-      .post(
-        "/save-merchant-info",
-        {
-          merchantKey: merchantKey,
-          merchantPass: merchantPass,
-          locationId: locationId,
+    const res = await axios.post(
+      "/save-merchant-info",
+      {
+        merchantKey: merchantKey,
+        merchantPass: merchantPass,
+        locationId: locationId,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        axios.post(
-          `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${response.data.userInfo.locationId}`,
-          {
-            live: {
-              apiKey: merchantKey,
-              publishableKey: merchantPass,
-            },
-            test: {
-              apiKey: "",
-              publishableKey: "",
-            },
-          },
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${response.data.userInfo.access_token}`,
-              "Content-Type": "application/json",
-              Version: "2021-07-28",
-            },
-          }
-        );
-      });
+      }
+    );
     return res.data.userInfo;
   }
   async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
-    const res = await axios
-      .post(
-        "/save-test-merchant-info",
-        {
-          TestmerchantKey: TestmerchantKey,
-          TestmerchantPass: TestmerchantPass,
-          locationId: locationId,
+    const res = await axios.post(
+      "/save-test-merchant-info",
+      {
+        TestmerchantKey: TestmerchantKey,
+        TestmerchantPass: TestmerchantPass,
+        locationId: locationId,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data.userInfo);
-        axios.post(
-          `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${response.data.userInfo.locationId}`,
-          {
-            live: {
-              apiKey: "",
-              publishableKey: "",
-            },
-            test: {
-              apiKey: TestmerchantKey,
-              publishableKey: TestmerchantPass,
-            },
-          },
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${response.data.userInfo.access_token}`,
-              "Content-Type": "application/json",
-              Version: "2021-07-28",
-            },
-          }
-        );
-      });
+      }
+    );
 
     return res.data.userInfo;
   }
