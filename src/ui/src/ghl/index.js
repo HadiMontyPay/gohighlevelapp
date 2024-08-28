@@ -85,6 +85,7 @@ export class GHL {
         }
       )
       .then((response) => {
+        console.log(response.data.userInfo);
         axios.post(
           `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${response.data.userInfo.locationId}`,
           {
