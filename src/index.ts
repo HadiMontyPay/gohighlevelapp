@@ -44,7 +44,7 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
       paymentsUrl: "https://funnnel-fusion.onrender.com/payment",
       queryUrl: "https://funnnel-fusion.onrender.com",
-      imageUrl: "https://funnnel-fusion.onrender.com/logo.png",
+      imageUrl: "https://funnnel-fusion.onrender.com/512x512.png",
     };
 
     await fetch(url, {
