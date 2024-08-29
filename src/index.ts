@@ -185,10 +185,12 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
       `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
       {
         live: {
+          liveMode: true,
           apiKey: merchantKey,
           publishableKey: merchantPass,
         },
         test: {
+          liveMode: false,
           apiKey: row.TestmerchantKey,
           publishableKey: row.TestmerchantPass,
         },
@@ -229,10 +231,12 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
       `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
       {
         live: {
+          liveMode: false,
           apiKey: row.merchantKey,
           publishableKey: row.merchantPass,
         },
         test: {
+          liveMode: true,
           apiKey: TestmerchantKey,
           publishableKey: TestmerchantPass,
         },
