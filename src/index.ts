@@ -28,48 +28,45 @@ const port = process.env.PORT;
 app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
   const rs = await ghl.authorizationHandler(code as string);
-  try {
-    const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${rs?.locationId}`;
 
-    const headers = {
-      Accept: "application/json",
-      Authorization: `Bearer ${rs?.access_token}`,
-      "Content-Type": "application/json",
-      Version: "2021-07-28",
-    };
+  const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${rs?.locationId}`;
 
-    const data = {
-      name: "MontyPay Payment",
-      description:
-        "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-      paymentsUrl: "https://funnnel-fusion.onrender.com/payment",
-      queryUrl: "https://funnnel-fusion.onrender.com",
-      imageUrl: "https://funnnel-fusion.onrender.com/logo.png",
-    };
+  const headers = {
+    Accept: "application/json",
+    Authorization: `Bearer ${rs?.access_token}`,
+    "Content-Type": "application/json",
+    Version: "2021-07-28",
+  };
 
-    fetch(url, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(data),
+  const data = {
+    name: "MontyPay Payment",
+    description:
+      "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
+    paymentsUrl: "https://funnnel-fusion.onrender.com/payment",
+    queryUrl: "https://funnnel-fusion.onrender.com",
+    imageUrl: "https://funnnel-fusion.onrender.com/logo.png",
+  };
+
+  await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      axios
+        .post("/add-providerConfig", {
+          providerConfig: result.providerConfig,
+          locationId: rs?.locationId,
+        })
+        .then((resp) => {
+          console.log("Provider config Added");
+        });
     })
-      .then((response) => response.json())
-      .then((result) => {
-        axios
-          .post("/add-providerConfig", {
-            providerConfig: result.providerConfig,
-            locationId: rs?.locationId,
-          })
-          .then((resp) => {
-            console.log("Provider config Added");
-          });
-      })
-      .catch((err) => {
-        console.log("Provider Config Error:", err);
-      })
-      .catch((error) => console.error("Error:", error));
-  } catch (err) {
-    console.error({ Error: err });
-  }
+    .catch((err) => {
+      console.log("Provider Config Error:", err);
+    })
+    .catch((error) => console.error("Error:", error));
 
   res.redirect(
     `https://app.gohighlevel.com/v2/location/${rs?.locationId}/integration/66784c7a116a7182d1c49bc5`
