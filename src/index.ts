@@ -151,8 +151,8 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
           publishableKey: merchantPass,
         },
         test: {
-          apiKey: " ",
-          publishableKey: " ",
+          apiKey: row.TestmerchantKey,
+          publishableKey: row.TestmerchantPass,
         },
       },
       {
@@ -191,8 +191,8 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
       `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
       {
         live: {
-          apiKey: " ",
-          publishableKey: " ",
+          apiKey: row.merchantKey,
+          publishableKey: row.merchantPass,
         },
         test: {
           apiKey: TestmerchantKey,
