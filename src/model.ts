@@ -12,6 +12,10 @@ export enum TokenType {
 export class Model {
   async saveInstallationInfo(details: InstallationDetails) {
     await InstallationDetails.upsert(details); // Upsert will create or update the record
+
+    return InstallationDetails.findOne({
+      where: { locationId: details.locationId },
+    });
   }
 
   async getAccessToken(resourceId: string): Promise<string | null> {

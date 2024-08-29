@@ -25,7 +25,7 @@ export class GHL {
         "Please provide code when making call to authorization Handler"
       );
     }
-    await this.generateAccessTokenRefreshTokenPair(code);
+    return await this.generateAccessTokenRefreshTokenPair(code);
   }
 
   decryptSSOData(key: string) {
@@ -190,7 +190,7 @@ export class GHL {
         }),
         { headers: { "content-type": "application/x-www-form-urlencoded" } }
       );
-      this.model.saveInstallationInfo(resp.data);
+      return this.model.saveInstallationInfo(resp.data);
     } catch (error: any) {
       console.error(error?.response?.data);
     }
