@@ -232,8 +232,8 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
       {
         live: {
           liveMode: false,
-          apiKey: row.merchantKey,
-          publishableKey: row.merchantPass,
+          apiKey: TestmerchantKey,
+          publishableKey: TestmerchantPass,
         },
         test: {
           liveMode: true,
