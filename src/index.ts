@@ -47,24 +47,17 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
       imageUrl: "https://funnnel-fusion.onrender.com/logo.png",
     };
 
-    fetch(url, {
+    await fetch(url, {
       method: "POST",
       headers: headers,
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((result) => {
-        axios
-          .post("/add-providerConfig", {
-            providerConfig: result.providerConfig,
-            locationId: rs?.locationId,
-          })
-          .then((resp) => {
-            console.log("Provider config Added");
-          });
-      })
-      .catch((err) => {
-        console.log("Provider Config Error:", err);
+      .then(async (result) => {
+        await ghl.addProviderConfig(
+          result.providerConfig as object,
+          rs?.locationId as string
+        );
       })
       .catch((error) => console.error("Error:", error));
   } catch (err) {
