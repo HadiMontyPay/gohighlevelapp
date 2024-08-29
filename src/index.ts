@@ -211,6 +211,9 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
       );
       console.log("Merchant Info Added");
       return res.status(200).json({ message: "Merchant Info Added" });
+    })
+    .catch((err) => {
+      console.log("Error", err);
     });
   // return res.status(200).json({ message: "Merchant Info Added" });
 });
@@ -259,6 +262,9 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
       return res
         .status(200)
         .json({ message: "Merchant Info Added", userInfo: info });
+    })
+    .catch((err) => {
+      console.log("Error", err);
     });
 });
 
