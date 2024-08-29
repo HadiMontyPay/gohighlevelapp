@@ -234,9 +234,11 @@ app.post("/add-providerConfig", async (req: Request, res: Request) => {
   );
 });
 
-// app.get("*", (req: Request, res: Response) => {
-//   res.sendFile(path + "index.html");
-// });
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path + "index.html");
+});
+
+// Continue Here
 
 const syncDatabase = async () => {
   try {
