@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div id="settings_page">
     <h1>MontyPay Configuration</h1>
+    <p>
+      Please update the test and live credentials below to use payment gateway.
+    </p>
     <form @submit.prevent="saveTestMerchantInfo">
       <fieldset>
-        <legend>Test Merchant Info</legend>
+        <legend>Test Credentials</legend>
         <label>
-          Test Merchant Key:
+          <span> Merchant Key: </span>
           <input
             v-model="TestmerchantKey"
             type="text"
@@ -13,32 +16,32 @@
           />
         </label>
         <label>
-          Test Merchant Password:
+          <span> Merchant Password: </span>
           <input
             v-model="TestmerchantPass"
             type="password"
             placeholder="Merchant Password"
           />
         </label>
-        <button type="submit">Save</button>
+        <button type="submit">Connect</button>
       </fieldset>
     </form>
     <form @submit.prevent="saveMerchantInfo">
       <fieldset>
-        <legend>Merchant Info</legend>
+        <legend>Live Credentials</legend>
         <label>
-          Merchant Key:
+          <span> Merchant Key: </span>
           <input v-model="merchantKey" type="text" placeholder="Merchant Key" />
         </label>
         <label>
-          Merchant Password:
+          <span> Merchant Password: </span>
           <input
             v-model="merchantPass"
             type="password"
             placeholder="Merchant Password"
           />
         </label>
-        <button type="submit">Save</button>
+        <button type="submit">Connect</button>
       </fieldset>
     </form>
   </div>
@@ -166,3 +169,56 @@ export default {
   //   }
 };
 </script>
+
+<style>
+#settings_page {
+  h1 {
+    border: none;
+    font-size: 20px;
+  }
+
+  form {
+    border-top: 1px solid #eaecf0;
+    border-radius: 0;
+
+    fieldset {
+      border: none;
+      width: 90%;
+
+      legend {
+        font-size: 14px;
+      }
+
+      label {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        margin-left: 20px;
+
+        span {
+          font-size: 14px;
+        }
+
+        input {
+          width: 80%;
+          max-width: 80%;
+          font-size: 14px;
+          padding: 0.75rem 1rem;
+        }
+      }
+
+      button {
+        background-color: #155eef;
+        font-size: 14px;
+        color: white;
+        font-weight: 500;
+        padding: 0.6rem 1.5rem;
+        margin-left: 20px;
+        border-radius: 8px;
+      }
+    }
+  }
+}
+</style>
