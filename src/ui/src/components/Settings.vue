@@ -177,6 +177,10 @@ export default {
     font-size: 20px;
   }
 
+  p {
+    font-size: 14px;
+  }
+
   form {
     border-top: 1px solid #eaecf0;
     border-radius: 0;
