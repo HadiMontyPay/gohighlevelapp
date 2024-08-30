@@ -54,7 +54,7 @@ import { ref, onMounted } from "vue";
 const merchantKey = ref("");
 const merchantPass = ref("");
 
-const locationId = ref("Wo0JTzsjoXSRdWMGyGNM");
+const locationId = ref("");
 
 const TestmerchantKey = ref("");
 const TestmerchantPass = ref("");
