@@ -54,7 +54,7 @@ import { ref, onMounted } from "vue";
 const merchantKey = ref("");
 const merchantPass = ref("");
 
-const locationId = ref("");
+const locationId = ref("Wo0JTzsjoXSRdWMGyGNM");
 
 const TestmerchantKey = ref("");
 const TestmerchantPass = ref("");
@@ -129,11 +129,34 @@ onMounted(() => {
   getUserData();
 });
 
+function validateMerchantKey(str) {
+  let regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return regex.test(str);
+}
+
+function validateMerchantPass(str) {
+  if (str.length < 32) {
+    return false;
+  } else {
+    return true;
+  }
+}
 async function saveMerchantInfo() {
   if (locationId.value === "") {
     console.log("LocationID Empty");
     return;
   }
+
+  if (!validateMerchantKey(merchantKey.value)) {
+    console.log("Merchant Key Invalid");
+    return;
+  }
+
+  if (!validateMerchantPass(merchantPass.value)) {
+    console.log("Merchant Password Invalid");
+    return;
+  }
+
   const data = await window.ghl.saveMerchantInfo(
     merchantKey.value,
     merchantPass.value,
@@ -149,6 +172,17 @@ async function saveTestMerchantInfo() {
     console.log("LocationID Empty");
     return;
   }
+
+  if (!validateMerchantKey(TestmerchantKey.value)) {
+    console.log("Merchant Key Invalid");
+    return;
+  }
+
+  if (!validateMerchantPass(TestmerchantPass.value)) {
+    console.log("Merchant Password Invalid");
+    return;
+  }
+
   const data = await window.ghl.saveTestMerchantInfo(
     TestmerchantKey.value,
     TestmerchantPass.value,

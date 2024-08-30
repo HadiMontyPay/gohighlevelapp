@@ -35,7 +35,7 @@ class GHL {
             if (!code) {
                 console.warn("Please provide code when making call to authorization Handler");
             }
-            yield this.generateAccessTokenRefreshTokenPair(code);
+            return yield this.generateAccessTokenRefreshTokenPair(code);
         });
     }
     decryptSSOData(key) {
@@ -111,6 +111,21 @@ class GHL {
     getAll() {
         return this.model.getAll();
     }
+    saveMerchantInfo(merchantKey, merchantPass, locationId) {
+        return this.model.saveMerchantInfo(merchantKey, merchantPass, locationId);
+    }
+    saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
+        return this.model.saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId);
+    }
+    getByLocationId(locationId) {
+        return this.model.getByLocationId(locationId);
+    }
+    addProviderConfig(providerConfig, locationId) {
+        return this.model.addProviderConfig(providerConfig, locationId);
+    }
+    updateProviderConfig(locationId, providerConfig) {
+        return this.model.updateProviderConfig(locationId, providerConfig);
+    }
     refreshAccessToken(resourceId) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
@@ -139,7 +154,7 @@ class GHL {
                     grant_type: "authorization_code",
                     code,
                 }), { headers: { "content-type": "application/x-www-form-urlencoded" } });
-                this.model.saveInstallationInfo(resp.data);
+                return this.model.saveInstallationInfo(resp.data);
             }
             catch (error) {
                 console.error((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data);

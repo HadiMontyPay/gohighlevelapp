@@ -27,6 +27,9 @@ class Model {
     saveInstallationInfo(details) {
         return __awaiter(this, void 0, void 0, function* () {
             yield installationDetailsModel_1.default.upsert(details); // Upsert will create or update the record
+            return installationDetailsModel_1.default.findOne({
+                where: { locationId: details.locationId },
+            });
         });
     }
     getAccessToken(resourceId) {
@@ -60,6 +63,38 @@ class Model {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             yield installationDetailsModel_1.default.findAll();
+        });
+    }
+    saveMerchantInfo(merchantKey, merchantPass, locationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield installationDetailsModel_1.default.update({ merchantKey: merchantKey, merchantPass: merchantPass }, { where: { locationId: locationId } });
+        });
+    }
+    saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield installationDetailsModel_1.default.update({ TestmerchantKey: TestmerchantKey, TestmerchantPass: TestmerchantPass }, { where: { locationId: locationId } });
+            return yield installationDetailsModel_1.default.findOne({
+                where: {
+                    locationId: locationId,
+                },
+            });
+        });
+    }
+    getByLocationId(locationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield installationDetailsModel_1.default.findOne({
+                where: { locationId: locationId },
+            });
+        });
+    }
+    addProviderConfig(providerConfig, locationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield installationDetailsModel_1.default.update({ providerConfig: providerConfig }, { where: { locationId: locationId } });
+        });
+    }
+    updateProviderConfig(locationId, providerConfig) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield installationDetailsModel_1.default.update({ providerConfig: providerConfig }, { where: { locationId: locationId } });
         });
     }
 }
