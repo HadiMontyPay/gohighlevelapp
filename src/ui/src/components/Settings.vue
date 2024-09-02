@@ -1,5 +1,5 @@
 <template>
-  <div id="settings_page">
+  <div id="settings_page" v-if="loading === false">
     <h1>MontyPay Configuration</h1>
     <p>
       Please update the test and live credentials below to use payment gateway.
@@ -45,6 +45,9 @@
       </fieldset>
     </form>
   </div>
+  <div id="lll" v-if="loading === true">
+    <div class="loader"></div>
+  </div>
 </template>
 
 <script setup>
@@ -53,6 +56,7 @@ import { ref, onMounted } from "vue";
 
 const merchantKey = ref("");
 const merchantPass = ref("");
+const loading = ref(true);
 
 const locationId = ref("");
 
@@ -80,6 +84,8 @@ async function getSavedInfo(locationId) {
   if (info.TestmerchantPass) {
     TestmerchantPass.value = info.TestmerchantPass;
   }
+
+  loading.value = false;
 }
 onMounted(() => {
   getUserData();
@@ -213,6 +219,107 @@ export default {
         border-radius: 8px;
       }
     }
+  }
+}
+
+#lll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .loader {
+    margin-top: 2rem;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #155eef;
+    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
+  }
+}
+@keyframes l20-1 {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+  12.5% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%
+    );
+  }
+  25% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      100% 100%,
+      100% 100%
+    );
+  }
+  50% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  62.5% {
+    clip-path: polygon(
+      50% 50%,
+      100% 0,
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  75% {
+    clip-path: polygon(
+      50% 50%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  100% {
+    clip-path: polygon(
+      50% 50%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+}
+@keyframes l20-2 {
+  0% {
+    transform: scaleY(1) rotate(0deg);
+  }
+  49.99% {
+    transform: scaleY(1) rotate(135deg);
+  }
+  50% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+  100% {
+    transform: scaleY(-1) rotate(-135deg);
   }
 }
 </style>
