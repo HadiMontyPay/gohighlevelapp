@@ -62,4 +62,10 @@ export class GHL {
 
     return res.data.userInfo;
   }
+
+  async getSavedInfo(locationId) {
+    const res = await axios.get(`/get-by-locationId?locationId=${locationId}`);
+
+    return res.data;
+  }
 }
