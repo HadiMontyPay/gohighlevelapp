@@ -67,7 +67,7 @@ async function getUserData() {
 
 async function getSavedInfo(locationId) {
   const info = await window.ghl.getSavedInfo(locationId);
-  console.log(info);
+  // console.log(info);
   if (info.merchantKey) {
     merchantKey.value = info.merchantKey;
   }
