@@ -72,20 +72,24 @@ async function getUserData() {
 async function getSavedInfo(locationId) {
   const info = await window.ghl.getSavedInfo(locationId);
   // console.log(info);
-  if (info.merchantKey) {
-    merchantKey.value = info.merchantKey;
-  }
-  if (info.merchantPass) {
-    merchantPass.value = info.merchantPass;
-  }
-  if (info.TestmerchantKey) {
-    TestmerchantKey.value = info.TestmerchantKey;
-  }
-  if (info.TestmerchantPass) {
-    TestmerchantPass.value = info.TestmerchantPass;
-  }
+  if (info) {
+    if (info.merchantKey) {
+      merchantKey.value = info.merchantKey;
+    }
+    if (info.merchantPass) {
+      merchantPass.value = info.merchantPass;
+    }
+    if (info.TestmerchantKey) {
+      TestmerchantKey.value = info.TestmerchantKey;
+    }
+    if (info.TestmerchantPass) {
+      TestmerchantPass.value = info.TestmerchantPass;
+    }
 
-  loading.value = false;
+    loading.value = false;
+  } else {
+    loading.value = false;
+  }
 }
 onMounted(() => {
   getUserData();
