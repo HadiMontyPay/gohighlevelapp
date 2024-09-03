@@ -1,12 +1,12 @@
 <template>
-  <div id="payment_page">
+  <div id="payment_page" v-if="loading === false">
     <h1>Payments Page</h1>
     <form @submit.prevent="submitPayment">
       <fieldset>
         <h3>Total: {{ this.total }} $</h3>
         <!-- <legend>Test Credentials</legend> -->
-        <label for="cardNumber"
-          >Card Number
+        <label for="cardNumber">
+          Card Number
           <input
             type="text"
             id="cardNumber"
@@ -14,10 +14,11 @@
             @input="formatCardNumber"
             placeholder="1234 1234 1234 1234"
             maxlength="19"
-        /></label>
+          />
+        </label>
         <div id="nnn">
-          <label for="expiryDate"
-            >Expiry Date
+          <label for="expiryDate">
+            Expiry Date
             <input
               type="text"
               id="expiryDate"
@@ -25,20 +26,25 @@
               @input="formatExpiryDate"
               placeholder="MM/YY"
               maxlength="5"
-          /></label>
-          <label for="cvv"
-            >CVV
+            />
+          </label>
+          <label for="cvv">
+            CVV
             <input
               type="text"
               id="cvv"
               v-model="cvv"
               placeholder="123"
               maxlength="3"
-          /></label>
+            />
+          </label>
         </div>
         <button type="submit">Pay</button>
       </fieldset>
     </form>
+  </div>
+  <div id="lll" v-if="loading === true">
+    <div class="loader"></div>
   </div>
 </template>
 
@@ -53,6 +59,7 @@ export default {
   // },
   data() {
     return {
+      loading: true,
       cardNumber: "",
       expiryDate: "",
       cvv: "",
@@ -132,6 +139,35 @@ export default {
       console.log("Expiry Date:", this.expiryDate);
       console.log("CVV:", this.cvv);
     },
+    async getSavedInfo(locationId) {
+      const info = await window.ghl.getSavedInfo(locationId);
+      console.log(info);
+      if (info) {
+        if (info.TestmerchantKey) {
+          this.merchantKey = info.TestmerchantKey;
+        }
+        if (info.TestmerchantPass) {
+          this.merchantPass = info.TestmerchantPass;
+        }
+        if (info.merchantKey) {
+          this.merchantKey = info.merchantKey;
+        }
+        if (info.merchantPass) {
+          this.merchantPass = info.merchantPass;
+        }
+
+        this.loading = false;
+      } else {
+        this.loading = false;
+      }
+    },
+    async getUserData() {
+      const data = await window.ghl.getUserData();
+      await this.getSavedInfo(data.activeLocation);
+    },
+  },
+  mounted() {
+    this.getUserData();
   },
 };
 </script>
@@ -197,6 +233,107 @@ export default {
         width: 20%;
       }
     }
+  }
+}
+
+#lll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .loader {
+    margin-top: 2rem;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #155eef;
+    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
+  }
+}
+@keyframes l20-1 {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+  12.5% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%,
+      100% 0%
+    );
+  }
+  25% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      100% 100%,
+      100% 100%
+    );
+  }
+  50% {
+    clip-path: polygon(
+      50% 50%,
+      0 0,
+      50% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  62.5% {
+    clip-path: polygon(
+      50% 50%,
+      100% 0,
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  75% {
+    clip-path: polygon(
+      50% 50%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+  100% {
+    clip-path: polygon(
+      50% 50%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      50% 100%,
+      0% 100%
+    );
+  }
+}
+@keyframes l20-2 {
+  0% {
+    transform: scaleY(1) rotate(0deg);
+  }
+  49.99% {
+    transform: scaleY(1) rotate(135deg);
+  }
+  50% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+  100% {
+    transform: scaleY(-1) rotate(-135deg);
   }
 }
 </style>
