@@ -1,50 +1,52 @@
 <template>
-  <div id="payment_page" v-if="loading === false">
-    <h1>Payments Page</h1>
-    <form @submit.prevent="submitPayment">
-      <fieldset>
-        <h3>Total: {{ this.total }} $</h3>
-        <!-- <legend>Test Credentials</legend> -->
-        <label for="cardNumber">
-          Card Number
-          <input
-            type="text"
-            id="cardNumber"
-            v-model="cardNumber"
-            @input="formatCardNumber"
-            placeholder="1234 1234 1234 1234"
-            maxlength="19"
-          />
-        </label>
-        <div id="nnn">
-          <label for="expiryDate">
-            Expiry Date
+  <div id="payment_page">
+    <div id="payment_page" v-if="loading === false">
+      <h1>Payments Page</h1>
+      <form @submit.prevent="submitPayment">
+        <fieldset>
+          <h3>Total: {{ this.total }} $</h3>
+          <!-- <legend>Test Credentials</legend> -->
+          <label for="cardNumber">
+            Card Number
             <input
               type="text"
-              id="expiryDate"
-              v-model="expiryDate"
-              @input="formatExpiryDate"
-              placeholder="MM/YY"
-              maxlength="5"
+              id="cardNumber"
+              v-model="cardNumber"
+              @input="formatCardNumber"
+              placeholder="1234 1234 1234 1234"
+              maxlength="19"
             />
           </label>
-          <label for="cvv">
-            CVV
-            <input
-              type="text"
-              id="cvv"
-              v-model="cvv"
-              placeholder="123"
-              maxlength="3"
-            />
-          </label>
-        </div>
-        <button type="submit">Pay</button>
-      </fieldset>
-    </form>
-  </div>
-  <div id="lll" v-if="loading === true">
-    <div class="loader"></div>
+          <div id="nnn">
+            <label for="expiryDate">
+              Expiry Date
+              <input
+                type="text"
+                id="expiryDate"
+                v-model="expiryDate"
+                @input="formatExpiryDate"
+                placeholder="MM/YY"
+                maxlength="5"
+              />
+            </label>
+            <label for="cvv">
+              CVV
+              <input
+                type="text"
+                id="cvv"
+                v-model="cvv"
+                placeholder="123"
+                maxlength="3"
+              />
+            </label>
+          </div>
+          <button type="submit">Pay</button>
+        </fieldset>
+      </form>
+    </div>
+    <div id="lll" v-if="loading === true">
+      <div class="loader"></div>
+    </div>
   </div>
 </template>
 
@@ -59,7 +61,7 @@ export default {
   // },
   data() {
     return {
-      loading: true,
+      loading: false,
       cardNumber: "",
       expiryDate: "",
       cvv: "",
