@@ -167,22 +167,23 @@ export default {
       const key = await new Promise((resolve) => {
         window.parent.postMessage(
           {
-            type: "custom_provider_ready",
-            loaded: true,
+            message: {
+              type: "custom_provider_ready",
+              loaded: true,
+            },
           },
           "*"
         );
         window.addEventListener("message", ({ data }) => {
-          if (data.message === "custom_provider_ready") {
+          if (data.message === "REQUEST_USER_DATA_RESPONSE") {
             resolve(data.payload);
           }
         });
       });
-      console.log(key);
     },
   },
   mounted() {
-    this.getUserData();
+    // this.getUserData();
   },
 };
 </script>
