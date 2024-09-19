@@ -166,11 +166,11 @@ export default {
     async getUserData() {
       const key = await new Promise((resolve) => {
         window.parent.postMessage(
-          { message: "custom_provider_ready", loaded: true },
+          { message: "CUSTOM_PROVIDER_READY", loaded: true },
           "*"
         );
         window.addEventListener("message", ({ data }) => {
-          if (data.message === "REQUEST_USER_DATA_RESPONSE") {
+          if (data.message === "CUSTOM_PROVIDER_READY") {
             console.log("Payload:", data.payload);
             resolve(data.payload);
           }
