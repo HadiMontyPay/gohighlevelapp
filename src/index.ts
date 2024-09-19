@@ -65,7 +65,7 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
   }
 
   res.redirect(
-    `https://app.gohighlevel.com/v2/location/${rs?.locationId}/integration/66784c7a116a7182d1c49bc5`
+    `https://app.gohighlevel.com/v2/location/${rs?.locationId}/integration/66e93c73340adb16801e16f4`
   );
 });
 

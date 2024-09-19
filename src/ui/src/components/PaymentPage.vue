@@ -164,12 +164,25 @@ export default {
       }
     },
     async getUserData() {
-      const data = await window.ghl.getUserData();
-      await this.getSavedInfo(data.activeLocation);
+      const key = await new Promise((resolve) => {
+        window.parent.postMessage(
+          {
+            type: "custom_provider_ready",
+            loaded: true,
+          },
+          "*"
+        );
+        window.addEventListener("message", ({ data }) => {
+          if (data.message === "custom_provider_ready") {
+            resolve(data.payload);
+          }
+        });
+      });
+      console.log(key);
     },
   },
   mounted() {
-    // this.getUserData();
+    this.getUserData();
   },
 };
 </script>
