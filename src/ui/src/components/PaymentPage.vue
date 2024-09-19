@@ -166,21 +166,17 @@ export default {
     async getUserData() {
       const key = await new Promise((resolve) => {
         window.parent.postMessage(
-          {
-            message: {
-              type: "custom_provider_ready",
-              loaded: true,
-            },
-          },
+          { message: "custom_provider_ready", loaded: true },
           "*"
         );
         window.addEventListener("message", ({ data }) => {
           if (data.message === "REQUEST_USER_DATA_RESPONSE") {
+            console.log("Payload:", data.payload);
             resolve(data.payload);
           }
         });
       });
-      console.log("Data:", key);
+      console.log(key);
     },
   },
   mounted() {
