@@ -171,13 +171,13 @@ export default {
             loaded: true,
           })
         );
-        window.addEventListener("message", ({ data }) => {
-          console.log("Data:", data);
-          if (data.message === "CUSTOM_PROVIDER_READY") {
-            console.log("Payload:", data.payload);
-            resolve(data.payload);
-          }
-        });
+        // window.addEventListener("message", ({ data }) => {
+        //   console.log("Data:", data);
+        //   if (data.message === "CUSTOM_PROVIDER_READY") {
+        //     console.log("Payload:", data.payload);
+        //     resolve(data.payload);
+        //   }
+        // });
       });
       console.log(key);
     },
