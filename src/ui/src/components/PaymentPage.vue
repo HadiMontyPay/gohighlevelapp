@@ -167,11 +167,7 @@ export default {
       const key = await new Promise((resolve) => {
         window.parent.postMessage(
           {
-            message: "CUSTOM_PROVIDER_READY",
-            data: {
-              type: "custom_provider_ready",
-              loaded: true,
-            },
+            message: "CUSTOM_PROVIDER_READY"
           },
           "*"
         );
