@@ -164,7 +164,7 @@ export default {
       }
     },
     async getUserData() {
-      const key = await new Promise((resolve) => {
+      const key = await new Promise(() => {
         window.parent.postMessage(
           JSON.stringify({
             type: "CUSTOM_PROVIDER_READY",
