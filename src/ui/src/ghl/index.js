@@ -32,10 +32,10 @@ export class GHL {
       window.parent.postMessage(
         {
           message: {
-            data: {
-              type: "CUSTOM_PROVIDER_READY",
+            data: JSON.stringify({
+              type: "custom_provider_ready",
               loaded: true,
-            },
+            }),
           },
         },
         "*"
