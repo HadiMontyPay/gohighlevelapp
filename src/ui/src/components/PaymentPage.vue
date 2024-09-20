@@ -165,10 +165,12 @@ export default {
     },
     async getUserData() {
       const key = await new Promise((resolve) => {
-        window.parent.postMessage({
-          type: "CUSTOM_PROVIDER_READY",
-          loaded: true,
-        });
+        window.parent.postMessage(
+          JSON.stringify({
+            type: "CUSTOM_PROVIDER_READY",
+            loaded: true,
+          })
+        );
         window.addEventListener("message", ({ data }) => {
           console.log("Data:", data);
           if (data.message === "CUSTOM_PROVIDER_READY") {
