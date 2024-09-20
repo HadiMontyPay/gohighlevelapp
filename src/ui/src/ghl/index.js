@@ -31,7 +31,7 @@ export class GHL {
     const key = await new Promise((resolve) => {
       window.parent.postMessage(
         {
-          data: JSON.stringify({
+          message: JSON.stringify({
             type: "custom_provider_ready",
             loaded: true,
           }),
