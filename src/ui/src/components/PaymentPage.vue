@@ -43,6 +43,7 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
+    <p>Info: {{ this.info }}</p>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -61,6 +62,7 @@ export default {
   // },
   data() {
     return {
+      info: {},
       loading: false,
       cardNumber: "",
       expiryDate: "",
@@ -165,7 +167,8 @@ export default {
     },
     async getPaymentData() {
       const data = await window.ghl.getPaymentData();
-      console.log(data);
+      // console.log(data);
+      this.info = data;
     },
   },
   mounted() {
