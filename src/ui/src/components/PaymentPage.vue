@@ -163,26 +163,13 @@ export default {
         this.loading = false;
       }
     },
-    async getUserData() {
-      const key = await new Promise((resolve) => {
-        window.parent.postMessage({
-          type: "custom_provider_read",
-          loaded: true,
-        });
-        console.log(resolve);
-        // window.addEventListener("message", ({ data }) => {
-        //   console.log("Data:", data);
-        //   if (data.message === "CUSTOM_PROVIDER_READY") {
-        //     console.log("Payload:", data.payload);
-        //     resolve(data.payload);
-        //   }
-        // });
-      });
-      console.log(key);
+    async getPaymentData() {
+      const data = await window.ghl.getPaymentData();
+      console.log(data);
     },
   },
   mounted() {
-    // this.getUserData();
+    this.getPaymentData();
   },
 };
 </script>

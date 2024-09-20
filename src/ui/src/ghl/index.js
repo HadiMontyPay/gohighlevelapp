@@ -27,6 +27,22 @@ export class GHL {
     return data;
   }
 
+  async getPaymentData() {
+    const key = await new Promise((resolve) => {
+      window.parent.postMessage(
+        { message: "custom_provider_ready" },
+        { loaded: true }
+      );
+      window.addEventListener("message", ({ data }) => {
+        if (data.message === "custom_provider_ready") {
+          resolve(data.payload);
+        }
+      });
+    });
+
+    return key;
+  }
+
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
     const res = await axios.post(
       "/save-merchant-info",
