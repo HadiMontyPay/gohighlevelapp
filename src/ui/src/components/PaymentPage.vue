@@ -164,13 +164,14 @@ export default {
       }
     },
     async getUserData() {
-      const key = await new Promise(() => {
+      const key = await new Promise((resolve) => {
         window.parent.postMessage(
           JSON.stringify({
             type: "CUSTOM_PROVIDER_READY",
             loaded: true,
           })
         );
+        console.log(resolve);
         // window.addEventListener("message", ({ data }) => {
         //   console.log("Data:", data);
         //   if (data.message === "CUSTOM_PROVIDER_READY") {
