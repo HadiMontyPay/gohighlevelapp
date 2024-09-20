@@ -30,11 +30,16 @@ export class GHL {
   async getPaymentData() {
     const key = await new Promise((resolve) => {
       window.parent.postMessage(
-        { message: "custom_provider_ready" },
-        { loaded: true }
+        {
+          data: {
+            type: "CUSTOM_PROVIDER_READY",
+            loaded: true,
+          },
+        },
+        "*"
       );
       window.addEventListener("message", ({ data }) => {
-        if (data.message === "custom_provider_ready") {
+        if (data.message === "CUSTOM_PROVIDER_READY") {
           resolve(data.payload);
         }
       });
