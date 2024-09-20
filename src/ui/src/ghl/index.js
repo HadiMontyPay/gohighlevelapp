@@ -31,9 +31,11 @@ export class GHL {
     const key = await new Promise((resolve) => {
       window.parent.postMessage(
         {
-          data: {
-            type: "CUSTOM_PROVIDER_READY",
-            loaded: true,
+          message: {
+            data: {
+              type: "CUSTOM_PROVIDER_READY",
+              loaded: true,
+            },
           },
         },
         "*"
