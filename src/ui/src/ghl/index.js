@@ -45,7 +45,7 @@ export class GHL {
       });
     });
 
-    return JSON.stringify({ key });
+    return key;
   }
 
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
