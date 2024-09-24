@@ -30,12 +30,11 @@ export class GHL {
   async getPaymentData() {
     const key = await new Promise((resolve) => {
       window.parent.postMessage(
-        {
-          message: JSON.stringify({
-            type: "custom_provider_ready",
-            loaded: true,
-          }),
-        },
+        JSON.stringify({
+          type: "custom_provider_ready",
+          loaded: true,
+        }),
+
         "*"
       );
       window.addEventListener("message", ({ data }) => {
