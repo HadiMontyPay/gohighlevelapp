@@ -16,3 +16,5 @@ dist
 # Logs
 logs
 *.log
+
+/Sample Data received On Payment Page.json

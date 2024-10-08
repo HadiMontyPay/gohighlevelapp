@@ -43,7 +43,7 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
-    <p>Info: {{ this.info }}</p>
+    <!-- <p>Info: {{ this.info }}</p> -->
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -54,9 +54,6 @@
 <script>
 import CryptoJS from "crypto-js";
 import axios from "axios";
-// import { ref } from "vue";
-
-// const info = ref({});
 
 export default {
   name: "PaymentPage",
@@ -65,7 +62,7 @@ export default {
   // },
   data() {
     return {
-      info: {},
+      // info: {},
       loading: false,
       cardNumber: "",
       expiryDate: "",
@@ -74,8 +71,8 @@ export default {
       merchant_key: "",
       merchant_pass: "",
       operation: "purchase",
-      cancel_url: "",
-      success_url: "",
+      cancel_url: "https://example.com",
+      success_url: "https://merchantapp.montypay.com/paysuccess",
       hash: "",
       order: {
         description: "",
@@ -168,20 +165,20 @@ export default {
         this.loading = false;
       }
     },
-    async getPaymentData() {
-      const data = await window.ghl.getPaymentData();
-      console.log("Payment Page Log: ", data);
-      // this.info = data;
-    },
   },
   mounted() {
     // this.getPaymentData();
     window.addEventListener("message", ({ data }) => {
       data = JSON.parse(data);
-      console.log("Data: ", data);
-      // if (data.type === "payment_initiate_props") {
-      // resolve(data);
-      this.info = data;
+      // this.info = data;
+      this.total = data.amount;
+      this.getSavedInfo(data.locationId);
+      this.order.amount = this.total;
+      this.order.currency = data.currency.toUpperCase();
+      this.order.description = data.description;
+      this.order.number = data.orderId;
+      this.customer.name = data.contact.name;
+      this.customer.email = data.contact.email;
       // }
     });
     window.parent.postMessage(
