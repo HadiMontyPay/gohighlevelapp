@@ -53,7 +53,6 @@
 
 <script>
 import CryptoJS from "crypto-js";
-import axios from "axios";
 
 export default {
   name: "PaymentPage",
@@ -111,37 +110,32 @@ export default {
 
       let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
       let result = CryptoJS.enc.Hex.stringify(hash);
+      this.hash = result;
 
-      console.log("Hash:", result);
-      this.hash = hash;
+      const todoObject = {
+        merchant_key: this.merchant_key,
+        operation: this.operation,
+        cancel_url: this.cancel_url,
+        success_url: this.success_url,
+        hash: `${this.hash}`,
+        order: this.order,
+        customer: this.customer,
+      };
 
-      await axios
-        .post("https://checkout.montypay.com/api/v1/session", {
-          merchant_key: this.merchant_key,
-          operation: this.operation,
-          cancel_url: this.cancel_url,
-          success_url: this.success_url,
-          hash: this.hash,
-          order: {
-            description: this.order.description,
-            number: this.order.number,
-            amount: this.order.amount,
-            currency: this.order.currency,
-          },
-          customer: {
-            name: this.customer.name,
-            email: this.customer.email,
-          },
-        })
-        .then((resp) => {
-          window.location.href = resp.data.redirect_url;
-        })
-        .catch((err) => {
-          console.log("Error In redirection:", err);
-        });
-      console.log("Card Number:", this.cardNumber);
-      console.log("Expiry Date:", this.expiryDate);
-      console.log("CVV:", this.cvv);
+      try {
+        const response = await fetch(
+          "https://checkout.montypay.com/api/v1/session",
+          {
+            method: "POST",
+            body: JSON.stringify(todoObject),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const jsonResponse = await response.json();
+        window.location.href = jsonResponse.redirect_url;
+      } catch (err) {
+        console.log("ERROR", err);
+      }
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
@@ -167,7 +161,6 @@ export default {
     },
   },
   mounted() {
-    // this.getPaymentData();
     window.addEventListener("message", ({ data }) => {
       data = JSON.parse(data);
       // this.info = data;
