@@ -43,7 +43,7 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
-    <p>Info: {{ info }}</p>
+    <p>Info: {{ this.info }}</p>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -56,7 +56,7 @@ import CryptoJS from "crypto-js";
 import axios from "axios";
 import { ref } from "vue";
 
-const info = ref({});
+// const info = ref({});
 
 export default {
   name: "PaymentPage",
@@ -65,7 +65,7 @@ export default {
   // },
   data() {
     return {
-      // info: {},
+      info: {},
       loading: false,
       cardNumber: "",
       expiryDate: "",
@@ -177,10 +177,11 @@ export default {
   mounted() {
     // this.getPaymentData();
     window.addEventListener("message", ({ data }) => {
+      data = JSON.parse(data);
       console.log("Data: ", data);
       // if (data.type === "payment_initiate_props") {
       // resolve(data);
-      info.value = data;
+      this.info = data;
       // }
     });
     window.parent.postMessage(
