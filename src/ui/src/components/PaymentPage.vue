@@ -173,6 +173,13 @@ export default {
   },
   mounted() {
     this.getPaymentData();
+    window.parent.postMessage(
+      JSON.stringify({
+        type: "custom_provider_ready",
+        loaded: true,
+      }),
+      "*"
+    );
   },
 };
 </script>

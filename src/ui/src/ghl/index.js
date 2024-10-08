@@ -27,27 +27,15 @@ export class GHL {
     return data;
   }
 
-  async getPaymentData() {
-    const key = await new Promise((resolve) => {
+  getPaymentData() {
+    return new Promise((resolve) => {
       window.addEventListener("message", ({ data }) => {
         console.log("Data: ", data);
         if (data.type === "payment_initiate_props") {
           resolve(data);
         }
       });
-
-      window.parent.postMessage(
-        {
-          data: JSON.stringify({
-            type: "custom_provider_ready",
-            loaded: true,
-          }),
-        },
-        "*"
-      );
     });
-
-    return key;
   }
 
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
