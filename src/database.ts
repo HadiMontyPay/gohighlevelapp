@@ -1,12 +1,15 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Initialize Sequelize
 const sequelize = new Sequelize(
-  "funnel_fussion_db",
-  "FunnelFusion",
-  "FunnelFusion@123",
+  process.env.DB_NAME as string,
+  process.env.DB_USER as string,
+  process.env.DB_PASS as string,
   {
-    host: "92.205.1.205",
+    host: process.env.DB_HOST as string,
     dialect: "mysql",
   }
 );

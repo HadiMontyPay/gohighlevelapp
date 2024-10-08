@@ -65,7 +65,7 @@ app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, fu
     catch (err) {
         console.error({ Error: err });
     }
-    res.redirect(`https://app.gohighlevel.com/v2/location/${rs === null || rs === void 0 ? void 0 : rs.locationId}/integration/66784c7a116a7182d1c49bc5`);
+    res.redirect(`https://app.gohighlevel.com/v2/location/${rs === null || rs === void 0 ? void 0 : rs.locationId}/integration/66e93c73340adb16801e16f4`);
 }));
 /*`app.get("/example-api-call", async (req: Request, res: Response) => { ... })` shows you how you can use ghl object to make get requests
  ghl object in abstract would handle all of the authorization part over here. */
