@@ -36,13 +36,13 @@ export class GHL {
         }
       });
 
-      // window.parent.postMessage(
-      //   JSON.stringify({
-      //     type: "custom_provider_ready",
-      //     loaded: true,
-      //   }),
-      //   "*"
-      // );
+      window.parent.postMessage(
+        JSON.stringify({
+          type: "custom_provider_ready",
+          loaded: true,
+        }),
+        "*"
+      );
     });
 
     return key;
