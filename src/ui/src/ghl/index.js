@@ -30,7 +30,7 @@ export class GHL {
   async getPaymentData() {
     const key = await new Promise((resolve) => {
       window.addEventListener("message", ({ data }) => {
-        console.log(data);
+        console.log("Data: ", data);
         if (data.type === "payment_initiate_props") {
           resolve(data);
         }
