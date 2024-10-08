@@ -178,10 +178,10 @@ export default {
     // this.getPaymentData();
     window.addEventListener("message", ({ data }) => {
       console.log("Data: ", data);
-      if (data.type === "payment_initiate_props") {
-        // resolve(data);
-        info.value = data;
-      }
+      // if (data.type === "payment_initiate_props") {
+      // resolve(data);
+      info.value = data;
+      // }
     });
     window.parent.postMessage(
       JSON.stringify({
