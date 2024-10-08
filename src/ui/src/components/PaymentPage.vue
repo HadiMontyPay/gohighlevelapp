@@ -172,7 +172,14 @@ export default {
     },
   },
   mounted() {
-    this.getPaymentData();
+    // this.getPaymentData();
+    window.addEventListener("message", ({ data }) => {
+      console.log("Data: ", data);
+      if (data.type === "payment_initiate_props") {
+        // resolve(data);
+        this.info = data;
+      }
+    });
     window.parent.postMessage(
       JSON.stringify({
         type: "custom_provider_ready",
