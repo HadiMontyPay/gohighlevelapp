@@ -167,7 +167,7 @@ export default {
     },
     async getPaymentData() {
       const data = await window.ghl.getPaymentData();
-      // console.log(data);
+      console.log("Payment Page Log: ", data);
       this.info = data;
     },
   },
