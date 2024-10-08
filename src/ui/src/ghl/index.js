@@ -31,18 +31,18 @@ export class GHL {
     const key = await new Promise((resolve) => {
       window.addEventListener("message", ({ data }) => {
         console.log(data);
-        if (data.message === "CUSTOM_PROVIDER_READY") {
-          resolve(data.payload);
+        if (data.type === "payment_initiate_props") {
+          resolve(data);
         }
       });
 
-      window.parent.postMessage(
-        JSON.stringify({
-          type: "custom_provider_ready",
-          loaded: true,
-        }),
-        "*"
-      );
+      // window.parent.postMessage(
+      //   JSON.stringify({
+      //     type: "custom_provider_ready",
+      //     loaded: true,
+      //   }),
+      //   "*"
+      // );
     });
 
     return key;
