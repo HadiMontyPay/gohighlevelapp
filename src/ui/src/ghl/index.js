@@ -37,12 +37,12 @@ export class GHL {
       });
 
       window.parent.postMessage(
-        JSON.stringify({
-          data: {
+        {
+          data: JSON.stringify({
             type: "custom_provider_ready",
             loaded: true,
-          },
-        }),
+          }),
+        },
         "*"
       );
     });
