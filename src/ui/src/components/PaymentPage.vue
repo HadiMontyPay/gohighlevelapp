@@ -43,7 +43,7 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
-    <p>Info: {{ this.info }}</p>
+    <p>Info: {{ data }}</p>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -54,6 +54,9 @@
 <script>
 import CryptoJS from "crypto-js";
 import axios from "axios";
+import { ref } from "vue";
+
+const data = ref({});
 
 export default {
   name: "PaymentPage",
@@ -177,7 +180,7 @@ export default {
       console.log("Data: ", data);
       if (data.type === "payment_initiate_props") {
         // resolve(data);
-        this.info = data;
+        data.value = data;
       }
     });
     window.parent.postMessage(
