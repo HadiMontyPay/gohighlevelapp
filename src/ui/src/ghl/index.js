@@ -76,7 +76,7 @@ export class GHL {
   }
 
   async payment(todoObject) {
-    const res = await axios
+    await axios
       .post("/getPaymentRedirectURL", {
         todoObject: todoObject,
       })
