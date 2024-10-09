@@ -184,7 +184,6 @@ export default {
       this.order.number = data.orderId;
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
-      await this.getSavedInfo(data.locationId);
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -193,6 +192,7 @@ export default {
       }),
       "*"
     );
+    this.getSavedInfo(data.locationId);
   },
 };
 </script>
