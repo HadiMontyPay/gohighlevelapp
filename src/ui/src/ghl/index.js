@@ -76,7 +76,7 @@ export class GHL {
   }
 
   async payment(todoObject) {
-    await axios
+    const ttt = await axios
       .post("/getPaymentRedirectURL", {
         todoObject: todoObject,
       })
@@ -86,6 +86,8 @@ export class GHL {
       .catch((err) => {
         return err;
       });
+
+    return ttt;
   }
 
   async getSavedInfo(locationId) {
