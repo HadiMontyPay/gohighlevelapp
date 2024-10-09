@@ -53,6 +53,7 @@
 
 <script>
 // import CryptoJS from "crypto-js";
+import axios from "axios";
 
 export default {
   name: "PaymentPage",
@@ -101,17 +102,6 @@ export default {
     async submitPayment() {
       // Add payment submission logic here
 
-      // let to_md5 =
-      //   this.order.number +
-      //   this.order.amount +
-      //   this.order.currency +
-      //   this.order.description +
-      //   this.merchant_pass;
-
-      // let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
-      // let result = CryptoJS.enc.Hex.stringify(hash);
-      // this.hash = result;
-
       const todoObject = {
         merchant_key: this.merchant_key,
         merchant_pass: this.merchant_pass,
@@ -131,12 +121,18 @@ export default {
         },
       };
 
-      const pay = window.ghl.payment(todoObject);
+      const pay = await axios
+        .post("/getPaymentRedirectURL", {
+          todoObject: todoObject,
+        })
+        .then((response) => {
+          console.log("Wasel:", response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-      if (!pay) {
-        console.log("Error:", pay);
-      }
-      console.log("Wasel:", pay);
+      console.log("Pay", pay);
 
       // window.parent.location.href = pay;
     },
