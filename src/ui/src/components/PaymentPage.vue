@@ -177,18 +177,16 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("message", ({ data }) => {
+    window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
-      // this.info = data;
       this.total = data.amount;
-      this.getSavedInfo(data.locationId);
       this.order.amount = this.total;
       this.order.currency = data.currency.toUpperCase();
       this.order.description = data.description;
       this.order.number = data.orderId;
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
-      // }
+      await this.getSavedInfo(data.locationId);
     });
     window.parent.postMessage(
       JSON.stringify({
