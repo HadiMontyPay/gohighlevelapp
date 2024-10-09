@@ -155,24 +155,18 @@ export default {
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
-      console.log(info);
-      if (info) {
-        if (info.TestmerchantKey) {
-          this.merchantKey = info.TestmerchantKey;
-        }
-        if (info.TestmerchantPass) {
-          this.merchantPass = info.TestmerchantPass;
-        }
-        if (info.merchantKey) {
-          this.merchantKey = info.merchantKey;
-        }
-        if (info.merchantPass) {
-          this.merchantPass = info.merchantPass;
-        }
-
-        // this.loading = false;
-      } else {
-        // this.loading = false;
+      // console.log(info);
+      if (info.TestmerchantKey) {
+        this.merchantKey = info.TestmerchantKey;
+      }
+      if (info.TestmerchantPass) {
+        this.merchantPass = info.TestmerchantPass;
+      }
+      if (info.merchantKey !== "" || info.merchantKey !== null) {
+        this.merchantKey = info.merchantKey;
+      }
+      if (info.merchantPass !== "" || info.merchantPass !== null) {
+        this.merchantPass = info.merchantPass;
       }
     },
   },
