@@ -157,19 +157,19 @@ export default {
       const info = await window.ghl.getSavedInfo(locationId);
       // console.log(info);
       if (info.TestmerchantKey) {
-        this.merchantKey = info.TestmerchantKey;
+        this.merchant_key = info.TestmerchantKey;
         console.log("Test Key:", this.merchant_key);
       }
       if (info.TestmerchantPass) {
-        this.merchantPass = info.TestmerchantPass;
+        this.merchant_pass = info.TestmerchantPass;
         console.log("Test Pass:", this.merchant_pass);
       }
       if (info.merchantKey !== "" || info.merchantKey !== null) {
-        this.merchantKey = info.merchantKey;
+        this.merchant_key = info.merchantKey;
         console.log("Key:", this.merchant_key);
       }
       if (info.merchantPass !== "" || info.merchantPass !== null) {
-        this.merchantPass = info.merchantPass;
+        this.merchant_pass = info.merchantPass;
         console.log("Pass:", this.merchant_pass);
       }
     },
@@ -184,6 +184,7 @@ export default {
       this.order.number = data.orderId;
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
+      this.getSavedInfo(data.locationId);
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -192,7 +193,6 @@ export default {
       }),
       "*"
     );
-    this.getSavedInfo(data.locationId);
   },
 };
 </script>
