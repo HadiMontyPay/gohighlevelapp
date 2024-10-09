@@ -295,21 +295,43 @@ app.post("/add-providerConfig", async (req: Request, res: Request) => {
 });
 
 app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
-  const { todoObject } = req.body;
+  const {
+    merchant_key,
+    merchant_pass,
+    operation,
+    cancel_url,
+    success_url,
+    order,
+    customer,
+  } = req.body;
 
   let to_md5 =
-    todoObject.order.number +
-    todoObject.order.amount +
-    todoObject.order.currency +
-    todoObject.order.description +
-    todoObject.merchant_pass;
+    order.number +
+    order.amount +
+    order.currency +
+    order.description +
+    merchant_pass;
 
   let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
   let result = CryptoJS.enc.Hex.stringify(hash);
   // console.log(result);
   const endObject = {
-    ...todoObject,
+    merchant_key: merchant_key,
+    merchant_pass: merchant_pass,
+    operation: operation,
+    cancel_url: cancel_url,
+    success_url: success_url,
     hash: `${result}`,
+    order: {
+      description: order.description,
+      number: order.number,
+      amount: order.amount,
+      currency: order.currency,
+    },
+    customer: {
+      name: customer.name,
+      email: customer.email,
+    },
   };
   console.log(endObject);
   try {

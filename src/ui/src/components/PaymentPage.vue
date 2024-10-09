@@ -102,28 +102,43 @@ export default {
     async submitPayment() {
       // Add payment submission logic here
 
-      const todoObject = {
-        merchant_key: this.merchant_key,
-        merchant_pass: this.merchant_pass,
-        operation: this.operation,
-        cancel_url: this.cancel_url,
-        success_url: this.success_url,
-        // hash: this.hash,
-        order: {
-          description: this.order.description,
-          number: this.order.number,
-          amount: this.order.amount,
-          currency: this.order.currency,
-        },
-        customer: {
-          name: this.customer.name,
-          email: this.customer.email,
-        },
-      };
+      // const todoObject = {
+      //   merchant_key: this.merchant_key,
+      //   merchant_pass: this.merchant_pass,
+      //   operation: this.operation,
+      //   cancel_url: this.cancel_url,
+      //   success_url: this.success_url,
+      //   // hash: this.hash,
+      //   order: {
+      //     description: this.order.description,
+      //     number: this.order.number,
+      //     amount: this.order.amount,
+      //     currency: this.order.currency,
+      //   },
+      //   customer: {
+      //     name: this.customer.name,
+      //     email: this.customer.email,
+      //   },
+      // };
 
       const pay = await axios
         .post("/getPaymentRedirectURL", {
-          todoObject: todoObject,
+          merchant_key: this.merchant_key,
+          merchant_pass: this.merchant_pass,
+          operation: this.operation,
+          cancel_url: this.cancel_url,
+          success_url: this.success_url,
+          // hash: this.hash,
+          order: {
+            description: this.order.description,
+            number: this.order.number,
+            amount: this.order.amount,
+            currency: this.order.currency,
+          },
+          customer: {
+            name: this.customer.name,
+            email: this.customer.email,
+          },
         })
         .then((response) => {
           console.log("Wasel:", response.data);
