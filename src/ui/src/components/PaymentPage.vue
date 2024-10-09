@@ -180,7 +180,11 @@ export default {
       this.total = data.amount;
       this.order.amount = this.total;
       this.order.currency = data.currency.toUpperCase();
-      this.order.description = data.description;
+      if (data.description === "") {
+        this.order.description = "this product doesn't have a description";
+      } else {
+        this.order.description = data.description;
+      }
       this.order.number = data.orderId;
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
