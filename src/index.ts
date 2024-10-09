@@ -293,6 +293,27 @@ app.post("/add-providerConfig", async (req: Request, res: Request) => {
   );
 });
 
+app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
+  const { todoObject } = req.body;
+  try {
+    const response = await fetch(
+      "https://checkout.montypay.com/api/v1/session",
+      {
+        method: "POST",
+        body: JSON.stringify(todoObject),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const jsonResponse = await response.json();
+    // window.location.href = jsonResponse.redirect_url;
+    console.log(jsonResponse.redirect_url);
+    return res.json({ redirect_url: jsonResponse.redirect_url });
+  } catch (err) {
+    console.log("ERROR", err);
+    return res.json({ error: err });
+  }
+});
+
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
 });

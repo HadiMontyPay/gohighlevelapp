@@ -76,23 +76,20 @@ export class GHL {
   }
 
   async payment(todoObject) {
-    try {
-      const response = await fetch(
-        "https://checkout.montypay.com/api/v1/session",
-        {
-          method: "POST",
-          body: JSON.stringify(todoObject),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const jsonResponse = await response.json();
-      // window.location.href = jsonResponse.redirect_url;
-      console.log(jsonResponse.redirect_url);
-      return jsonResponse.redirect_url;
-    } catch (err) {
-      console.log("ERROR", err);
-      return err;
-    }
+    const res = await axios.post(
+      "/getPaymentRedirectURL",
+      {
+        todoObject: todoObject,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.data.redirect_url;
   }
 
   async getSavedInfo(locationId) {

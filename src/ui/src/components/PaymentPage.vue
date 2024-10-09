@@ -127,6 +127,7 @@ export default {
       if (!pay) {
         console.log("Error:", pay);
       }
+      console.log("Wasel:", pay);
 
       // window.parent.location.href = pay;
     },
