@@ -6,12 +6,23 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
+import cors from "cors";
 
 const path = __dirname + "/ui/dist/";
 
 dotenv.config();
 const app: Express = express();
 app.use(json({ type: "application/json" }));
+
+// Set up CORS options if needed
+const corsOptions = {
+  origin: "*", // You can specify the allowed origin or use '*'
+  methods: ["GET", "POST"], // Specify the allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+};
+
+// Apply CORS middleware to all routes
+app.use(cors(corsOptions));
 
 /*`app.use(express.static(path));` is setting up a middleware in the Express server. The
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
@@ -285,8 +296,6 @@ app.post("/add-providerConfig", async (req: Request, res: Request) => {
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
 });
-
-// Continue Here
 
 const syncDatabase = async () => {
   try {
