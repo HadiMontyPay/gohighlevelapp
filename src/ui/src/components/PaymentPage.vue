@@ -158,15 +158,19 @@ export default {
       // console.log(info);
       if (info.TestmerchantKey) {
         this.merchantKey = info.TestmerchantKey;
+        console.log("Test Key:", this.merchant_key);
       }
       if (info.TestmerchantPass) {
         this.merchantPass = info.TestmerchantPass;
+        console.log("Test Pass:", this.merchant_pass);
       }
       if (info.merchantKey !== "" || info.merchantKey !== null) {
         this.merchantKey = info.merchantKey;
+        console.log("Key:", this.merchant_key);
       }
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchantPass = info.merchantPass;
+        console.log("Pass:", this.merchant_pass);
       }
     },
   },
