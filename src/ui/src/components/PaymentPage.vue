@@ -128,7 +128,7 @@ export default {
         console.log("Error:", pay);
       }
 
-      window.location.href = pay;
+      window.open(pay);
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
