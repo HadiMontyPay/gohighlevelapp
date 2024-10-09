@@ -145,9 +145,9 @@ export default {
           console.log(err);
         });
 
-      console.log("Pay", pay);
+      // console.log("Pay", pay);
 
-      // window.parent.location.href = pay;
+      window.parent.location.href = pay;
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
