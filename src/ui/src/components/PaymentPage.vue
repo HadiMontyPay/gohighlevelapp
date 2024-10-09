@@ -131,7 +131,7 @@ export default {
           // hash: this.hash,
           order: {
             description: this.order.description,
-            number: this.order.number,
+            number: "B07",
             amount: this.order.amount,
             currency: this.order.currency,
           },
@@ -168,9 +168,9 @@ export default {
           this.merchantPass = info.merchantPass;
         }
 
-        this.loading = false;
+        // this.loading = false;
       } else {
-        this.loading = false;
+        // this.loading = false;
       }
     },
   },

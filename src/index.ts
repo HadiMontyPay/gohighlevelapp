@@ -305,6 +305,10 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     customer,
   } = req.body;
 
+  console.log("Mer Key:", merchant_key);
+  console.log("Mer Pass:", merchant_pass);
+  console.log("Order:", order);
+
   let to_md5 =
     order.number +
     order.amount +
