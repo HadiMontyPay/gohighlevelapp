@@ -311,6 +311,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     ...todoObject,
     hash: `${result}`,
   };
+  console.log(endObject);
   try {
     const response = await fetch(
       "https://checkout.montypay.com/api/v1/session",
