@@ -120,10 +120,6 @@ export default {
       //     email: this.customer.email,
       //   },
       // };
-
-      console.log("Mer Key:", this.merchant_key);
-      console.log("Mer Pass:", this.merchant_pass);
-      console.log("Order:", this.order);
       const pay = await axios
         .post("/getPaymentRedirectURL", {
           merchant_key: this.merchant_key,
@@ -143,7 +139,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log("Wasel:", response.data);
+          return response.data.redirect_url;
         })
         .catch((err) => {
           console.log(err);
@@ -158,19 +154,15 @@ export default {
       // console.log(info);
       if (info.TestmerchantKey) {
         this.merchant_key = info.TestmerchantKey;
-        console.log("Test Key:", this.merchant_key);
       }
       if (info.TestmerchantPass) {
         this.merchant_pass = info.TestmerchantPass;
-        console.log("Test Pass:", this.merchant_pass);
       }
       if (info.merchantKey !== "" || info.merchantKey !== null) {
         this.merchant_key = info.merchantKey;
-        console.log("Key:", this.merchant_key);
       }
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchant_pass = info.merchantPass;
-        console.log("Pass:", this.merchant_pass);
       }
     },
   },
@@ -178,7 +170,12 @@ export default {
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       this.total = data.amount;
-      this.order.amount = this.total.toFixed(2);
+
+      if (data.currency.toUpperCase() === "JOD") {
+        this.order.amount = this.total.toFixed(3);
+      } else {
+        this.order.amount = this.total.toFixed(2);
+      }
       this.order.currency = data.currency.toUpperCase();
       if (data.description === "") {
         this.order.description = "this product doesn't have a description";
