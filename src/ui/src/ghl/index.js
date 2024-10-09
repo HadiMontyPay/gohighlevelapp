@@ -81,10 +81,10 @@ export class GHL {
         todoObject: todoObject,
       })
       .then((response) => {
-        return res.json(response.data.redirect_url);
+        return response.data.redirect_url;
       })
       .catch((err) => {
-        return res.json({ error: err });
+        return err;
       });
   }
 
