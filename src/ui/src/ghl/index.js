@@ -30,7 +30,7 @@ export class GHL {
   getPaymentData() {
     return new Promise((resolve) => {
       window.addEventListener("message", ({ data }) => {
-        console.log("Data: ", data);
+        // console.log("Data: ", data);
         if (data.type === "payment_initiate_props") {
           resolve(data);
         }
