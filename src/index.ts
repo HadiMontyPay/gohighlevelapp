@@ -307,7 +307,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     const jsonResponse = await response.json();
     // window.location.href = jsonResponse.redirect_url;
     console.log(jsonResponse.redirect_url);
-    return res.json({ redirect_url: jsonResponse.redirect_url });
+    return res.json({ redirect_url: jsonResponse });
   } catch (err) {
     console.log("ERROR", err);
     return res.json({ error: err });
