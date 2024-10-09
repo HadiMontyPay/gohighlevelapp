@@ -76,20 +76,16 @@ export class GHL {
   }
 
   async payment(todoObject) {
-    const res = await axios.post(
-      "/getPaymentRedirectURL",
-      {
+    const res = await axios
+      .post("/getPaymentRedirectURL", {
         todoObject: todoObject,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return res.data.redirect_url;
+      })
+      .then((response) => {
+        return res.json(response.data.redirect_url);
+      })
+      .catch((err) => {
+        return res.json({ error: err });
+      });
   }
 
   async getSavedInfo(locationId) {
