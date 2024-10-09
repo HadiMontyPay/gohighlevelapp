@@ -178,7 +178,7 @@ export default {
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       this.total = data.amount;
-      this.order.amount = this.total;
+      this.order.amount = this.total.toFixed(2);
       this.order.currency = data.currency.toUpperCase();
       if (data.description === "") {
         this.order.description = "this product doesn't have a description";
