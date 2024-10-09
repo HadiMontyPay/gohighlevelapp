@@ -132,7 +132,8 @@ export default {
           }
         );
         const jsonResponse = await response.json();
-        window.location.href = jsonResponse.redirect_url;
+        // window.location.href = jsonResponse.redirect_url;
+        window.open(jsonResponse.redirect_url);
       } catch (err) {
         console.log("ERROR", err);
       }
