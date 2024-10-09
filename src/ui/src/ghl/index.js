@@ -87,10 +87,11 @@ export class GHL {
       );
       const jsonResponse = await response.json();
       // window.location.href = jsonResponse.redirect_url;
+      console.log(jsonResponse.redirect_url);
       return jsonResponse.redirect_url;
     } catch (err) {
       console.log("ERROR", err);
-      return;
+      return err;
     }
   }
 
