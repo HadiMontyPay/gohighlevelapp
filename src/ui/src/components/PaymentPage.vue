@@ -114,6 +114,7 @@ export default {
 
       const todoObject = {
         merchant_key: this.merchant_key,
+        merchant_pass: this.merchant_pass,
         operation: this.operation,
         cancel_url: this.cancel_url,
         success_url: this.success_url,
