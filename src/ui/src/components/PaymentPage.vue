@@ -122,21 +122,13 @@ export default {
         customer: this.customer,
       };
 
-      try {
-        const response = await fetch(
-          "https://checkout.montypay.com/api/v1/session",
-          {
-            method: "POST",
-            body: JSON.stringify(todoObject),
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const jsonResponse = await response.json();
-        // window.location.href = jsonResponse.redirect_url;
-        window.open(jsonResponse.redirect_url);
-      } catch (err) {
-        console.log("ERROR", err);
+      const pay = window.ghl.payment(todoObject);
+
+      if (!pay) {
+        console.log("Error:", pay);
       }
+
+      window.location.href = pay;
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
