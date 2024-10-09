@@ -121,6 +121,9 @@ export default {
       //   },
       // };
 
+      console.log("Mer Key:", this.merchant_key);
+      console.log("Mer Pass:", this.merchant_pass);
+      console.log("Order:", this.order);
       const pay = await axios
         .post("/getPaymentRedirectURL", {
           merchant_key: this.merchant_key,
@@ -128,7 +131,6 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
-          // hash: this.hash,
           order: {
             description: this.order.description,
             number: "B07",
