@@ -7,6 +7,7 @@ import express, { Express, Request, Response } from "express";
 import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
+import CryptoJS from "crypto-js";
 
 const path = __dirname + "/ui/dist/";
 
@@ -295,30 +296,36 @@ app.post("/add-providerConfig", async (req: Request, res: Request) => {
 
 app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
   const { todoObject } = req.body;
-  await axios
-    .post("https://checkout.montypay.com/api/v1/session", {
-      merchant_key: todoObject.merchant_key,
-      operation: "purchase",
-      cancel_url: todoObject.cancel_url,
-      success_url: todoObject.success_url,
-      hash: todoObject.hash,
-      order: {
-        description: todoObject.order.description,
-        number: "b07",
-        amount: todoObject.order.amount,
-        currency: todoObject.order.currency,
-      },
-      customer: {
-        name: todoObject.customer.name,
-        email: todoObject.customer.email,
-      },
-    })
-    .then((responce) => {
-      return res.status(200).json({ redirect_url: responce.data.redirect_url });
-    })
-    .catch((err) => {
-      return res.status(500).json({ error: err });
-    });
+
+  let to_md5 =
+    todoObject.order.number +
+    todoObject.order.amount +
+    todoObject.order.currency +
+    todoObject.order.description +
+    todoObject.merchant_pass;
+
+  let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
+  let result = CryptoJS.enc.Hex.stringify(hash);
+  // console.log(result);
+  const endObject = {
+    ...todoObject,
+    hash: `${result}`,
+  };
+  try {
+    const response = await fetch(
+      "https://checkout.montypay.com/api/v1/session",
+      {
+        method: "POST",
+        body: JSON.stringify(endObject),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const jsonResponse = await response.json();
+    return res.status(200).json(jsonResponse);
+  } catch (err) {
+    console.log("ERROR", err);
+    return res.status(500).json(err);
+  }
 });
 
 app.get("*", (req: Request, res: Response) => {

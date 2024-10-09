@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
 
 export default {
   name: "PaymentPage",
@@ -72,7 +72,7 @@ export default {
       operation: "purchase",
       cancel_url: "https://example.com",
       success_url: "https://merchantapp.montypay.com/paysuccess",
-      hash: "",
+      // hash: "",
       order: {
         description: "",
         number: "",
@@ -101,16 +101,16 @@ export default {
     async submitPayment() {
       // Add payment submission logic here
 
-      let to_md5 =
-        this.order.number +
-        this.order.amount +
-        this.order.currency +
-        this.order.description +
-        this.merchant_pass;
+      // let to_md5 =
+      //   this.order.number +
+      //   this.order.amount +
+      //   this.order.currency +
+      //   this.order.description +
+      //   this.merchant_pass;
 
-      let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
-      let result = CryptoJS.enc.Hex.stringify(hash);
-      this.hash = result;
+      // let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
+      // let result = CryptoJS.enc.Hex.stringify(hash);
+      // this.hash = result;
 
       const todoObject = {
         merchant_key: this.merchant_key,
@@ -118,9 +118,17 @@ export default {
         operation: this.operation,
         cancel_url: this.cancel_url,
         success_url: this.success_url,
-        hash: `${this.hash}`,
-        order: this.order,
-        customer: this.customer,
+        // hash: this.hash,
+        order: {
+          description: this.order.description,
+          number: this.order.number,
+          amount: this.order.amount,
+          currency: this.order.currency,
+        },
+        customer: {
+          name: this.customer.name,
+          email: this.customer.email,
+        },
       };
 
       const pay = window.ghl.payment(todoObject);

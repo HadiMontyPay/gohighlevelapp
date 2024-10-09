@@ -81,7 +81,7 @@ export class GHL {
         todoObject: todoObject,
       })
       .then((response) => {
-        return response.data.redirect_url;
+        return response.data;
       })
       .catch((err) => {
         return err;
