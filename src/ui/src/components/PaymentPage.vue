@@ -194,7 +194,7 @@ export default {
       }),
       "*"
     );
-    console.log(window.parent);
+    console.log(window.parent.location.href);
   },
 };
 </script>
