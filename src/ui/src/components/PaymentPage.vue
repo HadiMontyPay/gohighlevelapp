@@ -194,7 +194,8 @@ export default {
       }),
       "*"
     );
-    console.log(window.parent.location.href);
+    const parentUrl = document.referrer;
+    console.log("Parent URL:", parentUrl);
   },
 };
 </script>
