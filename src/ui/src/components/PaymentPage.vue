@@ -1,11 +1,10 @@
 <template>
   <!-- <div id="payment_page"> -->
-  <div id="payment_page" v-if="loading === false">
+  <!-- <div id="payment_page" v-if="loading === false">
     <h1>Payments Page</h1>
     <form @submit.prevent="submitPayment">
       <fieldset>
         <h3>Total: {{ this.total }} $</h3>
-        <!-- <legend>Test Credentials</legend> -->
         <label for="cardNumber">
           Card Number
           <input
@@ -43,8 +42,7 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
-    <!-- <p>Info: {{ this.info }}</p> -->
-  </div>
+  </div> -->
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
@@ -62,7 +60,7 @@ export default {
   data() {
     return {
       // info: {},
-      loading: false,
+      loading: true,
       cardNumber: "",
       expiryDate: "",
       cvv: "",
@@ -146,7 +144,7 @@ export default {
 
       // console.log("Pay", pay);
 
-      window.parent.location.href = pay;
+      // window.parent.location.href = pay;
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
