@@ -70,7 +70,7 @@ export default {
       merchant_key: "",
       merchant_pass: "",
       operation: "purchase",
-      cancel_url: "https://example.com",
+      cancel_url: "",
       success_url: "https://merchantapp.montypay.com/paysuccess",
       // hash: "",
       order: {
@@ -195,7 +195,6 @@ export default {
     );
     const parentUrl = document.referrer;
     this.success_url = parentUrl;
-    this.cancel_url = parentUrl;
   },
 };
 </script>

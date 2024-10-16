@@ -305,10 +305,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     customer,
   } = req.body;
 
-  // console.log("Mer Key:", merchant_key);
-  // console.log("Mer Pass:", merchant_pass);
-  // console.log("Order:", order);
-
   let to_md5 =
     order.number +
     order.amount +
@@ -318,7 +314,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
 
   let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
   let result = CryptoJS.enc.Hex.stringify(hash);
-  // console.log(result);
   const endObject = {
     merchant_key: merchant_key,
     merchant_pass: merchant_pass,
@@ -337,7 +332,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
       email: customer.email,
     },
   };
-  // console.log(endObject);
   try {
     const response = await fetch(
       "https://checkout.montypay.com/api/v1/session",
@@ -353,6 +347,33 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     console.log("ERROR", err);
     return res.status(500).json(err);
   }
+});
+
+// Interface for typing notification data
+interface NotificationPayload {
+  id: string;
+  order_number: string;
+  order_amount: number;
+  order_currency: string;
+  order_description: string;
+  order_status: string;
+  type: string;
+  status: string;
+  customer_ip: string;
+  hash: string;
+  // Add more fields based on your expected payload
+}
+
+app.post("/notifications", (req: Request, res: Response) => {
+  const notification: NotificationPayload = req.body;
+
+  // Log the notification or process it
+  console.log("Received notification:", notification);
+
+  // Respond with a status message
+  res
+    .status(200)
+    .json({ message: "Notification received", notification: notification });
 });
 
 app.get("*", (req: Request, res: Response) => {
