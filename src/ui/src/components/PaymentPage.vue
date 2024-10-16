@@ -182,7 +182,10 @@ export default {
       this.order.number = data.orderId;
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
-      this.getSavedInfo(data.locationId);
+      const fff = async () => {
+        await this.getSavedInfo(data.locationId);
+      };
+      fff();
     });
     window.parent.postMessage(
       JSON.stringify({
