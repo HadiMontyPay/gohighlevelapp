@@ -305,9 +305,9 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     customer,
   } = req.body;
 
-  console.log("Mer Key:", merchant_key);
-  console.log("Mer Pass:", merchant_pass);
-  console.log("Order:", order);
+  // console.log("Mer Key:", merchant_key);
+  // console.log("Mer Pass:", merchant_pass);
+  // console.log("Order:", order);
 
   let to_md5 =
     order.number +
@@ -337,7 +337,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
       email: customer.email,
     },
   };
-  console.log(endObject);
+  // console.log(endObject);
   try {
     const response = await fetch(
       "https://checkout.montypay.com/api/v1/session",

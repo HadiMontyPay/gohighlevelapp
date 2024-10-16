@@ -52,7 +52,6 @@
 </template>
 
 <script>
-// import CryptoJS from "crypto-js";
 import axios from "axios";
 
 export default {
@@ -166,7 +165,7 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       this.total = data.amount;
@@ -195,7 +194,10 @@ export default {
       "*"
     );
     const parentUrl = document.referrer;
-    console.log("Parent URL:", parentUrl);
+    this.success_url = parentUrl;
+    this.cancel_url = parentUrl;
+
+    await this.submitPayment();
   },
 };
 </script>
