@@ -1,10 +1,11 @@
 <template>
   <!-- <div id="payment_page"> -->
-  <!-- <div id="payment_page" v-if="loading === false">
+  <div id="payment_page" v-if="loading === false">
     <h1>Payments Page</h1>
     <form @submit.prevent="submitPayment">
       <fieldset>
         <h3>Total: {{ this.total }} $</h3>
+        <!-- <legend>Test Credentials</legend> -->
         <label for="cardNumber">
           Card Number
           <input
@@ -42,7 +43,8 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
-  </div> -->
+    <!-- <p>Info: {{ this.info }}</p> -->
+  </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
@@ -60,7 +62,7 @@ export default {
   data() {
     return {
       // info: {},
-      loading: true,
+      loading: false,
       cardNumber: "",
       expiryDate: "",
       cvv: "",
@@ -183,6 +185,10 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
+      const parentUrl = document.referrer;
+      this.success_url = parentUrl;
+      this.cancel_url = parentUrl;
+      await this.submitPayment();
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -191,13 +197,6 @@ export default {
       }),
       "*"
     );
-    const parentUrl = document.referrer;
-    this.success_url = parentUrl;
-    this.cancel_url = parentUrl;
-    const fff = async () => {
-      await this.submitPayment();
-    };
-    fff();
   },
 };
 </script>
