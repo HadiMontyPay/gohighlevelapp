@@ -117,7 +117,7 @@ export default {
       //     email: this.customer.email,
       //   },
       // };
-      const pay = await axios
+      await axios
         .post("/getPaymentRedirectURL", {
           merchant_key: this.merchant_key,
           merchant_pass: this.merchant_pass,
@@ -183,6 +183,8 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
+
+      await this.submitPayment();
     });
     window.parent.postMessage(
       JSON.stringify({
