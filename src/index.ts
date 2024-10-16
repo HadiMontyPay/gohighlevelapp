@@ -369,6 +369,8 @@ app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
   const notification = req.body;
 
+  console.log(document.referrer);
+
   // Log the notification or process it
   console.log("Received notification:", notification);
 

@@ -193,8 +193,8 @@ export default {
       }),
       "*"
     );
-    const parentUrl = document.referrer;
-    this.success_url = parentUrl;
+    // const parentUrl = document.referrer;
+    // this.success_url = parentUrl;
   },
 };
 </script>
