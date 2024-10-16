@@ -1,10 +1,11 @@
 <template>
   <!-- <div id="payment_page"> -->
-  <!-- <div id="payment_page" v-if="loading === false">
+  <div id="payment_page" v-if="loading === false">
     <h1>Payments Page</h1>
     <form @submit.prevent="submitPayment">
       <fieldset>
         <h3>Total: {{ this.total }} $</h3>
+        <!-- <legend>Test Credentials</legend> -->
         <label for="cardNumber">
           Card Number
           <input
@@ -42,7 +43,8 @@
         <button type="submit">Pay</button>
       </fieldset>
     </form>
-  </div> -->
+    <!-- <p>Info: {{ this.info }}</p> -->
+  </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
@@ -60,7 +62,7 @@ export default {
   data() {
     return {
       // info: {},
-      loading: true,
+      loading: false,
       cardNumber: "",
       expiryDate: "",
       cvv: "",
@@ -117,7 +119,7 @@ export default {
       //     email: this.customer.email,
       //   },
       // };
-      await axios
+      const pay = await axios
         .post("/getPaymentRedirectURL", {
           merchant_key: this.merchant_key,
           merchant_pass: this.merchant_pass,
@@ -144,7 +146,7 @@ export default {
 
       // console.log("Pay", pay);
 
-      // window.parent.location.href = pay;
+      window.parent.location.href = pay;
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
@@ -183,8 +185,6 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
-
-      await this.submitPayment();
     });
     window.parent.postMessage(
       JSON.stringify({
