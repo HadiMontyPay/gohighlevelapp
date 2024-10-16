@@ -1,7 +1,7 @@
 /*you provided is a TypeScript code that sets up an Express server and defines several routes
 for handling HTTP requests. */
 import axios from "axios";
-import { json } from "body-parser";
+import { json, urlencoded } from "body-parser";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import sequelize from "./database"; // Adjust path if necessary
@@ -14,6 +14,7 @@ const path = __dirname + "/ui/dist/";
 dotenv.config();
 const app: Express = express();
 app.use(json({ type: "application/json" }));
+app.use(urlencoded({ extended: true }));
 
 // Set up CORS options if needed
 const corsOptions = {
@@ -350,22 +351,23 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
 });
 
 // Interface for typing notification data
-interface NotificationPayload {
-  id: string;
-  order_number: string;
-  order_amount: number;
-  order_currency: string;
-  order_description: string;
-  order_status: string;
-  type: string;
-  status: string;
-  customer_ip: string;
-  hash: string;
-  // Add more fields based on your expected payload
-}
+// interface NotificationPayload {
+//   id: string;
+//   order_number: string;
+//   order_amount: number;
+//   order_currency: string;
+//   order_description: string;
+//   order_status: string;
+//   type: string;
+//   status: string;
+//   customer_ip: string;
+//   hash: string;
+//   // Add more fields based on your expected payload
+// }
 
 app.post("/notifications", (req: Request, res: Response) => {
-  const notification: NotificationPayload = req.body;
+  // const notification: NotificationPayload = req.body;
+  const notification = req.body;
 
   // Log the notification or process it
   console.log("Received notification:", notification);
