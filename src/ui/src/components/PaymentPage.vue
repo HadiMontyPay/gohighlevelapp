@@ -182,10 +182,7 @@ export default {
       this.order.number = data.orderId;
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
-      const fff = async () => {
-        await this.getSavedInfo(data.locationId);
-      };
-      fff();
+      this.getSavedInfo(data.locationId);
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -197,8 +194,10 @@ export default {
     const parentUrl = document.referrer;
     this.success_url = parentUrl;
     this.cancel_url = parentUrl;
-
-    this.submitPayment();
+    const fff = async () => {
+      await this.submitPayment();
+    };
+    fff();
   },
 };
 </script>
