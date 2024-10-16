@@ -166,13 +166,6 @@ export default {
     },
   },
   mounted() {
-    window.parent.postMessage(
-      JSON.stringify({
-        type: "custom_provider_ready",
-        loaded: true,
-      }),
-      "*"
-    );
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       this.total = data.amount;
@@ -192,11 +185,17 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
-      const parentUrl = document.referrer;
-      this.success_url = parentUrl;
-      this.cancel_url = parentUrl;
-      await this.submitPayment();
     });
+    window.parent.postMessage(
+      JSON.stringify({
+        type: "custom_provider_ready",
+        loaded: true,
+      }),
+      "*"
+    );
+    const parentUrl = document.referrer;
+    this.success_url = parentUrl;
+    this.cancel_url = parentUrl;
   },
 };
 </script>
