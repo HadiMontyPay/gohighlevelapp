@@ -166,6 +166,13 @@ export default {
     },
   },
   mounted() {
+    window.parent.postMessage(
+      JSON.stringify({
+        type: "custom_provider_ready",
+        loaded: true,
+      }),
+      "*"
+    );
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       this.total = data.amount;
@@ -190,13 +197,6 @@ export default {
       this.cancel_url = parentUrl;
       await this.submitPayment();
     });
-    window.parent.postMessage(
-      JSON.stringify({
-        type: "custom_provider_ready",
-        loaded: true,
-      }),
-      "*"
-    );
   },
 };
 </script>
