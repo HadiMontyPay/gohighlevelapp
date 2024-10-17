@@ -18,7 +18,7 @@ export default {
   // },
   data() {
     return {
-      paymentURL: "about:blank",
+      iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
       expiryDate: "",
