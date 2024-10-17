@@ -149,6 +149,10 @@ export default {
     font-size: 20px;
   }
 
+  iframe {
+    min-height: 90%;
+  }
+
   p {
     font-size: 14px;
   }
