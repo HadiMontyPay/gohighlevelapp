@@ -67,7 +67,7 @@ export default {
       merchant_pass: "",
       operation: "purchase",
       cancel_url: "",
-      success_url: "https://merchantapp.montypay.com/paysuccess",
+      success_url: "https://funnnel-fusion.onrender.com/return",
       // hash: "",
       order: {
         description: "",
