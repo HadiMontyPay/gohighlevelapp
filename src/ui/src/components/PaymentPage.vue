@@ -144,6 +144,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 #payment_page {
+  height: 100vh;
   h1 {
     border: none;
     font-size: 20px;
