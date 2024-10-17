@@ -67,7 +67,7 @@ export default {
       merchant_pass: "",
       operation: "purchase",
       cancel_url: "",
-      success_url: "https://funnnel-fusion.onrender.com/return",
+      success_url: "https://merchantapp.montypay.com/paysuccess",
       // hash: "",
       order: {
         description: "",
@@ -142,7 +142,7 @@ export default {
 
       // console.log("Pay", pay);
 
-      window.parent.location.href = pay;
+      window.open(pay, "_blank");
     },
     async getSavedInfo(locationId) {
       console.log("Get Saved Info");
