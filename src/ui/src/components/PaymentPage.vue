@@ -189,6 +189,7 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
+      console.log("finished Calling Parent Iframe");
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -197,7 +198,6 @@ export default {
       }),
       "*"
     );
-    console.log("finished Calling Parent Iframe");
   },
 };
 </script>
