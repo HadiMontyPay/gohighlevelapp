@@ -149,6 +149,7 @@ export default {
       window.parent.location.href = pay;
     },
     async getSavedInfo(locationId) {
+      console.log("Get Saved Info");
       const info = await window.ghl.getSavedInfo(locationId);
       // console.log(info);
       if (info.TestmerchantKey) {
@@ -163,10 +164,13 @@ export default {
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchant_pass = info.merchantPass;
       }
+
+      console.log("Got Saved Info");
     },
   },
   mounted() {
     window.addEventListener("message", async ({ data }) => {
+      console.log("Called Patrent Iframe");
       data = JSON.parse(data);
       this.total = data.amount;
 
@@ -193,8 +197,7 @@ export default {
       }),
       "*"
     );
-    // const parentUrl = document.referrer;
-    // this.success_url = parentUrl;
+    console.log("finished Calling Parent Iframe");
   },
 };
 </script>

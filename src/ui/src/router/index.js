@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SettingsPage from "../components/Settings.vue";
 import PaymentPage from "../components/PaymentPage.vue";
+import ReturnPage from "@/components/ReturnPage.vue";
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/payment",
     name: "PaymentPage",
     component: PaymentPage,
+  },
+  {
+    path: "/return",
+    name: "ReturnPage",
+    component: ReturnPage,
   },
 ];
 
