@@ -83,7 +83,7 @@ export default {
         });
 
       // window.open(pay, "_blank");
-      this.paymentURL = pay;
+      this.iframeSrc = pay;
       this.loading = false;
     },
     async getSavedInfo(locationId) {
