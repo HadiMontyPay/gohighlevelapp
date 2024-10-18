@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       notifications: null,
+      interval: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -156,7 +157,10 @@ export default {
       "*"
     );
 
-    setInterval(this.fetchData(), 1);
+    this.interval = setInterval(this.fetchData(), 500);
+  },
+  beforeUnmount() {
+    clearInterval(this.interval);
   },
 };
 </script>
