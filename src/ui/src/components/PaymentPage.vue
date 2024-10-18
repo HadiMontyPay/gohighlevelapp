@@ -6,6 +6,14 @@
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
+  <div>
+    <h2>Notifications</h2>
+    <ul>
+      <li v-for="notification in notifications" :key="notification.id">
+        {{ notification.message }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -18,6 +26,7 @@ export default {
   // },
   data() {
     return {
+      notifications: [],
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -137,6 +146,22 @@ export default {
       }),
       "*"
     );
+
+    // Establish an SSE connection to the backend
+    const eventSource = new EventSource(
+      "https://funnnel-fusion.onrender.com/notifications"
+    );
+
+    // Listen for new notifications
+    eventSource.onmessage = (event) => {
+      const notification = JSON.parse(event.data);
+      this.notifications.push(notification);
+    };
+
+    // Optional: handle error or connection closure
+    eventSource.onerror = (error) => {
+      console.error("EventSource failed: ", error);
+    };
   },
 };
 </script>
