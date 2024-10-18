@@ -150,7 +150,7 @@ export default {
 
     // Connect to the SSE API
     const eventSource = new EventSource(
-      "https://funnnel-fusion.onrender.com/notification"
+      "https://funnnel-fusion.onrender.com/notifications"
     );
 
     // Listen for messages from the server
