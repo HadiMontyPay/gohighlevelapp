@@ -49,27 +49,6 @@ export default {
     };
   },
   methods: {
-    setupWebSocket() {
-      const socket = new WebSocket("ws://funnnel-fusion.onrender.com");
-
-      socket.onopen = () => {
-        console.log("WebSocket connection opened");
-      };
-
-      socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        this.notifications = data.message; // Update message when data is received
-        console.log("Received data from WebSocket:", data);
-      };
-
-      socket.onclose = () => {
-        console.log("WebSocket connection closed");
-      };
-
-      socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-      };
-    },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
         .replace(/\D/g, "")
@@ -165,7 +144,14 @@ export default {
       "*"
     );
 
-    this.setupWebSocket();
+    axios
+      .get("/notifications")
+      .then((response) => {
+        this.notifications = response.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   },
 };
 </script>
