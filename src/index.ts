@@ -8,6 +8,8 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
+import { WebSocketServer } from "ws";
+import http from "http";
 
 const path = __dirname + "/ui/dist/";
 
@@ -15,6 +17,30 @@ dotenv.config();
 const app: Express = express();
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
+
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server });
+// WebSocket connection logic
+wss.on("connection", (ws) => {
+  console.log("Client connected via WebSocket");
+
+  // Send data to the connected client
+  ws.send(JSON.stringify({ message: "Hello from WebSocket server!" }));
+
+  // Handle incoming messages from the client
+  ws.on("message", (message: string) => {
+    console.log(`Received message: ${message}`);
+  });
+
+  // Handle WebSocket disconnection
+  ws.on("close", () => {
+    console.log("Client disconnected");
+  });
+
+  ws.on("error", (error) => {
+    console.error("WebSocket error:", error);
+  });
+});
 
 // Set up CORS options if needed
 const corsOptions = {

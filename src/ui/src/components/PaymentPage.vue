@@ -14,7 +14,6 @@
 
 <script>
 import axios from "axios";
-import api from "@/services/api";
 
 export default {
   name: "PaymentPage",
@@ -50,17 +49,26 @@ export default {
     };
   },
   methods: {
-    fetchData() {
-      // Use the custom Axios instance to make the request
-      api
-        .post("/notifications") // Replace with the specific endpoint
-        .then((response) => {
-          // Data is automatically handled in the interceptor
-          this.notifications = response.data; // Assign data to the component's state
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
+    setupWebSocket() {
+      const socket = new WebSocket("ws://funnnel-fusion.onrender.com");
+
+      socket.onopen = () => {
+        console.log("WebSocket connection opened");
+      };
+
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        this.notifications = data.message; // Update message when data is received
+        console.log("Received data from WebSocket:", data);
+      };
+
+      socket.onclose = () => {
+        console.log("WebSocket connection closed");
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
     },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
@@ -157,10 +165,7 @@ export default {
       "*"
     );
 
-    this.interval = setInterval(this.fetchData(), 500);
-  },
-  beforeUnmount() {
-    clearInterval(this.interval);
+    this.setupWebSocket();
   },
 };
 </script>
