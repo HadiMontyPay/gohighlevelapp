@@ -173,7 +173,7 @@ export default {
     // Set up polling to check for new data every 5 seconds
     this.intervalId = setInterval(this.fetchData, 5000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // Clear the interval when the component is destroyed
     if (this.intervalId) {
       clearInterval(this.intervalId);
