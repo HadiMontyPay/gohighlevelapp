@@ -8,11 +8,7 @@
   </div>
   <div>
     <h2>Notifications</h2>
-    <ul>
-      <li v-for="notification in notifications" :key="notification.id">
-        {{ notification.message }}
-      </li>
-    </ul>
+    <h2>New Data: {{ notifications }}</h2>
   </div>
 </template>
 
@@ -26,7 +22,7 @@ export default {
   // },
   data() {
     return {
-      notifications: [],
+      notifications: {},
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -52,6 +48,11 @@ export default {
     };
   },
   methods: {
+    onDataReceived(newData) {
+      // This function will be called every time new data is received
+      console.log("New data received:", newData);
+      this.notifications = newData;
+    },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
         .replace(/\D/g, "")
@@ -147,20 +148,19 @@ export default {
       "*"
     );
 
-    // Establish an SSE connection to the backend
+    // Connect to the SSE API
     const eventSource = new EventSource(
-      "https://funnnel-fusion.onrender.com/notifications"
+      "https://funnnel-fusion.onrender.com/notification"
     );
 
-    // Listen for new notifications
+    // Listen for messages from the server
     eventSource.onmessage = (event) => {
-      const notification = JSON.parse(event.data);
-      this.notifications.push(notification);
+      const receivedData = JSON.parse(event.data);
+      this.onDataReceived(receivedData); // Call the function when new data arrives
     };
 
-    // Optional: handle error or connection closure
     eventSource.onerror = (error) => {
-      console.error("EventSource failed: ", error);
+      console.error("EventSource failed:", error);
     };
   },
 };
