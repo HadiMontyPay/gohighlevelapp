@@ -23,7 +23,6 @@ export default {
   data() {
     return {
       notifications: null,
-      intervalId: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -49,19 +48,10 @@ export default {
     };
   },
   methods: {
-    // Function to fetch data from the API
-    fetchData() {
-      fetch("https://funnnel-fusion.onrender.com/notifications")
-        .then((response) => response.json())
-        .then((data) => {
-          this.notifications = data;
-          // Call the function you want to activate when new data arrives
-          this.onDataReceived(data);
-        });
-    },
     onDataReceived(newData) {
       // This function will be called every time new data is received
       console.log("New data received:", newData);
+      this.notifications = newData;
     },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
@@ -158,12 +148,20 @@ export default {
       "*"
     );
 
-    // Set an interval to check the API every 5 seconds
-    this.intervalId = setInterval(this.fetchData, 5000);
-  },
-  beforeUnmount() {
-    // Clear the interval when the component is destroyed
-    clearInterval(this.intervalId);
+    // Connect to the SSE API
+    const eventSource = new EventSource(
+      "https://funnnel-fusion.onrender.com/notifications"
+    );
+
+    // Listen for messages from the server
+    eventSource.onmessage = (event) => {
+      const receivedData = JSON.parse(event.data);
+      this.onDataReceived(receivedData); // Call the function when new data arrives
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("EventSource failed:", error);
+    };
   },
 };
 </script>
