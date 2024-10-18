@@ -52,7 +52,7 @@ export default {
     // Function to fetch data from the API
     fetchData() {
       axios
-        .get("https://funnnel-fusion.onrender.com/notifications") // Replace with your API URL
+        .post("https://funnnel-fusion.onrender.com/notifications") // Replace with your API URL
         .then((response) => {
           // Check if there's new data and trigger a function
           if (response.data) {
