@@ -148,20 +148,23 @@ export default {
       "*"
     );
 
-    // Connect to the SSE API
-    const eventSource = new EventSource(
-      "https://funnnel-fusion.onrender.com/notifications"
+    // Add a response interceptor
+    axios.interceptors.response.use(
+      (response) => {
+        this.onDataReceived(response.data); // Trigger the function when data is received
+        return response;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
     );
 
-    // Listen for messages from the server
-    eventSource.onmessage = (event) => {
-      const receivedData = JSON.parse(event.data);
-      this.onDataReceived(receivedData); // Call the function when new data arrives
-    };
-
-    eventSource.onerror = (error) => {
-      console.error("EventSource failed:", error);
-    };
+    // Fetch some initial data
+    axios
+      .post("https://funnnel-fusion.onrender.com/notifications")
+      .then((response) => {
+        this.notifications = response.data;
+      });
   },
 };
 </script>
