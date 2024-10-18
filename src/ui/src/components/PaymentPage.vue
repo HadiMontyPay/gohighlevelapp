@@ -117,6 +117,7 @@ export default {
     window.addEventListener("message", async ({ data }) => {
       console.log("Called Patrent Iframe");
       data = JSON.parse(data);
+      console.log("Data:", data);
       this.total = data.amount;
 
       if (data.currency.toUpperCase() === "JOD") {
