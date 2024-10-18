@@ -52,7 +52,7 @@ export default {
     fetchData() {
       // Use the custom Axios instance to make the request
       api
-        .get("/data") // Replace with the specific endpoint
+        .post("/notifications") // Replace with the specific endpoint
         .then((response) => {
           // Data is automatically handled in the interceptor
           this.notifications = response.data; // Assign data to the component's state
