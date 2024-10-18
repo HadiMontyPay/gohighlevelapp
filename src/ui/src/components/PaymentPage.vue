@@ -14,6 +14,7 @@
 
 <script>
 import axios from "axios";
+import api from "@/services/api";
 
 export default {
   name: "PaymentPage",
@@ -48,10 +49,17 @@ export default {
     };
   },
   methods: {
-    onDataReceived(newData) {
-      // This function will be called every time new data is received
-      console.log("New data received:", newData);
-      this.notifications = newData;
+    fetchData() {
+      // Use the custom Axios instance to make the request
+      api
+        .get("/data") // Replace with the specific endpoint
+        .then((response) => {
+          // Data is automatically handled in the interceptor
+          this.notifications = response.data; // Assign data to the component's state
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
@@ -148,23 +156,7 @@ export default {
       "*"
     );
 
-    // Add a response interceptor
-    axios.interceptors.response.use(
-      (response) => {
-        this.onDataReceived(response.data); // Trigger the function when data is received
-        return response;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-
-    // Fetch some initial data
-    axios
-      .post("https://funnnel-fusion.onrender.com/notifications")
-      .then((response) => {
-        this.notifications = response.data;
-      });
+    this.fetchData();
   },
 };
 </script>
