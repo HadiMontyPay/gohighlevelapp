@@ -51,26 +51,17 @@ export default {
   methods: {
     // Function to fetch data from the API
     fetchData() {
-      axios
-        .post("https://funnnel-fusion.onrender.com/notifications") // Replace with your API URL
-        .then((response) => {
-          // Check if there's new data and trigger a function
-          if (response.data) {
-            this.onDataReceived(response.data);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
+      fetch("https://funnnel-fusion.onrender.com/notifications")
+        .then((response) => response.json())
+        .then((data) => {
+          this.notifications = data;
+          // Call the function you want to activate when new data arrives
+          this.onDataReceived(data);
         });
     },
-
-    // Function to trigger when data is received
     onDataReceived(newData) {
+      // This function will be called every time new data is received
       console.log("New data received:", newData);
-      this.notifications = newData;
-
-      // Perform additional actions when new data arrives, like updating the UI
-      // or triggering other methods.
     },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
@@ -167,17 +158,12 @@ export default {
       "*"
     );
 
-    // Fetch the data when the component mounts
-    this.fetchData();
-
-    // Set up polling to check for new data every 5 seconds
+    // Set an interval to check the API every 5 seconds
     this.intervalId = setInterval(this.fetchData, 5000);
   },
   beforeUnmount() {
     // Clear the interval when the component is destroyed
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    clearInterval(this.intervalId);
   },
 };
 </script>
