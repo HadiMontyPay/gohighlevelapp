@@ -22,7 +22,8 @@ export default {
   // },
   data() {
     return {
-      notifications: {},
+      notifications: null,
+      intervalId: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -48,10 +49,28 @@ export default {
     };
   },
   methods: {
+    // Function to fetch data from the API
+    fetchData() {
+      axios
+        .get("https://funnnel-fusion.onrender.com/notifications") // Replace with your API URL
+        .then((response) => {
+          // Check if there's new data and trigger a function
+          if (response.data) {
+            this.onDataReceived(response.data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    },
+
+    // Function to trigger when data is received
     onDataReceived(newData) {
-      // This function will be called every time new data is received
       console.log("New data received:", newData);
       this.notifications = newData;
+
+      // Perform additional actions when new data arrives, like updating the UI
+      // or triggering other methods.
     },
     formatCardNumber() {
       this.cardNumber = this.cardNumber
@@ -148,20 +167,17 @@ export default {
       "*"
     );
 
-    // Connect to the SSE API
-    const eventSource = new EventSource(
-      "https://funnnel-fusion.onrender.com/notifications"
-    );
+    // Fetch the data when the component mounts
+    this.fetchData();
 
-    // Listen for messages from the server
-    eventSource.onmessage = (event) => {
-      const receivedData = JSON.parse(event.data);
-      this.onDataReceived(receivedData); // Call the function when new data arrives
-    };
-
-    eventSource.onerror = (error) => {
-      console.error("EventSource failed:", error);
-    };
+    // Set up polling to check for new data every 5 seconds
+    this.intervalId = setInterval(this.fetchData, 5000);
+  },
+  beforeDestroy() {
+    // Clear the interval when the component is destroyed
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   },
 };
 </script>
