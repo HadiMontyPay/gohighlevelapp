@@ -156,7 +156,7 @@ export default {
       "*"
     );
 
-    this.fetchData();
+    setInterval(this.fetchData(), 1);
   },
 };
 </script>
