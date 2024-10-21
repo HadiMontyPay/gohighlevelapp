@@ -371,14 +371,11 @@ app.post("/notifications", (req: Request, res: Response) => {
 
   // Log the notification or process it
   console.log("Received notification:", notification);
-  const temp = {};
 
-  if (notification !== temp) {
-    // Respond with a status message
-    res
-      .status(200)
-      .json({ message: "Notification received", notification: notification });
-  }
+  // Respond with a status message
+  res
+    .status(200)
+    .json({ message: "Notification received", notification: notification });
 });
 
 app.get("*", (req: Request, res: Response) => {
