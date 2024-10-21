@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
-import cors from "cors";
+// import cors from "cors";
 import CryptoJS from "crypto-js";
 import http from "http";
 import { Server } from "socket.io";
@@ -20,20 +20,22 @@ app.use(urlencoded({ extended: true }));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow cross-origin requests for testing
+    origin: "https://funnnel-fusion.onrender.com", // Allow cross-origin requests for testing
     methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
   },
 });
 app.use(express.json());
 // Set up CORS options if needed
-const corsOptions = {
-  origin: "*", // You can specify the allowed origin or use '*'
-  methods: ["GET", "POST"], // Specify the allowed HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
-};
+// const corsOptions = {
+//   origin: "https://funnnel-fusion.onrender.com", // You can specify the allowed origin or use '*'
+//   methods: ["GET", "POST"], // Specify the allowed HTTP methods
+//   allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+// };
 
 // Apply CORS middleware to all routes
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 /*`app.use(express.static(path));` is setting up a middleware in the Express server. The
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
