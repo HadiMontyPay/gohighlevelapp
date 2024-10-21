@@ -115,6 +115,29 @@ export default {
     },
   },
   mounted() {
+    const socket = io("https://funnnel-fusion.onrender.com", {
+      transports: ["websocket"], // Force WebSocket protocol (avoid polling)
+      reconnectionAttempts: 3, // Retry if connection fails
+    });
+
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+      this.connectionStatus = true;
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected");
+      this.connectionStatus = false;
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Connection error:", err.message);
+    });
+
+    socket.on("newData", (data) => {
+      console.log("New data received from server:", data);
+      this.newData = data;
+    });
     window.addEventListener("message", async ({ data }) => {
       // console.log("Called Patrent Iframe");
       data = JSON.parse(data);
@@ -145,29 +168,6 @@ export default {
       }),
       "*"
     );
-    const socket = io("https://funnnel-fusion.onrender.com/notifications", {
-      transports: ["websocket"], // Force WebSocket protocol (avoid polling)
-      reconnectionAttempts: 3, // Retry if connection fails
-    });
-
-    socket.on("connect", () => {
-      console.log("Socket connected:", socket.id);
-      this.connectionStatus = true;
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Socket disconnected");
-      this.connectionStatus = false;
-    });
-
-    socket.on("connect_error", (err) => {
-      console.error("Connection error:", err.message);
-    });
-
-    socket.on("newData", (data) => {
-      console.log("New data received from server:", data);
-      this.newData = data;
-    });
   },
 };
 </script>
