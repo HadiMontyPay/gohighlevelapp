@@ -144,6 +144,17 @@ export default {
     );
     const socket = io("https://funnnel-fusion.onrender.com");
 
+    // Debug: Check if connected
+    socket.on("connect", () => {
+      console.log("Connected to Socket.IO server:", socket.id);
+    });
+
+    // Debug: Check if disconnected
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+
+    // Listen for new data
     socket.on("newData", (data) => {
       this.newData = data;
       console.log("New data received:", data);

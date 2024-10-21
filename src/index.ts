@@ -18,8 +18,13 @@ const app: Express = express();
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
 const server = http.createServer(app);
-const io = new Server(server);
-
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Allow cross-origin requests for testing
+    methods: ["GET", "POST"],
+  },
+});
+app.use(express.json());
 // Set up CORS options if needed
 const corsOptions = {
   origin: "*", // You can specify the allowed origin or use '*'
@@ -362,19 +367,12 @@ app.post("/notifications", (req: Request, res: Response) => {
 
   // Emit the received data to connected clients
   io.emit("newData", notification);
-
+  console.log("Data emitted to clients");
   // Respond with a status message
-  res
-    .status(200)
-    .json({ message: "Notification received", notification: notification });
-});
-
-io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
+  // res
+  //   .status(200)
+  //   .json({ message: "Notification received", notification: notification });
+  res.status(200).send("Webhook received");
 });
 
 app.get("*", (req: Request, res: Response) => {
@@ -391,6 +389,14 @@ const syncDatabase = async () => {
 };
 
 syncDatabase();
+
+io.on("connection", (socket) => {
+  console.log("A client connected:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
+  });
+});
 
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
