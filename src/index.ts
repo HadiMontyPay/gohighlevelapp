@@ -350,26 +350,8 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
   }
 });
 
-// Interface for typing notification data
-// interface NotificationPayload {
-//   id: string;
-//   order_number: string;
-//   order_amount: number;
-//   order_currency: string;
-//   order_description: string;
-//   order_status: string;
-//   type: string;
-//   status: string;
-//   customer_ip: string;
-//   hash: string;
-//   // Add more fields based on your expected payload
-// }
-
 app.post("/notifications", (req: Request, res: Response) => {
-  // const notification: NotificationPayload = req.body;
   const notification = req.body;
-
-  console.log(document.referrer);
 
   // Log the notification or process it
   console.log("Received notification:", notification);
