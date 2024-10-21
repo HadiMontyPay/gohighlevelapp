@@ -128,12 +128,17 @@ export default {
       axios
         .post("/notifications")
         .then((response) => {
-          this.notifications = response.data;
+          const temp = {};
+          if (response.data.notification !== temp) {
+            return;
+          } else {
+            this.notifications = response.data;
+          }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
-    }, 200);
+    }, 20);
   },
 };
 </script>
