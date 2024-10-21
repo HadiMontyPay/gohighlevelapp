@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
-// import cors from "cors";
+import cors from "cors";
 import CryptoJS from "crypto-js";
 import http from "http";
 import { Server } from "socket.io";
@@ -26,18 +26,16 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
-const notificationNamespace = io.of("/notifications");
 app.use(express.json());
 // Set up CORS options if needed
-// const corsOptions = {
-//   origin: "https://funnnel-fusion.onrender.com", // You can specify the allowed origin or use '*'
-//   methods: ["GET", "POST"], // Specify the allowed HTTP methods
-//   allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
-// };
+const corsOptions = {
+  origin: "https://funnnel-fusion.onrender.com", // You can specify the allowed origin or use '*'
+  methods: ["GET", "POST"], // Specify the allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+};
 
 // Apply CORS middleware to all routes
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 /*`app.use(express.static(path));` is setting up a middleware in the Express server. The
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
@@ -363,17 +361,19 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
   }
 });
 
+const notificationNamespace = io.of("/notifications");
+
 app.post("/notifications", (req: Request, res: Response) => {
   const notification = req.body;
 
   // Log the notification or process it
   console.log("Received notification:", notification);
 
-  // Emit data to clients connected to the /notifications namespace
+  // Emit the received data to clients connected to the /notifications namespace
   notificationNamespace.emit("newData", notification);
   console.log("Data emitted to clients on /notifications namespace");
 
-  res.status(200).send("Webhook processed successfully");
+  res.status(200).send("Webhook received");
 });
 
 app.get("*", (req: Request, res: Response) => {
@@ -391,15 +391,12 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-// Listen for connections to the /notifications namespace
+// Handle WebSocket connections to the /notifications namespace
 notificationNamespace.on("connection", (socket) => {
   console.log("Client connected to /notifications namespace:", socket.id);
 
   socket.on("disconnect", () => {
-    console.log(
-      "Client disconnected from /notifications namespace:",
-      socket.id
-    );
+    console.log("Client disconnected:", socket.id);
   });
 });
 

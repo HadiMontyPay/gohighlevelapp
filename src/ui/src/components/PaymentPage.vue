@@ -116,27 +116,26 @@ export default {
   },
   mounted() {
     const socket = io("https://funnnel-fusion.onrender.com/notifications", {
-      transports: ["websocket"], // Force WebSocket protocol (avoid polling)
-      reconnectionAttempts: 3, // Retry if connection fails
+      transports: ["websocket"], // Ensure the WebSocket transport is used
+      reconnectionAttempts: 3,
     });
 
+    // Check if connected
     socket.on("connect", () => {
-      console.log("Socket connected:", socket.id);
+      console.log("Connected to /notifications namespace:", socket.id);
       this.connectionStatus = true;
     });
 
+    // Check if disconnected
     socket.on("disconnect", () => {
-      console.log("Socket disconnected");
+      console.log("Disconnected from /notifications namespace");
       this.connectionStatus = false;
     });
 
-    socket.on("connect_error", (err) => {
-      console.error("Connection error:", err.message);
-    });
-
+    // Listen for new data
     socket.on("newData", (data) => {
-      console.log("New data received from server:", data);
       this.newData = data;
+      console.log("New data received:", data);
     });
     window.addEventListener("message", async ({ data }) => {
       // console.log("Called Patrent Iframe");
