@@ -2,19 +2,18 @@
   <div id="payment_page" v-if="loading === false">
     <h1>Monty Pay Payment</h1>
     <iframe :src="iframeSrc"></iframe>
-    <h2>New Data: {{ newData }}</h2>
-    <p v-if="connectionStatus">Connected to WebSocket</p>
-    <p v-else>Not connected to WebSocket</p>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
+  </div>
+  <div>
+    <h2>Notifications</h2>
+    <h2>New Data: {{ notifications }}</h2>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
-import { io } from "socket.io-client";
 
 export default {
   name: "PaymentPage",
@@ -23,8 +22,7 @@ export default {
   // },
   data() {
     return {
-      newData: null,
-      connectionStatus: false,
+      notifications: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -50,18 +48,6 @@ export default {
     };
   },
   methods: {
-    formatCardNumber() {
-      this.cardNumber = this.cardNumber
-        .replace(/\D/g, "")
-        .replace(/(.{4})/g, "$1 ")
-        .trim();
-    },
-    formatExpiryDate() {
-      this.expiryDate = this.expiryDate
-        .replace(/\D/g, "")
-        .replace(/(\d{2})(\d{1,2})/, "$1/$2")
-        .slice(0, 5);
-    },
     async submitPayment() {
       // Add payment submission logic here
       const pay = await axios
@@ -88,13 +74,10 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
-      // window.open(pay, "_blank");
       this.iframeSrc = pay;
       this.loading = false;
     },
     async getSavedInfo(locationId) {
-      // console.log("Get Saved Info");
       const info = await window.ghl.getSavedInfo(locationId);
       // console.log(info);
       if (info.TestmerchantKey) {
@@ -109,39 +92,12 @@ export default {
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchant_pass = info.merchantPass;
       }
-
-      // console.log("Got Saved Info");
       this.submitPayment();
     },
   },
   mounted() {
-    const socket = io("https://funnnel-fusion.onrender.com/notifications", {
-      transports: ["polling"], // Fallback to polling
-      reconnection: true,
-      reconnectionAttempts: 5,
-    });
-
-    // Check if connected
-    socket.on("connect", () => {
-      console.log("Connected to /notifications namespace:", socket.id);
-      this.connectionStatus = true;
-    });
-
-    // Check if disconnected
-    socket.on("disconnect", () => {
-      console.log("Disconnected from /notifications namespace");
-      this.connectionStatus = false;
-    });
-
-    // Listen for new data
-    socket.on("newData", (data) => {
-      this.newData = data;
-      console.log("New data received:", data);
-    });
     window.addEventListener("message", async ({ data }) => {
-      // console.log("Called Patrent Iframe");
       data = JSON.parse(data);
-      console.log("Data:", data);
       this.total = data.amount;
 
       if (data.currency.toUpperCase() === "JOD") {
@@ -159,7 +115,6 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
-      // console.log("finished Calling Parent Iframe");
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -168,10 +123,22 @@ export default {
       }),
       "*"
     );
+
+    setInterval(() => {
+      axios
+        .post("/notifications")
+        .then((response) => {
+          this.notifications = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }, 200);
   },
 };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 #payment_page {
   height: 100vh;

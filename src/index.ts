@@ -8,8 +8,6 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
-import http from "http";
-import { Server } from "socket.io";
 
 const path = __dirname + "/ui/dist/";
 
@@ -17,20 +15,10 @@ dotenv.config();
 const app: Express = express();
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "https://funnnel-fusion.onrender.com", // Adjust this to match your frontend URL
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-    credentials: true,
-  },
-});
 
-app.use(express.json());
 // Set up CORS options if needed
 const corsOptions = {
-  origin: "https://funnnel-fusion.onrender.com", // You can specify the allowed origin or use '*'
+  origin: "*", // You can specify the allowed origin or use '*'
   methods: ["GET", "POST"], // Specify the allowed HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
 };
@@ -362,19 +350,32 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
   }
 });
 
-const notificationNamespace = io.of("/notifications");
+// Interface for typing notification data
+// interface NotificationPayload {
+//   id: string;
+//   order_number: string;
+//   order_amount: number;
+//   order_currency: string;
+//   order_description: string;
+//   order_status: string;
+//   type: string;
+//   status: string;
+//   customer_ip: string;
+//   hash: string;
+//   // Add more fields based on your expected payload
+// }
 
 app.post("/notifications", (req: Request, res: Response) => {
+  // const notification: NotificationPayload = req.body;
   const notification = req.body;
 
   // Log the notification or process it
   console.log("Received notification:", notification);
 
-  // Emit the received data to clients connected to the /notifications namespace
-  notificationNamespace.emit("newData", notification);
-  console.log("Data emitted to clients on /notifications namespace");
-
-  res.status(200).send("Webhook received");
+  // Respond with a status message
+  res
+    .status(200)
+    .json({ message: "Notification received", notification: notification });
 });
 
 app.get("*", (req: Request, res: Response) => {
@@ -391,15 +392,6 @@ const syncDatabase = async () => {
 };
 
 syncDatabase();
-
-// Handle WebSocket connections to the /notifications namespace
-notificationNamespace.on("connection", (socket) => {
-  console.log("Client connected to /notifications namespace:", socket.id);
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected:", socket.id);
-  });
-});
 
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
