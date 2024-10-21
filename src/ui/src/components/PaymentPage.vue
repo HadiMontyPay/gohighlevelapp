@@ -6,10 +6,6 @@
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
-  <div>
-    <h2>Notifications</h2>
-    <h2>New Data: {{ notifications }}</h2>
-  </div>
 </template>
 
 <script>
@@ -22,8 +18,6 @@ export default {
   // },
   data() {
     return {
-      notifications: null,
-      interval: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -93,7 +87,7 @@ export default {
       this.loading = false;
     },
     async getSavedInfo(locationId) {
-      console.log("Get Saved Info");
+      // console.log("Get Saved Info");
       const info = await window.ghl.getSavedInfo(locationId);
       // console.log(info);
       if (info.TestmerchantKey) {
@@ -109,13 +103,13 @@ export default {
         this.merchant_pass = info.merchantPass;
       }
 
-      console.log("Got Saved Info");
+      // console.log("Got Saved Info");
       this.submitPayment();
     },
   },
   mounted() {
     window.addEventListener("message", async ({ data }) => {
-      console.log("Called Patrent Iframe");
+      // console.log("Called Patrent Iframe");
       data = JSON.parse(data);
       console.log("Data:", data);
       this.total = data.amount;
@@ -135,7 +129,7 @@ export default {
       this.customer.name = data.contact.name;
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
-      console.log("finished Calling Parent Iframe");
+      // console.log("finished Calling Parent Iframe");
     });
     window.parent.postMessage(
       JSON.stringify({
@@ -144,20 +138,10 @@ export default {
       }),
       "*"
     );
-
-    axios
-      .get("/notifications")
-      .then((response) => {
-        this.notifications = response.data;
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 #payment_page {
   height: 100vh;
