@@ -3,6 +3,8 @@
     <h1>Monty Pay Payment</h1>
     <iframe :src="iframeSrc"></iframe>
     <h2>New Data: {{ newData }}</h2>
+    <p v-if="connectionStatus">Connected to WebSocket</p>
+    <p v-else>Not connected to WebSocket</p>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -22,6 +24,7 @@ export default {
   data() {
     return {
       newData: null,
+      connectionStatus: false,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -142,22 +145,28 @@ export default {
       }),
       "*"
     );
-    const socket = io("https://funnnel-fusion.onrender.com");
+    const socket = io("https://funnnel-fusion.onrender.com/notifications", {
+      transports: ["websocket"], // Force WebSocket protocol (avoid polling)
+      reconnectionAttempts: 3, // Retry if connection fails
+    });
 
-    // Debug: Check if connected
     socket.on("connect", () => {
-      console.log("Connected to Socket.IO server:", socket.id);
+      console.log("Socket connected:", socket.id);
+      this.connectionStatus = true;
     });
 
-    // Debug: Check if disconnected
     socket.on("disconnect", () => {
-      console.log("Disconnected from server");
+      console.log("Socket disconnected");
+      this.connectionStatus = false;
     });
 
-    // Listen for new data
+    socket.on("connect_error", (err) => {
+      console.error("Connection error:", err.message);
+    });
+
     socket.on("newData", (data) => {
+      console.log("New data received from server:", data);
       this.newData = data;
-      console.log("New data received:", data);
     });
   },
 };
