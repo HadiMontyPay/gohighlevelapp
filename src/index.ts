@@ -371,8 +371,9 @@ app.post("/notifications", (req: Request, res: Response) => {
 
   // Log the notification or process it
   console.log("Received notification:", notification);
+  const temp = {};
 
-  if (notification) {
+  if (notification !== temp) {
     // Respond with a status message
     res
       .status(200)
