@@ -115,7 +115,7 @@ export default {
     },
   },
   mounted() {
-    const socket = io("https://funnnel-fusion.onrender.com", {
+    const socket = io("https://funnnel-fusion.onrender.com/notifications", {
       transports: ["websocket"], // Force WebSocket protocol (avoid polling)
       reconnectionAttempts: 3, // Retry if connection fails
     });

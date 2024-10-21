@@ -26,6 +26,8 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+
+const notificationNamespace = io.of("/notifications");
 app.use(express.json());
 // Set up CORS options if needed
 // const corsOptions = {
@@ -367,14 +369,11 @@ app.post("/notifications", (req: Request, res: Response) => {
   // Log the notification or process it
   console.log("Received notification:", notification);
 
-  // Emit the received data to connected clients
-  io.emit("newData", notification);
-  console.log("Data emitted to clients");
-  // Respond with a status message
-  // res
-  //   .status(200)
-  //   .json({ message: "Notification received", notification: notification });
-  res.status(200).send("Webhook received");
+  // Emit data to clients connected to the /notifications namespace
+  notificationNamespace.emit("newData", notification);
+  console.log("Data emitted to clients on /notifications namespace");
+
+  res.status(200).send("Webhook processed successfully");
 });
 
 app.get("*", (req: Request, res: Response) => {
@@ -392,11 +391,15 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-io.on("connection", (socket) => {
-  console.log("A client connected:", socket.id);
+// Listen for connections to the /notifications namespace
+notificationNamespace.on("connection", (socket) => {
+  console.log("Client connected to /notifications namespace:", socket.id);
 
   socket.on("disconnect", () => {
-    console.log("Client disconnected:", socket.id);
+    console.log(
+      "Client disconnected from /notifications namespace:",
+      socket.id
+    );
   });
 });
 
