@@ -20,12 +20,13 @@ app.use(urlencoded({ extended: true }));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://funnnel-fusion.onrender.com", // Allow cross-origin requests for testing
+    origin: "https://funnnel-fusion.onrender.com", // Adjust this to match your frontend URL
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true,
   },
 });
+
 app.use(express.json());
 // Set up CORS options if needed
 const corsOptions = {

@@ -116,8 +116,9 @@ export default {
   },
   mounted() {
     const socket = io("https://funnnel-fusion.onrender.com/notifications", {
-      transports: ["websocket"], // Ensure the WebSocket transport is used
-      reconnectionAttempts: 3,
+      transports: ["websocket"],
+      reconnection: true,
+      reconnectionAttempts: 5,
     });
 
     // Check if connected
