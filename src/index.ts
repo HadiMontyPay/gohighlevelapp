@@ -8,6 +8,8 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
+import http from "http";
+import { Server } from "socket.io";
 
 const path = __dirname + "/ui/dist/";
 
@@ -15,6 +17,8 @@ dotenv.config();
 const app: Express = express();
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
+const server = http.createServer(app);
+const io = new Server(server);
 
 // Set up CORS options if needed
 const corsOptions = {
@@ -356,10 +360,21 @@ app.post("/notifications", (req: Request, res: Response) => {
   // Log the notification or process it
   console.log("Received notification:", notification);
 
+  // Emit the received data to connected clients
+  io.emit("newData", notification);
+
   // Respond with a status message
   res
     .status(200)
     .json({ message: "Notification received", notification: notification });
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
 });
 
 app.get("*", (req: Request, res: Response) => {

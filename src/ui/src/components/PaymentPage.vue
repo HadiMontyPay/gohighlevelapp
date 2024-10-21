@@ -11,6 +11,8 @@
 <script>
 import axios from "axios";
 
+import { io } from "socket.io-client";
+
 export default {
   name: "PaymentPage",
   // props: {
@@ -18,6 +20,7 @@ export default {
   // },
   data() {
     return {
+      newData: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -138,6 +141,12 @@ export default {
       }),
       "*"
     );
+    const socket = io("https://funnnel-fusion.onrender.com");
+
+    socket.on("newData", (data) => {
+      this.newData = data;
+      console.log("New data received:", data);
+    });
   },
 };
 </script>
