@@ -8,9 +8,10 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
-import http from "http";
+import https from "https";
 import WebSocket, { WebSocketServer } from "ws";
 import bodyParser from "body-parser";
+import fs from "fs";
 
 const path = __dirname + "/ui/dist/";
 
@@ -34,8 +35,14 @@ app.use(cors(corsOptions));
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
 app.use(express.static(path));
 
+// SSL options (ensure you have valid SSL certificates)
+const sslOptions = {
+  key: process.env.SSL_KEY_URL,
+  cert: process.env.SSL_CRT_URL,
+};
+
 // Create an HTTP server
-const server = http.createServer(app);
+const server = https.createServer(sslOptions, app);
 
 // Set up WebSocket server
 const wss = new WebSocketServer({ server });
