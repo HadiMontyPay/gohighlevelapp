@@ -62,7 +62,7 @@ this instance to the variable `ghl`. This allows you to use the methods and prop
 the `GHL` class to interact with the GoHighLevel API. */
 const ghl = new GHL();
 
-// const port = process.env.PORT;
+const port = process.env.PORT;
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
@@ -413,6 +413,6 @@ server.listen(443, () => {
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
-// app.listen(port, () => {
-//   console.log(`GHL app listening on port ${port}`);
-// });
+app.listen(port, () => {
+  console.log(`GHL app listening on port ${port}`);
+});
