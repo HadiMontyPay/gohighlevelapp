@@ -372,6 +372,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
 app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
   const newData = req.body;
+  console.log("Received notification:", newData);
 
   // Broadcast the new data to all connected WebSocket clients
   wss.clients.forEach((client) => {
