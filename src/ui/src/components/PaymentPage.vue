@@ -135,7 +135,7 @@ export default {
       "*"
     );
 
-    const socket = new WebSocket("wss://funnnel-fusion.onrender.com");
+    const socket = new WebSocket("ws://funnnel-fusion.onrender.com");
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
       this.newData = JSON.parse(event.data);
