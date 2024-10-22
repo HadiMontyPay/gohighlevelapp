@@ -37,8 +37,9 @@ app.use(express.static(path));
 
 // SSL options (ensure you have valid SSL certificates)
 const sslOptions = {
-  key: process.env.SSL_KEY_URL,
-  cert: process.env.SSL_CRT_URL,
+  key: fs.readFileSync("./cert/server.key"),
+  cert: fs.readFileSync("./cert/server.crt"),
+  passphrase: process.env.SSL_PASSPHRASE,
 };
 
 // Create an HTTP server
