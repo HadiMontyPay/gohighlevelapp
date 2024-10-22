@@ -8,11 +8,15 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
+import http from "http";
+import WebSocket, { WebSocketServer } from "ws";
+import bodyParser from "body-parser";
 
 const path = __dirname + "/ui/dist/";
 
 dotenv.config();
 const app: Express = express();
+app.use(bodyParser.json());
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
 
@@ -29,6 +33,21 @@ app.use(cors(corsOptions));
 /*`app.use(express.static(path));` is setting up a middleware in the Express server. The
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
 app.use(express.static(path));
+
+// Create an HTTP server
+const server = http.createServer(app);
+
+// Set up WebSocket server
+const wss = new WebSocketServer({ server });
+
+// WebSocket connection handling
+wss.on("connection", (ws: WebSocket) => {
+  console.log("Client connected");
+
+  ws.on("close", () => {
+    console.log("Client disconnected");
+  });
+});
 
 /* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
 this instance to the variable `ghl`. This allows you to use the methods and properties defined in
@@ -350,32 +369,18 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
   }
 });
 
-// Interface for typing notification data
-// interface NotificationPayload {
-//   id: string;
-//   order_number: string;
-//   order_amount: number;
-//   order_currency: string;
-//   order_description: string;
-//   order_status: string;
-//   type: string;
-//   status: string;
-//   customer_ip: string;
-//   hash: string;
-//   // Add more fields based on your expected payload
-// }
-
 app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
-  const notification = req.body;
+  const newData = req.body;
 
-  // Log the notification or process it
-  console.log("Received notification:", notification);
+  // Broadcast the new data to all connected WebSocket clients
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(newData));
+    }
+  });
 
-  // Respond with a status message
-  res
-    .status(200)
-    .json({ message: "Notification received", notification: notification });
+  res.status(200).send("Webhook received");
 });
 
 app.get("*", (req: Request, res: Response) => {

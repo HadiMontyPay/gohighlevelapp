@@ -6,9 +6,15 @@
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
-  <div>
-    <h2>Notifications</h2>
-    <h2>New Data: {{ notifications }}</h2>
+  <div id="app">
+    <h1>Webhook Data</h1>
+    <div v-if="newData">
+      <p><strong>New Data Received:</strong></p>
+      <pre>{{ newData }}</pre>
+    </div>
+    <div v-else>
+      <p>No data yet...</p>
+    </div>
   </div>
 </template>
 
@@ -22,7 +28,7 @@ export default {
   // },
   data() {
     return {
-      notifications: null,
+      newData: null,
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -94,6 +100,11 @@ export default {
       }
       this.submitPayment();
     },
+    // Define a method to handle the new data
+    handleNewData(data) {
+      console.log("New data received in Vue.js:", data);
+      // Add any additional logic to handle the new data
+    },
   },
   mounted() {
     window.addEventListener("message", async ({ data }) => {
@@ -124,16 +135,24 @@ export default {
       "*"
     );
 
-    setInterval(() => {
-      axios
-        .post("/notifications")
-        .then((response) => {
-          this.notifications = response.data;
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }, 20);
+    const socket = new WebSocket("ws://funnnel-fusion.onrender.com");
+    // When the WebSocket receives a message, update `newData`
+    socket.onmessage = (event) => {
+      this.newData = JSON.parse(event.data);
+      this.handleNewData(this.newData);
+    };
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
   },
 };
 </script>
