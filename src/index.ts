@@ -58,10 +58,14 @@ app.use(express.static(path));
 //   });
 // });
 
-const PORT: number = parseInt("443", 10);
+const PORT: number = parseInt(process.env.PORT || "3000", 10);
+// Create the HTTP server using Express
 const server = http.createServer(app);
+
+// Start the server
 server.listen(PORT, () => console.log(`Listening on ${PORT}`));
-// Initialize Socket.IO server with CORS options
+
+// Initialize Socket.IO server for only one endpoint (e.g., /ws)
 const io = new SocketIOServer(server, {
   cors: {
     origin: "*",
@@ -69,19 +73,19 @@ const io = new SocketIOServer(server, {
   },
 });
 
-// Handle Socket.IO connections
-io.on("connection", (socket: Socket) => {
-  console.log("Client connected");
+// Handle WebSocket connections for a specific namespace or purpose
+io.of("/ws").on("connection", (socket: Socket) => {
+  console.log("Client connected to /ws");
 
-  socket.on("disconnect", () => console.log("Client disconnected"));
+  socket.on("disconnect", () => console.log("Client disconnected from /ws"));
 
   socket.on("messaged", (args: any) => {
-    io.emit("message", args);
+    io.of("/ws").emit("message", args);
     console.log(args);
   });
 
   socket.on("event_name", (...args: any[]) => {
-    io.emit("message2", args);
+    io.of("/ws").emit("message2", args);
     console.log(args);
   });
 });
