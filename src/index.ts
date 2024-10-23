@@ -9,7 +9,7 @@ import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
 import https from "https";
-import WebSocket, { WebSocketServer } from "ws";
+import WebSocket, { Server, WebSocket as WS } from "ws";
 import bodyParser from "body-parser";
 import fs from "fs";
 
@@ -41,28 +41,27 @@ const sslOptions = {
   cert: fs.readFileSync("./cert/server.crt"),
   passphrase: process.env.SSL_PASSPHRASE,
 };
-
+const port = process.env.PORT;
 // Create an HTTP server
-const server = https.createServer(sslOptions, app);
+// const server = https.createServer(sslOptions, app);
 
 // Set up WebSocket server
-const wss = new WebSocketServer({ server });
+// const PORT: number = parseInt(port || "443", 10);
 
-// WebSocket connection handling
-wss.on("connection", (ws: WebSocket) => {
-  console.log("Client connected");
+const wss: Server = new WebSocket.Server({ port: 443 });
 
-  ws.on("close", () => {
-    console.log("Client disconnected");
+wss.on("connection", (ws: WS) => {
+  ws.on("message", (message: string) => {
+    console.log(`Received message => ${message}`);
   });
+
+  ws.send("Hello! Message From Server!!");
 });
 
 /* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
 this instance to the variable `ghl`. This allows you to use the methods and properties defined in
 the `GHL` class to interact with the GoHighLevel API. */
 const ghl = new GHL();
-
-const port = process.env.PORT;
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
@@ -383,11 +382,11 @@ app.post("/notifications", (req: Request, res: Response) => {
   console.log("Received notification:", newData);
 
   // Broadcast the new data to all connected WebSocket clients
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(newData));
-    }
-  });
+  // wss.clients.forEach((client) => {
+  //   if (client.readyState === WebSocket.OPEN) {
+  //     client.send(JSON.stringify(newData));
+  //   }
+  // });
 
   res.status(200).send("Webhook received");
 });
@@ -407,9 +406,9 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-server.listen(443, () => {
-  console.log("Secure WebSocket server is running on port 443");
-});
+// server.listen(443, () => {
+//   console.log("Secure WebSocket server is running on port 443");
+// });
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
