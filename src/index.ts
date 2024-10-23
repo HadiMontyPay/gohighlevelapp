@@ -35,28 +35,35 @@ app.use(cors(corsOptions));
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
 app.use(express.static(path));
 
-// SSL options (ensure you have valid SSL certificates)
-const sslOptions = {
-  key: fs.readFileSync("./cert/server.key"),
-  cert: fs.readFileSync("./cert/server.crt"),
-  passphrase: process.env.SSL_PASSPHRASE,
-};
+// // SSL options (ensure you have valid SSL certificates)
+// const sslOptions = {
+//   key: fs.readFileSync("./cert/server.key"),
+//   cert: fs.readFileSync("./cert/server.crt"),
+//   passphrase: process.env.SSL_PASSPHRASE,
+// };
 
-// Create an HTTP server
-const server = https.createServer(sslOptions, app);
+// // Create an HTTP server
+// const server = https.createServer(sslOptions, app);
 
-// Set up WebSocket server
-const wss = new WebSocketServer({ server });
+// // Set up WebSocket server
+// const wss = new WebSocketServer({ server });
 
-// WebSocket connection handling
-wss.on("connection", (ws: WebSocket) => {
-  console.log("Client connected");
+// // WebSocket connection handling
+// wss.on("connection", (ws: WebSocket) => {
+//   console.log("Client connected");
 
-  ws.on("close", () => {
-    console.log("Client disconnected");
+//   ws.on("close", () => {
+//     console.log("Client disconnected");
+//   });
+// });
+
+const wss = new WebSocketServer({ port: 8080 });
+wss.on("connection", function connection(ws) {
+  ws.on("message", function message(data) {
+    console.log("received: %s", data);
   });
+  ws.send("something");
 });
-
 /* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
 this instance to the variable `ghl`. This allows you to use the methods and properties defined in
 the `GHL` class to interact with the GoHighLevel API. */
@@ -382,13 +389,6 @@ app.post("/notifications", (req: Request, res: Response) => {
   const newData = req.body;
   console.log("Received notification:", newData);
 
-  // Broadcast the new data to all connected WebSocket clients
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(newData));
-    }
-  });
-
   res.status(200).send("Webhook received");
 });
 
@@ -406,10 +406,6 @@ const syncDatabase = async () => {
 };
 
 syncDatabase();
-
-server.listen(443, () => {
-  console.log("Secure WebSocket server is running on port 443");
-});
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
