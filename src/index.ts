@@ -45,7 +45,13 @@ const sslOptions = {
 // Create an HTTP server
 const server = https.createServer(sslOptions, app);
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocket.Server({ server });
+wss.on("connection", function connection(ws) {
+  ws.on("message", function message(data) {
+    console.log("received: %s", data);
+  });
+  ws.send("Web Socket Received data");
+});
 
 /* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
 this instance to the variable `ghl`. This allows you to use the methods and properties defined in
@@ -367,19 +373,13 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/notifications", (req: Request, res: Response) => {
-  // const notification: NotificationPayload = req.body;
-  const newData = req.body;
-  console.log("Received notification:", newData);
-  wss.on("connection", function connection(ws) {
-    ws.on("message", function message(data) {
-      console.log("received: %s", data);
-    });
-    ws.send(newData);
-  });
+// app.post("/notifications", (req: Request, res: Response) => {
+//   // const notification: NotificationPayload = req.body;
+//   const newData = req.body;
+//   console.log("Received notification:", newData);
 
-  res.status(200).send(newData);
-});
+//   res.status(200).send(newData);
+// });
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
