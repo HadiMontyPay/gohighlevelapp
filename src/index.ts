@@ -8,7 +8,7 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
-import https from "https";
+import http from "http";
 import WebSocket, { WebSocketServer } from "ws";
 import bodyParser from "body-parser";
 import fs from "fs";
@@ -36,15 +36,16 @@ app.use(cors(corsOptions));
 app.use(express.static(path));
 
 // SSL options (ensure you have valid SSL certificates)
-const sslOptions = {
-  key: fs.readFileSync("./cert/server.key"),
-  cert: fs.readFileSync("./cert/server.crt"),
-  passphrase: process.env.SSL_PASSPHRASE,
-};
+// const sslOptions = {
+//   key: fs.readFileSync("./cert/server.key"),
+//   cert: fs.readFileSync("./cert/server.crt"),
+//   passphrase: process.env.SSL_PASSPHRASE,
+// };
 
 // Create an HTTP server
-const server = https.createServer(sslOptions, app);
+// const server = https.createServer(sslOptions, app);
 
+const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 wss.on("connection", function connection(ws) {
   ws.on("message", function message(data) {
