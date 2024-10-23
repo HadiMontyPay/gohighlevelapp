@@ -396,8 +396,8 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-server.listen(443, () => {
-  console.log("Secure WebSocket server is running on port 443");
+server.listen(8080, () => {
+  console.log("Secure WebSocket server is running on port 8080");
 });
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
