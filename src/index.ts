@@ -441,6 +441,6 @@ syncDatabase();
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
-// app.listen(port, () => {
-//   console.log(`GHL app listening on port ${port}`);
-// });
+app.listen(port, () => {
+  console.log(`GHL app listening on port ${port}`);
+});
