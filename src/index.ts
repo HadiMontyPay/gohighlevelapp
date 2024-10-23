@@ -9,7 +9,8 @@ import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
 import https from "https";
-import WebSocket, { Server, WebSocket as WS } from "ws";
+import { Server as SocketIOServer, Socket } from "socket.io";
+import http from "http";
 import bodyParser from "body-parser";
 import fs from "fs";
 
@@ -36,32 +37,60 @@ app.use(cors(corsOptions));
 app.use(express.static(path));
 
 // SSL options (ensure you have valid SSL certificates)
-const sslOptions = {
-  key: fs.readFileSync("./cert/server.key"),
-  cert: fs.readFileSync("./cert/server.crt"),
-  passphrase: process.env.SSL_PASSPHRASE,
-};
-const port = process.env.PORT;
+// const sslOptions = {
+//   key: fs.readFileSync("./cert/server.key"),
+//   cert: fs.readFileSync("./cert/server.crt"),
+//   passphrase: process.env.SSL_PASSPHRASE,
+// };
+
 // Create an HTTP server
 // const server = https.createServer(sslOptions, app);
 
 // Set up WebSocket server
-// const PORT: number = parseInt(port || "443", 10);
+// const wss = new WebSocketServer({ server });
 
-const wss: Server = new WebSocket.Server({ port: 443 });
+// WebSocket connection handling
+// wss.on("connection", (ws: WebSocket) => {
+//   console.log("Client connected");
 
-wss.on("connection", (ws: WS) => {
-  ws.on("message", (message: string) => {
-    console.log(`Received message => ${message}`);
-  });
+//   ws.on("close", () => {
+//     console.log("Client disconnected");
+//   });
+// });
 
-  ws.send("Hello! Message From Server!!");
+const PORT: number = parseInt("443", 10);
+const server = http.createServer(app);
+server.listen(PORT, () => console.log(`Listening on ${PORT}`));
+// Initialize Socket.IO server with CORS options
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
+// Handle Socket.IO connections
+io.on("connection", (socket: Socket) => {
+  console.log("Client connected");
+
+  socket.on("disconnect", () => console.log("Client disconnected"));
+
+  socket.on("messaged", (args: any) => {
+    io.emit("message", args);
+    console.log(args);
+  });
+
+  socket.on("event_name", (...args: any[]) => {
+    io.emit("message2", args);
+    console.log(args);
+  });
+});
 /* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
 this instance to the variable `ghl`. This allows you to use the methods and properties defined in
 the `GHL` class to interact with the GoHighLevel API. */
 const ghl = new GHL();
+
+const port = process.env.PORT;
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
@@ -412,6 +441,6 @@ syncDatabase();
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
-app.listen(port, () => {
-  console.log(`GHL app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`GHL app listening on port ${port}`);
+// });
