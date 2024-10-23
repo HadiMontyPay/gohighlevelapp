@@ -58,7 +58,7 @@ app.use(express.static(path));
 //   });
 // });
 
-const PORT: number = parseInt(process.env.PORT || "3000", 10);
+const PORT: number = parseInt("443", 10);
 // Create the HTTP server using Express
 const server = http.createServer(app);
 
