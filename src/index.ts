@@ -45,17 +45,7 @@ const sslOptions = {
 // Create an HTTP server
 const server = https.createServer(sslOptions, app);
 
-// Set up WebSocket server
-const wss = new WebSocketServer({ server });
-
-// WebSocket connection handling
-wss.on("connection", (ws: WebSocket) => {
-  console.log("Client connected");
-
-  ws.on("close", () => {
-    console.log("Client disconnected");
-  });
-});
+const wss = new WebSocketServer({ port: 8080 });
 
 /* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
 this instance to the variable `ghl`. This allows you to use the methods and properties defined in
@@ -381,15 +371,14 @@ app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
   const newData = req.body;
   console.log("Received notification:", newData);
-
-  // Broadcast the new data to all connected WebSocket clients
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(newData));
-    }
+  wss.on("connection", function connection(ws) {
+    ws.on("message", function message(data) {
+      console.log("received: %s", data);
+    });
+    ws.send(newData);
   });
 
-  res.status(200).send("Webhook received");
+  res.status(200).send(newData);
 });
 
 app.get("*", (req: Request, res: Response) => {
