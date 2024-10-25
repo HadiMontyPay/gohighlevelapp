@@ -35,6 +35,13 @@ app.use(cors(corsOptions));
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
 app.use(express.static(path));
 
+/* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
+this instance to the variable `ghl`. This allows you to use the methods and properties defined in
+the `GHL` class to interact with the GoHighLevel API. */
+const ghl = new GHL();
+
+const port = process.env.PORT;
+
 // SSL options (ensure you have valid SSL certificates)
 // const sslOptions = {
 //   key: fs.readFileSync("./cert/server.key"),
@@ -47,19 +54,34 @@ app.use(express.static(path));
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+
+let clients = new Set<WebSocket>(); // Store connected clients
+
 wss.on("connection", function connection(ws) {
+  clients.add(ws); // Add new client to the Set
   ws.on("message", function message(data) {
     console.log("received: %s", data);
   });
   ws.send("Web Socket Received data");
 });
 
-/* The line `const ghl = new GHL();` is creating a new instance of the `GHL` class. It is assigning
-this instance to the variable `ghl`. This allows you to use the methods and properties defined in
-the `GHL` class to interact with the GoHighLevel API. */
-const ghl = new GHL();
+app.post("/notifications", (req: Request, res: Response) => {
+  // const notification: NotificationPayload = req.body;
+  const newData = req.body;
+  // console.log("Received notification:", newData);
 
-const port = process.env.PORT;
+  // Broadcast the notification to all connected clients
+  clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(newData)); // Send notification as JSON
+    } else {
+      // Handle closed or closing connections
+      clients.delete(client); // Remove closed clients from the Set
+    }
+  });
+
+  res.status(200).send(newData); // Send appropriate response to client
+});
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
@@ -373,14 +395,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
-
-// app.post("/notifications", (req: Request, res: Response) => {
-//   // const notification: NotificationPayload = req.body;
-//   const newData = req.body;
-//   console.log("Received notification:", newData);
-
-//   res.status(200).send(newData);
-// });
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
