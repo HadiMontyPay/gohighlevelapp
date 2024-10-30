@@ -9,6 +9,7 @@ import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
 import http from "http";
+import https from "https";
 import WebSocket, { WebSocketServer } from "ws";
 import bodyParser from "body-parser";
 import fs from "fs";
@@ -417,6 +418,16 @@ server.listen(8080, () => {
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
-app.listen(port, () => {
-  console.log(`GHL app listening on port ${port}`);
+
+const options = {
+  key: fs.readFileSync('./cert/file.key'),
+  cert: fs.readFileSync('./cert/file.crt')
+};
+
+https.createServer(options, app).listen(8081, () => {
+  console.log('Secure server running on port 8081');
 });
+
+// app.listen(port, () => {
+//   console.log(`GHL app listening on port ${port}`);
+// });

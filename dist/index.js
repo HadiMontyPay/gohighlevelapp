@@ -20,10 +20,27 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const database_1 = __importDefault(require("./database")); // Adjust path if necessary
 const ghl_1 = require("./ghl");
+const cors_1 = __importDefault(require("cors"));
+const crypto_js_1 = __importDefault(require("crypto-js"));
+const http_1 = __importDefault(require("http"));
+const https_1 = __importDefault(require("https"));
+const ws_1 = __importDefault(require("ws"));
+const body_parser_2 = __importDefault(require("body-parser"));
+const fs_1 = __importDefault(require("fs"));
 const path = __dirname + "/ui/dist/";
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+app.use(body_parser_2.default.json());
 app.use((0, body_parser_1.json)({ type: "application/json" }));
+app.use((0, body_parser_1.urlencoded)({ extended: true }));
+// Set up CORS options if needed
+const corsOptions = {
+    origin: "*", // You can specify the allowed origin or use '*'
+    methods: ["GET", "POST"], // Specify the allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+};
+// Apply CORS middleware to all routes
+app.use((0, cors_1.default)(corsOptions));
 /*`app.use(express.static(path));` is setting up a middleware in the Express server. The
 `express.static` middleware is used to serve static files such as HTML, CSS, JavaScript, and images. */
 app.use(express_1.default.static(path));
@@ -32,6 +49,40 @@ this instance to the variable `ghl`. This allows you to use the methods and prop
 the `GHL` class to interact with the GoHighLevel API. */
 const ghl = new ghl_1.GHL();
 const port = process.env.PORT;
+// SSL options (ensure you have valid SSL certificates)
+// const sslOptions = {
+//   key: fs.readFileSync("./cert/server.key"),
+//   cert: fs.readFileSync("./cert/server.crt"),
+//   passphrase: process.env.SSL_PASSPHRASE,
+// };
+// Create an HTTP server
+// const server = https.createServer(sslOptions, app);
+const server = http_1.default.createServer(app);
+const wss = new ws_1.default.Server({ server });
+let clients = new Set(); // Store connected clients
+wss.on("connection", function connection(ws) {
+    clients.add(ws); // Add new client to the Set
+    ws.on("message", function message(data) {
+        console.log("received: %s", data);
+    });
+    ws.send("Web Socket Received data");
+});
+app.post("/notifications", (req, res) => {
+    // const notification: NotificationPayload = req.body;
+    const newData = req.body;
+    // console.log("Received notification:", newData);
+    // Broadcast the notification to all connected clients
+    clients.forEach((client) => {
+        if (client.readyState === ws_1.default.OPEN) {
+            client.send(JSON.stringify(newData)); // Send notification as JSON
+        }
+        else {
+            // Handle closed or closing connections
+            clients.delete(client); // Remove closed clients from the Set
+        }
+    });
+    res.status(200).send(newData); // Send appropriate response to client
+});
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { code } = req.query;
@@ -246,10 +297,50 @@ app.post("/add-providerConfig", (req, res) => __awaiter(void 0, void 0, void 0, 
     const { providerConfig, locationId } = req.body;
     const info = yield ghl.addProviderConfig(providerConfig, locationId);
 }));
+app.post("/getPaymentRedirectURL", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { merchant_key, merchant_pass, operation, cancel_url, success_url, order, customer, } = req.body;
+    let to_md5 = order.number +
+        order.amount +
+        order.currency +
+        order.description +
+        merchant_pass;
+    let hash = crypto_js_1.default.SHA1(crypto_js_1.default.MD5(to_md5.toUpperCase()).toString());
+    let result = crypto_js_1.default.enc.Hex.stringify(hash);
+    const endObject = {
+        merchant_key: merchant_key,
+        merchant_pass: merchant_pass,
+        operation: operation,
+        cancel_url: cancel_url,
+        success_url: success_url,
+        hash: `${result}`,
+        order: {
+            description: order.description,
+            number: order.number,
+            amount: order.amount,
+            currency: order.currency,
+        },
+        customer: {
+            name: customer.name,
+            email: customer.email,
+        },
+    };
+    try {
+        const response = yield fetch("https://checkout.montypay.com/api/v1/session", {
+            method: "POST",
+            body: JSON.stringify(endObject),
+            headers: { "Content-Type": "application/json" },
+        });
+        const jsonResponse = yield response.json();
+        return res.status(200).json(jsonResponse);
+    }
+    catch (err) {
+        console.log("ERROR", err);
+        return res.status(500).json(err);
+    }
+}));
 app.get("*", (req, res) => {
     res.sendFile(path + "index.html");
 });
-// Continue Here
 const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield database_1.default.sync(); // This will create the table if it doesn't exist
@@ -260,9 +351,19 @@ const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 syncDatabase();
+server.listen(8080, () => {
+    console.log("Secure WebSocket server is running on port 8080");
+});
 /*`app.listen(port, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
-app.listen(port, () => {
-    console.log(`GHL app listening on port ${port}`);
+const options = {
+    key: fs_1.default.readFileSync('./cert/file.key'),
+    cert: fs_1.default.readFileSync('./cert/file.crt')
+};
+https_1.default.createServer(options, app).listen(8081, () => {
+    console.log('Secure server running on port 8081');
 });
+// app.listen(port, () => {
+//   console.log(`GHL app listening on port ${port}`);
+// });
