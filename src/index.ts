@@ -13,6 +13,7 @@ import https from "https";
 import WebSocket, { WebSocketServer } from "ws";
 import bodyParser from "body-parser";
 import fs from "fs";
+const { exec } = require('child_process');
 
 const path = __dirname + "/ui/dist/";
 
@@ -90,6 +91,22 @@ app.post("/notifications", (req: Request, res: Response) => {
   });
 
   res.status(200).send(newData); // Send appropriate response to client
+});
+
+app.post('/github-webhook', (req, res) => {
+  const payload = req.body;
+  if (payload.ref === 'refs/heads/main') {
+    exec('/path/to/update_repo.sh', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error updating repo: ${stderr}`);
+        return res.status(500).send(`Error: ${stderr}`);
+      }
+      console.log(`Repo updated: ${stdout}`);
+      res.status(200).send('Repository updated successfully');
+    });
+  } else {
+    res.status(400).send('Not a main branch push');
+  }
 });
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
