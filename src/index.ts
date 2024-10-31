@@ -53,7 +53,15 @@ const port = process.env.PORT;
 // Create an HTTP server
 // const server = https.createServer(sslOptions, app);
 
-const server = http.createServer(app);
+// Load SSL certificates
+const privateKey = fs.readFileSync('./cert/file.key', 'utf8');
+const certificate = fs.readFileSync('./cert/file.crt', 'utf8');
+const ca = fs.readFileSync('./cert/cabundle.crt', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+// const server = http.createServer(app);
+const server = https.createServer(credentials, app);
 const wss = new WebSocket.Server({ server });
 
 let clients = new Set<WebSocket>(); // Store connected clients
