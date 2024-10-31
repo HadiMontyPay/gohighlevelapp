@@ -23,13 +23,6 @@ class GHL {
     constructor() {
         this.model = new model_1.Model();
     }
-    /**
-     * The `authorizationHandler` function handles the authorization process by generating an access token
-     * and refresh token pair.
-     * @param {string} code - The code parameter is a string that represents the authorization code
-     * obtained from the authorization server. It is used to exchange for an access token and refresh token
-     * pair.
-     */
     authorizationHandler(code) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!code) {
@@ -42,13 +35,6 @@ class GHL {
         const data = crypto_js_1.default.AES.decrypt(key, process.env.GHL_APP_SSO_KEY).toString(crypto_js_1.default.enc.Utf8);
         return JSON.parse(data);
     }
-    /**
-     * The function creates an instance of Axios with a base URL and interceptors for handling
-     * authorization and refreshing access tokens.
-     * @param {string} resourceId - The `resourceId` parameter is a string that represents the locationId or companyId you want
-     * to make api call for.
-     * @returns an instance of the Axios library with some custom request and response interceptors.
-     */
     requests(resourceId) {
         const baseUrl = process.env.GHL_API_DOMAIN;
         if (!this.model.getAccessToken(resourceId)) {
@@ -79,22 +65,9 @@ class GHL {
         });
         return axiosInstance;
     }
-    /**
-     * The function checks if an installation exists for a given resource ID i.e locationId or companyId.
-     * @param {string} resourceId - The `resourceId` parameter is a string that represents the ID of a
-     * resource.
-     * @returns a boolean value.
-     */
     checkInstallationExists(resourceId) {
         return !!this.model.getAccessToken(resourceId);
     }
-    /**
-     * The function `getLocationTokenFromCompanyToken` retrieves a location token from a company token and
-     * saves the installation information.
-     * @param {string} companyId - A string representing the ID of the company.
-     * @param {string} locationId - The `locationId` parameter is a string that represents the unique
-     * identifier of a location within a company.
-     */
     getLocationTokenFromCompanyToken(companyId, locationId) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield this.requests(companyId).post("/oauth/locationToken", {
@@ -127,8 +100,8 @@ class GHL {
         return this.model.updateProviderConfig(locationId, providerConfig);
     }
     refreshAccessToken(resourceId) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 const resp = yield axios_1.default.post(`${process.env.GHL_API_DOMAIN}/oauth/token`, qs_1.default.stringify({
                     client_id: process.env.GHL_APP_CLIENT_ID,
@@ -145,8 +118,8 @@ class GHL {
         });
     }
     generateAccessTokenRefreshTokenPair(code) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 const resp = yield axios_1.default.post(`${process.env.GHL_API_DOMAIN}/oauth/token`, qs_1.default.stringify({
                     client_id: process.env.GHL_APP_CLIENT_ID,

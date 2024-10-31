@@ -1,0 +1,25 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Replace with your Node.js version
+      - run: npm install @types/node --save-dev && npm install && npm run build
+      - run: npm start # Or any other build command
+      - uses: cPanel/cPanel-action@v1
+        with:
+          hostname: 92.205.188.201
+          username: user6
+          password: E1L#.dRnf6rT7ls
+          script: |
+            cd public_html/your_app_directory
+            git pull origin main
+            # Any additional deployment steps, like restarting a service
