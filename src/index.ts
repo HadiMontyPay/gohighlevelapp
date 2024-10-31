@@ -54,9 +54,9 @@ const port = process.env.PORT;
 // const server = https.createServer(sslOptions, app);
 
 // Load SSL certificates
-const privateKey = fs.readFileSync('./cert/file.key', 'utf8');
-const certificate = fs.readFileSync('./cert/file.crt', 'utf8');
-const ca = fs.readFileSync('./cert/cabundle.crt', 'utf8');
+const privateKey = fs.readFileSync("./cert/file.key", "utf8");
+const certificate = fs.readFileSync("./cert/file.crt", "utf8");
+const ca = fs.readFileSync("./cert/cabundle.crt", "utf8");
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
@@ -73,6 +73,8 @@ wss.on("connection", function connection(ws) {
   });
   ws.send("Web Socket Received data");
 });
+
+// test
 
 app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
@@ -428,12 +430,12 @@ server.listen(8080, () => {
 });` is starting the Express server and making it listen on the specified port. */
 
 const options = {
-  key: fs.readFileSync('./cert/file.key'),
-  cert: fs.readFileSync('./cert/file.crt')
+  key: fs.readFileSync("./cert/file.key"),
+  cert: fs.readFileSync("./cert/file.crt"),
 };
 
 https.createServer(options, app).listen(8081, () => {
-  console.log('Secure server running on port 8081');
+  console.log("Secure server running on port 8081");
 });
 
 // app.listen(port, () => {
