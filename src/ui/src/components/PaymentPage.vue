@@ -1,6 +1,6 @@
 <template>
   <div id="payment_page" v-if="loading === false">
-    <h1>Monty Pay Payment</h1>
+    <h1>MontyPay Payment</h1>
     <iframe :src="iframeSrc"></iframe>
   </div>
   <div id="lll" v-if="loading === true">
