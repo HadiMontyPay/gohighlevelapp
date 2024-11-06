@@ -8,9 +8,9 @@
   </div>
   <div id="app">
     <h1>Webhook Data</h1>
-    <div v-if="newData">
+    <div v-if="messages">
       <p><strong>New Data Received:</strong></p>
-      <pre>{{ newData }}</pre>
+      <pre>{{ messages }}</pre>
     </div>
     <div v-else>
       <p>No data yet...</p>
@@ -28,7 +28,8 @@ export default {
   // },
   data() {
     return {
-      newData: null,
+      socket: null,
+      messages: [],
       iframeSrc: "about:blank",
       loading: true,
       cardNumber: "",
@@ -135,24 +136,52 @@ export default {
       "*"
     );
 
-    const socket = new WebSocket("wss://lhg.montypaydev.com:8080");
-    // When the WebSocket receives a message, update `newData`
-    socket.onmessage = (event) => {
-      this.newData = JSON.parse(event.data);
-      this.handleNewData(this.newData);
-    };
+    // const socket = new WebSocket("wss://lhg.montypaydev.com:8080");
+    // // When the WebSocket receives a message, update `newData`
+    // socket.onmessage = (event) => {
+    //   this.newData = JSON.parse(event.data);
+    //   this.handleNewData(this.newData);
+    // };
 
-    socket.onopen = () => {
+    // socket.onopen = () => {
+    //   console.log("WebSocket connection established");
+    // };
+
+    // socket.onclose = () => {
+    //   console.log("WebSocket connection closed");
+    // };
+
+    // socket.onerror = (error) => {
+    //   console.error("WebSocket error:", error);
+    // };
+
+    this.socket = new WebSocket("wss://lhg.montypaydev.com:8080");
+    // Open event
+    this.socket.onopen = () => {
       console.log("WebSocket connection established");
     };
 
-    socket.onclose = () => {
+    // Message event
+    this.socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      this.messages.push(data);
+    };
+
+    // Close event
+    this.socket.onclose = () => {
       console.log("WebSocket connection closed");
     };
 
-    socket.onerror = (error) => {
+    // Error event
+    this.socket.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
+  },
+  beforeUnmount() {
+    // Close the WebSocket connection when the component is destroyed
+    if (this.socket) {
+      this.socket.close();
+    }
   },
 };
 </script>

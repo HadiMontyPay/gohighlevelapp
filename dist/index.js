@@ -22,7 +22,6 @@ const database_1 = __importDefault(require("./database")); // Adjust path if nec
 const ghl_1 = require("./ghl");
 const cors_1 = __importDefault(require("cors"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
-const http_1 = __importDefault(require("http"));
 const https_1 = __importDefault(require("https"));
 const ws_1 = __importDefault(require("ws"));
 const body_parser_2 = __importDefault(require("body-parser"));
@@ -57,7 +56,13 @@ const port = process.env.PORT;
 // };
 // Create an HTTP server
 // const server = https.createServer(sslOptions, app);
-const server = http_1.default.createServer(app);
+// Load SSL certificates
+const privateKey = fs_1.default.readFileSync("./cert/file.key", "utf8");
+const certificate = fs_1.default.readFileSync("./cert/file.crt", "utf8");
+const ca = fs_1.default.readFileSync("./cert/cabundle.crt", "utf8");
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+// const server = http.createServer(app);
+const server = https_1.default.createServer(credentials, app);
 const wss = new ws_1.default.Server({ server });
 let clients = new Set(); // Store connected clients
 wss.on("connection", function connection(ws) {
@@ -67,6 +72,7 @@ wss.on("connection", function connection(ws) {
     });
     ws.send("Web Socket Received data");
 });
+// test
 app.post("/notifications", (req, res) => {
     // const notification: NotificationPayload = req.body;
     const newData = req.body;
@@ -98,9 +104,9 @@ app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, fu
         const data = {
             name: "MontyPay Payment",
             description: "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-            paymentsUrl: "https://funnnel-fusion.onrender.com/payment",
-            queryUrl: "https://funnnel-fusion.onrender.com",
-            imageUrl: "https://funnnel-fusion.onrender.com/512x512.png",
+            paymentsUrl: "https://lhg.montypaydev.com:8081/payment",
+            queryUrl: "https://lhg.montypaydev.com:8081",
+            imageUrl: "https://lhg.montypaydev.com:8081/512x512.png",
         };
         yield fetch(url, {
             method: "POST",
@@ -224,13 +230,13 @@ app.post("/save-merchant-info", (req, res) => __awaiter(void 0, void 0, void 0, 
         .post(`https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`, {
         live: {
             liveMode: true,
-            apiKey: merchantKey,
-            publishableKey: merchantPass,
+            apiKey: merchantPass,
+            publishableKey: merchantKey,
         },
         test: {
             liveMode: false,
-            apiKey: row.TestmerchantKey,
-            publishableKey: row.TestmerchantPass,
+            apiKey: row.TestmerchantPass,
+            publishableKey: row.TestmerchantKey,
         },
     }, {
         headers: {
@@ -261,13 +267,13 @@ app.post("/save-test-merchant-info", (req, res) => __awaiter(void 0, void 0, voi
         .post(`https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`, {
         live: {
             liveMode: false,
-            apiKey: TestmerchantKey,
-            publishableKey: TestmerchantPass,
+            apiKey: TestmerchantPass,
+            publishableKey: TestmerchantKey,
         },
         test: {
             liveMode: true,
-            apiKey: TestmerchantKey,
-            publishableKey: TestmerchantPass,
+            apiKey: row.TestmerchantPass,
+            publishableKey: row.TestmerchantKey,
         },
     }, {
         headers: {
@@ -280,14 +286,62 @@ app.post("/save-test-merchant-info", (req, res) => __awaiter(void 0, void 0, voi
         .then((resp) => __awaiter(void 0, void 0, void 0, function* () {
         const updateProviderConfig = yield ghl.updateProviderConfig(locationId, resp.data.providerConfig);
         console.log("Merchant Info Added");
-        return res
-            .status(200)
-            .json({ message: "Merchant Info Added", userInfo: info });
+        return res.status(200).json({ message: "Merchant Info Added" });
     }))
         .catch((err) => {
         console.log("Error", err);
     });
+    // return res.status(200).json({ message: "Merchant Info Added" });
 }));
+// app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
+//   const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
+//   const info = await ghl.saveTestMerchantInfo(
+//     TestmerchantKey,
+//     TestmerchantPass,
+//     locationId
+//   );
+//   const row = await ghl.getByLocationId(locationId as string);
+//   if (!row) {
+//     return res.status(500).json({ message: "Merchant Info Not Added" });
+//   }
+//   axios
+//     .post(
+//       `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
+//       {
+//         live: {
+//           liveMode: false,
+//           apiKey: TestmerchantKey,
+//           publishableKey: TestmerchantPass,
+//         },
+//         test: {
+//           liveMode: true,
+//           apiKey: TestmerchantKey,
+//           publishableKey: TestmerchantPass,
+//         },
+//       },
+//       {
+//         headers: {
+//           Accept: "application/json",
+//           Authorization: `Bearer ${row.access_token}`,
+//           "Content-Type": "application/json",
+//           Version: "2021-07-28",
+//         },
+//       }
+//     )
+//     .then(async (resp) => {
+//       const updateProviderConfig = await ghl.updateProviderConfig(
+//         locationId as string,
+//         resp.data.providerConfig as object
+//       );
+//       console.log("Merchant Info Added");
+//       return res
+//         .status(200)
+//         .json({ message: "Merchant Info Added", userInfo: info });
+//     })
+//     .catch((err) => {
+//       console.log("Error", err);
+//     });
+// });
 app.get("/get-by-locationId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const locationId = req.query.locationId;
     const info = yield ghl.getByLocationId(locationId);
@@ -358,11 +412,11 @@ server.listen(8080, () => {
   console.log(`GHL app listening on port `);
 });` is starting the Express server and making it listen on the specified port. */
 const options = {
-    key: fs_1.default.readFileSync('./cert/file.key'),
-    cert: fs_1.default.readFileSync('./cert/file.crt')
+    key: fs_1.default.readFileSync("./cert/file.key"),
+    cert: fs_1.default.readFileSync("./cert/file.crt"),
 };
-https_1.default.createServer(options, app).listen(8081, () => {
-    console.log('Secure server running on port 8081');
+https_1.default.createServer(options, app).listen(port, () => {
+    console.log(`Secure server running on port ${port}`);
 });
 // app.listen(port, () => {
 //   console.log(`GHL app listening on port ${port}`);
