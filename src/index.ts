@@ -21,7 +21,6 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
 
 // Set up CORS options if needed
 const corsOptions = {
@@ -76,7 +75,8 @@ wss.on("connection", function connection(ws) {
 });
 
 app.post("/notifications", (req: Request, res: Response) => {
-  // const notification: NotificationPayload = req.body;
+  console.log("Headers:", req.headers["content-type"]);
+  console.log("Body:", req.body);
   const newData = req.body;
   console.log("Received notification:", newData);
 
