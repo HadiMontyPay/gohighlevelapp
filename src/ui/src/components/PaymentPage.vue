@@ -6,7 +6,7 @@
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
-  <div id="app">
+  <!-- <div id="app">
     <h1>Webhook Data</h1>
     <div v-if="newData">
       <p><strong>New Data Received:</strong></p>
@@ -15,7 +15,7 @@
     <div v-else>
       <p>No data yet...</p>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
