@@ -74,8 +74,6 @@ wss.on("connection", function connection(ws) {
   ws.send("Web Socket Received data");
 });
 
-// test
-
 app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
   const newData = req.body;
@@ -335,56 +333,6 @@ app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
     });
   // return res.status(200).json({ message: "Merchant Info Added" });
 });
-
-// app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
-//   const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
-//   const info = await ghl.saveTestMerchantInfo(
-//     TestmerchantKey,
-//     TestmerchantPass,
-//     locationId
-//   );
-//   const row = await ghl.getByLocationId(locationId as string);
-//   if (!row) {
-//     return res.status(500).json({ message: "Merchant Info Not Added" });
-//   }
-//   axios
-//     .post(
-//       `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
-//       {
-//         live: {
-//           liveMode: false,
-//           apiKey: TestmerchantKey,
-//           publishableKey: TestmerchantPass,
-//         },
-//         test: {
-//           liveMode: true,
-//           apiKey: TestmerchantKey,
-//           publishableKey: TestmerchantPass,
-//         },
-//       },
-//       {
-//         headers: {
-//           Accept: "application/json",
-//           Authorization: `Bearer ${row.access_token}`,
-//           "Content-Type": "application/json",
-//           Version: "2021-07-28",
-//         },
-//       }
-//     )
-//     .then(async (resp) => {
-//       const updateProviderConfig = await ghl.updateProviderConfig(
-//         locationId as string,
-//         resp.data.providerConfig as object
-//       );
-//       console.log("Merchant Info Added");
-//       return res
-//         .status(200)
-//         .json({ message: "Merchant Info Added", userInfo: info });
-//     })
-//     .catch((err) => {
-//       console.log("Error", err);
-//     });
-// });
 
 app.get("/get-by-locationId", async (req: Request, res: Response) => {
   const locationId = req.query.locationId;
