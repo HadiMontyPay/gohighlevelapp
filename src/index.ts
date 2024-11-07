@@ -78,7 +78,7 @@ wss.on("connection", function connection(ws) {
 app.post("/notifications", (req: Request, res: Response) => {
   // const notification: NotificationPayload = req.body;
   const newData = req.body;
-  // console.log("Received notification:", newData);
+  console.log("Received notification:", newData);
 
   // Broadcast the notification to all connected clients
   clients.forEach((client) => {
