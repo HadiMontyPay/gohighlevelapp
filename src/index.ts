@@ -21,6 +21,7 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(json({ type: "application/json" }));
 app.use(urlencoded({ extended: true }));
+app.use(express.text());
 
 // Set up CORS options if needed
 const corsOptions = {
