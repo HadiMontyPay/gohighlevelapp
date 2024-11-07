@@ -1,7 +1,7 @@
 /*you provided is a TypeScript code that sets up an Express server and defines several routes
 for handling HTTP requests. */
 import axios from "axios";
-import { json, urlencoded } from "body-parser";
+// import { json, urlencoded } from "body-parser";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import sequelize from "./database"; // Adjust path if necessary
@@ -18,10 +18,11 @@ const path = __dirname + "/ui/dist/";
 
 dotenv.config();
 const app: Express = express();
-app.use(bodyParser.json());
-app.use(json({ type: "application/json" }));
-app.use(urlencoded({ extended: true }));
-app.use(express.text());
+// Middleware to parse different content types
+app.use(bodyParser.json({ type: ["application/json", "application/*+json"] })); // JSON and application/*+json
+app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded data
+app.use(express.text()); // Plain text data
+app.use(bodyParser.raw({ type: "*/*" })); // Raw data (catch-all for any other types)
 
 // Set up CORS options if needed
 const corsOptions = {
