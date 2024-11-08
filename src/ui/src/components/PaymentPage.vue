@@ -104,14 +104,14 @@ export default {
     },
     // Define a method to handle the new data
     handleNewData(info) {
-      // console.log("New data received in Vue.js:", info);
+      console.log("New data received in Vue.js:", info);
       // Add any additional logic to handle the new data
 
       // If Payment Is Successful
       if (info.status === "sucess" && info.type === "sale") {
-        window.addEventListener("message", async () => {
-          // const newdata = JSON.parse(data);
-          // console.log("New Data:", newdata);
+        window.addEventListener("message", async ({ data }) => {
+          const newdata = JSON.parse(data);
+          console.log("New Data:", newdata);
         });
         window.parent.postMessage(
           JSON.stringify({
