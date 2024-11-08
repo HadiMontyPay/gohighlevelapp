@@ -106,6 +106,7 @@ export default {
     handleNewData(info) {
       console.log("New data received in Vue.js:", info);
       // Add any additional logic to handle the new data
+      console.log("Test ID:", info.id);
 
       // If Payment Is Successful
       if (info.status === "sucess" && info.type === "sale") {
