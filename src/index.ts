@@ -18,11 +18,11 @@ const path = __dirname + "/ui/dist/";
 
 dotenv.config();
 const app: Express = express();
-// Middleware to parse different content types
-app.use(bodyParser.json({ type: ["application/json", "application/*+json"] })); // JSON and application/*+json
-app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded data
-app.use(express.text()); // Plain text data
-app.use(bodyParser.raw({ type: "*/*" })); // Raw data (catch-all for any other types)
+// Apply these middlewares to parse different content types
+app.use(bodyParser.json({ type: "application/json" })); // For JSON data
+app.use(bodyParser.urlencoded({ extended: true })); // For URL-encoded data
+app.use(bodyParser.text({ type: "text/*" })); // For plain text data
+app.use(bodyParser.raw({ type: "*/*" })); // For any other data type (catch-all)
 
 // Set up CORS options if needed
 const corsOptions = {
