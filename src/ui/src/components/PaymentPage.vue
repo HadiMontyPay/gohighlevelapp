@@ -109,7 +109,7 @@ export default {
       console.log("Test ID:", info.id);
 
       // If Payment Is Successful
-      if (info.status === "sucess" && info.type === "sale") {
+      if (info.status === "success" && info.type === "sale") {
         window.addEventListener("message", async ({ data }) => {
           const newdata = JSON.parse(data);
           console.log("New Data:", newdata);
