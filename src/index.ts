@@ -92,7 +92,10 @@ app.post("/notifications", (req: Request, res: Response) => {
     }
   });
 
-  res.status(200).send(newData); // Send appropriate response to client
+  return res.status(200).json({ data: newData }); // Send appropriate response to client
+});
+app.post("/testing", (req: Request, res: Response) => {
+  console.log("Testing Data:", req.body);
 });
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
@@ -424,9 +427,6 @@ syncDatabase();
 server.listen(8080, () => {
   console.log("Secure WebSocket server is running on port 8080");
 });
-/*`app.listen(port, () => {
-  console.log(`GHL app listening on port `);
-});` is starting the Express server and making it listen on the specified port. */
 
 const options = {
   key: fs.readFileSync("./cert/file.key"),
