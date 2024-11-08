@@ -77,11 +77,7 @@ wss.on("connection", function connection(ws) {
 });
 
 app.post("/notifications", (req: Request, res: Response) => {
-  console.log("Headers:", req.headers["content-type"]);
-  console.log("Body:", req.body);
   const newData = req.body;
-  console.log("Received notification:", newData);
-
   // Broadcast the notification to all connected clients
   clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
@@ -93,9 +89,6 @@ app.post("/notifications", (req: Request, res: Response) => {
   });
 
   return res.status(200).json({ data: newData }); // Send appropriate response to client
-});
-app.post("/testing", (req: Request, res: Response) => {
-  console.log("Testing Data:", req.body);
 });
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
