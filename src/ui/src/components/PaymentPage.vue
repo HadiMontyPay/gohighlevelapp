@@ -122,6 +122,23 @@ export default {
           "*"
         );
       }
+
+      // If Payment Failed
+      if (info.status === "fail" && info.type === "sale") {
+        window.addEventListener("message", async ({ data }) => {
+          const newdata = JSON.parse(data);
+          console.log("New Data:", newdata);
+        });
+        window.parent.postMessage(
+          JSON.stringify({
+            type: "custom_element_error_response",
+            error: {
+              description: "Payment Failed", // Error message to be shown to the user
+            }, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+          }),
+          "*"
+        );
+      }
     },
   },
   mounted() {
