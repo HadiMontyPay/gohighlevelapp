@@ -27,8 +27,8 @@ app.use(bodyParser.raw({ type: "*/*" })); // Raw data (catch-all for any other t
 // Set up CORS options if needed
 const corsOptions = {
   origin: "*", // You can specify the allowed origin or use '*'
-  methods: ["GET", "POST"], // Specify the allowed HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+  methods: "*", // Specify the allowed HTTP methods
+  allowedHeaders: "*", // Specify allowed headers
 };
 
 // Apply CORS middleware to all routes
