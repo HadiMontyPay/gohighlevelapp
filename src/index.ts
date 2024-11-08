@@ -424,7 +424,7 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-server.listen(8080, () => {
+server.listen(8081, () => {
   console.log("Secure WebSocket server is running on port 8080");
 });
 
@@ -433,8 +433,8 @@ const options = {
   cert: fs.readFileSync("./cert/file.crt"),
 };
 
-https.createServer(options, app).listen(8081, () => {
-  console.log("Secure server running on port 8081");
+https.createServer(options, app).listen(8080, () => {
+  console.log("Secure server running on port 8080");
 });
 
 // app.listen(8081, () => {
