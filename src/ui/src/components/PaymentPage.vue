@@ -131,10 +131,7 @@ export default {
         });
         window.parent.postMessage(
           JSON.stringify({
-            type: "custom_element_error_response",
-            error: {
-              description: "Payment Failed", // Error message to be shown to the user
-            }, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+            type: "custom_element_close_response",
           }),
           "*"
         );
