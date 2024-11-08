@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /*you provided is a TypeScript code that sets up an Express server and defines several routes
 for handling HTTP requests. */
 const axios_1 = __importDefault(require("axios"));
-const body_parser_1 = require("body-parser");
+// import { json, urlencoded } from "body-parser";
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const database_1 = __importDefault(require("./database")); // Adjust path if necessary
@@ -24,19 +24,21 @@ const cors_1 = __importDefault(require("cors"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const https_1 = __importDefault(require("https"));
 const ws_1 = __importDefault(require("ws"));
-const body_parser_2 = __importDefault(require("body-parser"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const fs_1 = __importDefault(require("fs"));
 const path = __dirname + "/ui/dist/";
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-app.use(body_parser_2.default.json());
-app.use((0, body_parser_1.json)({ type: "application/json" }));
-app.use((0, body_parser_1.urlencoded)({ extended: true }));
+// Apply these middlewares to parse different content types
+app.use(body_parser_1.default.json({ type: "application/json" })); // For JSON data
+app.use(body_parser_1.default.urlencoded({ extended: true })); // For URL-encoded data
+app.use(body_parser_1.default.text({ type: "text/*" })); // For plain text data
+app.use(body_parser_1.default.raw({ type: "*/*" })); // For any other data type (catch-all)
 // Set up CORS options if needed
 const corsOptions = {
     origin: "*", // You can specify the allowed origin or use '*'
-    methods: ["GET", "POST"], // Specify the allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+    methods: "*", // Specify the allowed HTTP methods
+    allowedHeaders: "*", // Specify allowed headers
 };
 // Apply CORS middleware to all routes
 app.use((0, cors_1.default)(corsOptions));
@@ -72,11 +74,11 @@ wss.on("connection", function connection(ws) {
     });
     ws.send("Web Socket Received data");
 });
-// test
 app.post("/notifications", (req, res) => {
-    // const notification: NotificationPayload = req.body;
+    console.log("Headers:", req.headers["content-type"]);
+    console.log("Body:", req.body);
     const newData = req.body;
-    // console.log("Received notification:", newData);
+    console.log("Received notification:", newData);
     // Broadcast the notification to all connected clients
     clients.forEach((client) => {
         if (client.readyState === ws_1.default.OPEN) {
@@ -87,7 +89,10 @@ app.post("/notifications", (req, res) => {
             clients.delete(client); // Remove closed clients from the Set
         }
     });
-    res.status(200).send(newData); // Send appropriate response to client
+    return res.status(200).json({ data: newData }); // Send appropriate response to client
+});
+app.post("/testing", (req, res) => {
+    console.log("Testing Data:", req.body);
 });
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -293,55 +298,6 @@ app.post("/save-test-merchant-info", (req, res) => __awaiter(void 0, void 0, voi
     });
     // return res.status(200).json({ message: "Merchant Info Added" });
 }));
-// app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
-//   const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
-//   const info = await ghl.saveTestMerchantInfo(
-//     TestmerchantKey,
-//     TestmerchantPass,
-//     locationId
-//   );
-//   const row = await ghl.getByLocationId(locationId as string);
-//   if (!row) {
-//     return res.status(500).json({ message: "Merchant Info Not Added" });
-//   }
-//   axios
-//     .post(
-//       `https://services.leadconnectorhq.com/payments/custom-provider/connect?locationId=${locationId}`,
-//       {
-//         live: {
-//           liveMode: false,
-//           apiKey: TestmerchantKey,
-//           publishableKey: TestmerchantPass,
-//         },
-//         test: {
-//           liveMode: true,
-//           apiKey: TestmerchantKey,
-//           publishableKey: TestmerchantPass,
-//         },
-//       },
-//       {
-//         headers: {
-//           Accept: "application/json",
-//           Authorization: `Bearer ${row.access_token}`,
-//           "Content-Type": "application/json",
-//           Version: "2021-07-28",
-//         },
-//       }
-//     )
-//     .then(async (resp) => {
-//       const updateProviderConfig = await ghl.updateProviderConfig(
-//         locationId as string,
-//         resp.data.providerConfig as object
-//       );
-//       console.log("Merchant Info Added");
-//       return res
-//         .status(200)
-//         .json({ message: "Merchant Info Added", userInfo: info });
-//     })
-//     .catch((err) => {
-//       console.log("Error", err);
-//     });
-// });
 app.get("/get-by-locationId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const locationId = req.query.locationId;
     const info = yield ghl.getByLocationId(locationId);
@@ -405,19 +361,16 @@ const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 syncDatabase();
-server.listen(8080, () => {
-    console.log("Secure WebSocket server is running on port 8080");
+server.listen(8081, () => {
+    console.log("Secure WebSocket server is running on port 8081");
 });
-/*`app.listen(port, () => {
-  console.log(`GHL app listening on port `);
-});` is starting the Express server and making it listen on the specified port. */
 const options = {
     key: fs_1.default.readFileSync("./cert/file.key"),
     cert: fs_1.default.readFileSync("./cert/file.crt"),
 };
-https_1.default.createServer(options, app).listen(port, () => {
-    console.log(`Secure server running on port ${port}`);
+https_1.default.createServer(options, app).listen(8080, () => {
+    console.log("Secure server running on port 8080");
 });
-// app.listen(port, () => {
-//   console.log(`GHL app listening on port ${port}`);
+// app.listen(8081, () => {
+//   console.log(`GHL app listening on port 8081`);
 // });

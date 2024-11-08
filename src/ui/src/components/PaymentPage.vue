@@ -108,9 +108,10 @@ export default {
       // Add any additional logic to handle the new data
 
       // If Payment Is Successful
-      if (data.status === "sucess" && data.type === "sale") {
+      if (info.status === "sucess" && info.type === "sale") {
         window.addEventListener("message", async ({ data }) => {
-          data = JSON.parse(data);
+          const newdata = JSON.parse(data);
+          console.log("New Data:", newdata);
         });
         window.parent.postMessage(
           JSON.stringify({
