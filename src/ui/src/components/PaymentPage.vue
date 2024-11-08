@@ -137,7 +137,7 @@ export default {
       "*"
     );
 
-    const socket = new WebSocket("wss://lhg.montypaydev.com:8080");
+    const socket = new WebSocket("wss://lhg.montypaydev.com:8081");
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
       this.newData = JSON.parse(event.data);
