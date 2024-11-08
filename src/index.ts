@@ -425,7 +425,7 @@ const syncDatabase = async () => {
 syncDatabase();
 
 server.listen(8081, () => {
-  console.log("Secure WebSocket server is running on port 8080");
+  console.log("Secure WebSocket server is running on port 8081");
 });
 
 const options = {

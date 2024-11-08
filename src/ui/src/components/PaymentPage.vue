@@ -103,9 +103,23 @@ export default {
       this.submitPayment();
     },
     // Define a method to handle the new data
-    handleNewData(data) {
-      console.log("New data received in Vue.js:", data);
+    handleNewData(info) {
+      console.log("New data received in Vue.js:", info);
       // Add any additional logic to handle the new data
+
+      // If Payment Is Successful
+      if (data.status === "sucess" && data.type === "sale") {
+        window.addEventListener("message", async ({ data }) => {
+          data = JSON.parse(data);
+        });
+        window.parent.postMessage(
+          JSON.stringify({
+            type: "custom_element_success_response",
+            chargeId: info.order_number, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+          }),
+          "*"
+        );
+      }
     },
   },
   mounted() {
