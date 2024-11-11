@@ -121,6 +121,7 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
     })
       .then((response) => response.json())
       .then(async (result) => {
+        console.log("Result:", result);
         await ghl.addProviderConfig(
           result.providerConfig as object,
           rs?.locationId as string
