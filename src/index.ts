@@ -109,9 +109,9 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
       name: "MontyPay Payment",
       description:
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-      paymentsUrl: "https://lhg.montypaydev.com:8081/payment",
-      queryUrl: "https://lhg.montypaydev.com:8081",
-      imageUrl: "https://lhg.montypaydev.com:8081/512x512.png",
+      paymentsUrl: "https://lhg.montypaydev.com:8080/payment",
+      queryUrl: "https://lhg.montypaydev.com:8080/verification",
+      imageUrl: "https://lhg.montypaydev.com:8080/512x512.png",
     };
 
     await fetch(url, {
@@ -404,6 +404,11 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
+});
+
+app.post("/verification", (req: Request, res: Response) => {
+  console.log("Verification:", req.body);
+  return res.json({ verification: req.body });
 });
 
 const syncDatabase = async () => {
