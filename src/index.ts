@@ -95,6 +95,8 @@ app.post("/notifications", (req: Request, res: Response) => {
 app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
   const rs = await ghl.authorizationHandler(code as string);
+
+  console.log("RS:", rs);
   try {
     const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${rs?.locationId}`;
 

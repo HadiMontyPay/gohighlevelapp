@@ -162,6 +162,7 @@ export class GHL {
         }),
         { headers: { "content-type": "application/x-www-form-urlencoded" } }
       );
+      console.log("Generate Access Token Refresh Token Pair", resp.data);
       return this.model.saveInstallationInfo(resp.data);
     } catch (error: any) {
       console.error(error?.response?.data);
