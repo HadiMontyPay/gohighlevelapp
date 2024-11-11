@@ -408,8 +408,17 @@ app.get("*", (req: Request, res: Response) => {
 });
 
 app.post("/verification", (req: Request, res: Response) => {
-  console.log("Verification:", req.body);
-  return res.json({ verification: req.body });
+  const newData = req.body;
+  console.log("Verification: ", newData);
+  // Broadcast the notification to all connected clients
+  clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ Verification: newData })); // Send notification as JSON
+    } else {
+      // Handle closed or closing connections
+      clients.delete(client); // Remove closed clients from the Set
+    }
+  });
 });
 
 const syncDatabase = async () => {
