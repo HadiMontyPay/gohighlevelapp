@@ -425,10 +425,6 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-server.listen(8081, () => {
-  console.log("Secure WebSocket server is running on port 8081");
-});
-
 // const options = {
 //   key: fs.readFileSync("./file.key"),
 //   cert: fs.readFileSync("./file.crt"),
@@ -438,6 +434,9 @@ https.createServer(credentials, app).listen(8080, () => {
   console.log("Secure server running on port 8080");
 });
 
+server.listen(8082, () => {
+  console.log("Secure WebSocket server is running on port 8082");
+});
 // app.listen(8081, () => {
 //   console.log(`GHL app listening on port 8081`);
 // });
