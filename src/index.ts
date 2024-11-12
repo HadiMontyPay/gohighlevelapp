@@ -429,12 +429,12 @@ server.listen(8081, () => {
   console.log("Secure WebSocket server is running on port 8081");
 });
 
-const options = {
-  key: fs.readFileSync("./file.key"),
-  cert: fs.readFileSync("./file.crt"),
-};
+// const options = {
+//   key: fs.readFileSync("./file.key"),
+//   cert: fs.readFileSync("./file.crt"),
+// };
 
-https.createServer(options, app).listen(8080, () => {
+https.createServer(credentials, app).listen(8080, () => {
   console.log("Secure server running on port 8080");
 });
 
