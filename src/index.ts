@@ -45,13 +45,6 @@ const ghl = new GHL();
 
 const port = process.env.PORT;
 
-// SSL options (ensure you have valid SSL certificates)
-// const sslOptions = {
-//   key: fs.readFileSync("./cert/server.key"),
-//   cert: fs.readFileSync("./cert/server.crt"),
-//   passphrase: process.env.SSL_PASSPHRASE,
-// };
-
 // Create an HTTP server
 // const server = https.createServer(sslOptions, app);
 
@@ -437,8 +430,8 @@ server.listen(8081, () => {
 });
 
 const options = {
-  key: fs.readFileSync("./cert/file.key"),
-  cert: fs.readFileSync("./cert/file.crt"),
+  key: fs.readFileSync("./file.key"),
+  cert: fs.readFileSync("./file.crt"),
 };
 
 https.createServer(options, app).listen(8080, () => {
