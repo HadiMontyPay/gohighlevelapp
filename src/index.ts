@@ -27,7 +27,7 @@ app.use(bodyParser.raw({ type: "*/*" })); // For any other data type (catch-all)
 // Set up CORS options if needed
 const corsOptions = {
   origin: "*", // You can specify the allowed origin or use '*'
-  methods: "*", // Specify the allowed HTTP methods
+  methods: ["GET", "POST"], // Specify the allowed HTTP methods
   allowedHeaders: "*", // Specify allowed headers
 };
 
