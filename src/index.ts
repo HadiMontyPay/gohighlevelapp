@@ -102,9 +102,9 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
       name: "MontyPay Payment",
       description:
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-      paymentsUrl: "https://lhg.montypaydev.com:8080/payment",
-      queryUrl: "https://lhg.montypaydev.com:8080/verification",
-      imageUrl: "https://lhg.montypaydev.com:8080/512x512.png",
+      paymentsUrl: `https://${process.env.BACKEND_URL}:8080/payment`,
+      queryUrl: `https://${process.env.BACKEND_URL}:8080/verification`,
+      imageUrl: `https://${process.env.BACKEND_URL}:8080/512x512.png`,
     };
 
     await fetch(url, {
@@ -430,8 +430,8 @@ syncDatabase();
 //   cert: fs.readFileSync("./file.crt"),
 // };
 
-https.createServer(credentials, app).listen(8080, () => {
-  console.log("Secure server running on port 8080");
+https.createServer(credentials, app).listen(port, () => {
+  console.log(`Secure server running on port ${port}`);
 });
 
 server.listen(8082, () => {

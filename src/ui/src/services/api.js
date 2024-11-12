@@ -4,7 +4,7 @@ import axios from "axios";
 
 // Create a custom Axios instance
 const api = axios.create({
-  baseURL: "https://lhg.montypaydev.com:8081", // Replace with your API base URL
+  baseURL: `https://${process.env.BACKEND_URL}:8080`, // Replace with your API base URL
 });
 
 // Add request interceptor
