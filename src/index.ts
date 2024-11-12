@@ -434,8 +434,8 @@ syncDatabase();
 //   console.log(`Secure server running on port ${port}`);
 // });
 
-server.listen(8082, () => {
-  console.log("Secure WebSocket server is running on port 8082");
+server.listen(3001, () => {
+  console.log("Secure WebSocket server is running on port 3001");
 });
 app.listen(port, () => {
   console.log(`Secure server running on port ${port}`);
