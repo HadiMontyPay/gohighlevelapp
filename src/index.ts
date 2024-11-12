@@ -103,7 +103,7 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
       description:
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
       paymentsUrl: "https://lhg.montypaydev.com:8080/payment",
-      queryUrl: "https://lhg.montypaydev.com:8080/notifications",
+      queryUrl: "https://lhg.montypaydev.com:8080/verification",
       imageUrl: "https://lhg.montypaydev.com:8080/512x512.png",
     };
 
@@ -400,19 +400,19 @@ app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
 });
 
-// app.post("/verification", (req: Request, res: Response) => {
-//   const newData = req.body;
-//   console.log("Verification: ", newData);
-//   // Broadcast the notification to all connected clients
-//   clients.forEach((client) => {
-//     if (client.readyState === WebSocket.OPEN) {
-//       client.send(JSON.stringify({ Verification: newData })); // Send notification as JSON
-//     } else {
-//       // Handle closed or closing connections
-//       clients.delete(client); // Remove closed clients from the Set
-//     }
-//   });
-// });
+app.post("/verification", (req: Request, res: Response) => {
+  const newData = req.body;
+  console.log("Verification: ", newData);
+  // Broadcast the notification to all connected clients
+  // clients.forEach((client) => {
+  //   if (client.readyState === WebSocket.OPEN) {
+  //     client.send(JSON.stringify({ Verification: newData })); // Send notification as JSON
+  //   } else {
+  //     // Handle closed or closing connections
+  //     clients.delete(client); // Remove closed clients from the Set
+  //   }
+  // });
+});
 
 const syncDatabase = async () => {
   try {
