@@ -49,14 +49,14 @@ const port = process.env.PORT;
 // const server = https.createServer(sslOptions, app);
 
 // Load SSL certificates
-const privateKey = fs.readFileSync("./file.key", "utf8");
-const certificate = fs.readFileSync("./file.crt", "utf8");
-const ca = fs.readFileSync("./cabundle.crt", "utf8");
+// const privateKey = fs.readFileSync("./file.key", "utf8");
+// const certificate = fs.readFileSync("./file.crt", "utf8");
+// const ca = fs.readFileSync("./cabundle.crt", "utf8");
 
-const credentials = { key: privateKey, cert: certificate, ca: ca };
+// const credentials = { key: privateKey, cert: certificate, ca: ca };
 
-// const server = http.createServer(app);
-const server = https.createServer(credentials, app);
+const server = http.createServer(app);
+// const server = https.createServer(credentials, app);
 const wss = new WebSocket.Server({ server });
 
 let clients = new Set<WebSocket>(); // Store connected clients
@@ -430,13 +430,13 @@ syncDatabase();
 //   cert: fs.readFileSync("./file.crt"),
 // };
 
-https.createServer(credentials, app).listen(port, () => {
-  console.log(`Secure server running on port ${port}`);
-});
+// https.createServer(credentials, app).listen(port, () => {
+//   console.log(`Secure server running on port ${port}`);
+// });
 
 server.listen(8082, () => {
   console.log("Secure WebSocket server is running on port 8082");
 });
-// app.listen(8081, () => {
-//   console.log(`GHL app listening on port 8081`);
-// });
+app.listen(port, () => {
+  console.log(`Secure server running on port ${port}`);
+});
