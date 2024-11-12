@@ -37,7 +37,7 @@ app.use(body_parser_1.default.raw({ type: "*/*" })); // For any other data type 
 // Set up CORS options if needed
 const corsOptions = {
     origin: "*", // You can specify the allowed origin or use '*'
-    methods: "*", // Specify the allowed HTTP methods
+    methods: ["GET", "POST"], // Specify the allowed HTTP methods
     allowedHeaders: "*", // Specify allowed headers
 };
 // Apply CORS middleware to all routes
@@ -50,18 +50,12 @@ this instance to the variable `ghl`. This allows you to use the methods and prop
 the `GHL` class to interact with the GoHighLevel API. */
 const ghl = new ghl_1.GHL();
 const port = process.env.PORT;
-// SSL options (ensure you have valid SSL certificates)
-// const sslOptions = {
-//   key: fs.readFileSync("./cert/server.key"),
-//   cert: fs.readFileSync("./cert/server.crt"),
-//   passphrase: process.env.SSL_PASSPHRASE,
-// };
 // Create an HTTP server
 // const server = https.createServer(sslOptions, app);
 // Load SSL certificates
-const privateKey = fs_1.default.readFileSync("./cert/file.key", "utf8");
-const certificate = fs_1.default.readFileSync("./cert/file.crt", "utf8");
-const ca = fs_1.default.readFileSync("./cert/cabundle.crt", "utf8");
+const privateKey = fs_1.default.readFileSync("./file.key", "utf8");
+const certificate = fs_1.default.readFileSync("./file.crt", "utf8");
+const ca = fs_1.default.readFileSync("./cabundle.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 // const server = http.createServer(app);
 const server = https_1.default.createServer(credentials, app);
@@ -75,10 +69,7 @@ wss.on("connection", function connection(ws) {
     ws.send("Web Socket Received data");
 });
 app.post("/notifications", (req, res) => {
-    console.log("Headers:", req.headers["content-type"]);
-    console.log("Body:", req.body);
     const newData = req.body;
-    console.log("Received notification:", newData);
     // Broadcast the notification to all connected clients
     clients.forEach((client) => {
         if (client.readyState === ws_1.default.OPEN) {
@@ -90,9 +81,6 @@ app.post("/notifications", (req, res) => {
         }
     });
     return res.status(200).json({ data: newData }); // Send appropriate response to client
-});
-app.post("/testing", (req, res) => {
-    console.log("Testing Data:", req.body);
 });
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,9 +97,9 @@ app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, fu
         const data = {
             name: "MontyPay Payment",
             description: "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-            paymentsUrl: "https://lhg.montypaydev.com:8081/payment",
-            queryUrl: "https://lhg.montypaydev.com:8081",
-            imageUrl: "https://lhg.montypaydev.com:8081/512x512.png",
+            paymentsUrl: "https://lhg.montypaydev.com:8080/payment",
+            queryUrl: "https://lhg.montypaydev.com:8080/verification",
+            imageUrl: "https://lhg.montypaydev.com:8080/512x512.png",
         };
         yield fetch(url, {
             method: "POST",
@@ -120,6 +108,7 @@ app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, fu
         })
             .then((response) => response.json())
             .then((result) => __awaiter(void 0, void 0, void 0, function* () {
+            console.log("Result:", result);
             yield ghl.addProviderConfig(result.providerConfig, rs === null || rs === void 0 ? void 0 : rs.locationId);
         }))
             .catch((error) => console.error("Error:", error));
@@ -351,6 +340,19 @@ app.post("/getPaymentRedirectURL", (req, res) => __awaiter(void 0, void 0, void 
 app.get("*", (req, res) => {
     res.sendFile(path + "index.html");
 });
+app.post("/verification", (req, res) => {
+    const newData = req.body;
+    console.log("Verification: ", newData);
+    // Broadcast the notification to all connected clients
+    // clients.forEach((client) => {
+    //   if (client.readyState === WebSocket.OPEN) {
+    //     client.send(JSON.stringify({ Verification: newData })); // Send notification as JSON
+    //   } else {
+    //     // Handle closed or closing connections
+    //     clients.delete(client); // Remove closed clients from the Set
+    //   }
+    // });
+});
 const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield database_1.default.sync(); // This will create the table if it doesn't exist
@@ -364,11 +366,11 @@ syncDatabase();
 server.listen(8081, () => {
     console.log("Secure WebSocket server is running on port 8081");
 });
-const options = {
-    key: fs_1.default.readFileSync("./cert/file.key"),
-    cert: fs_1.default.readFileSync("./cert/file.crt"),
-};
-https_1.default.createServer(options, app).listen(8080, () => {
+// const options = {
+//   key: fs.readFileSync("./file.key"),
+//   cert: fs.readFileSync("./file.crt"),
+// };
+https_1.default.createServer(credentials, app).listen(8080, () => {
     console.log("Secure server running on port 8080");
 });
 // app.listen(8081, () => {
