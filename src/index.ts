@@ -56,9 +56,9 @@ const port = process.env.PORT;
 // const server = https.createServer(sslOptions, app);
 
 // Load SSL certificates
-const privateKey = fs.readFileSync("./cert/file.key", "utf8");
-const certificate = fs.readFileSync("./cert/file.crt", "utf8");
-const ca = fs.readFileSync("./cert/cabundle.crt", "utf8");
+const privateKey = fs.readFileSync("./file.key", "utf8");
+const certificate = fs.readFileSync("./file.crt", "utf8");
+const ca = fs.readFileSync("./cabundle.crt", "utf8");
 
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
