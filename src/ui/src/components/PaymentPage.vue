@@ -168,7 +168,7 @@ export default {
       "*"
     );
 
-    const socket = new WebSocket(`wss://${process.env.BACKEND_URL}:8082`);
+    const socket = new WebSocket(`wss://${process.env.BACKEND_URL}:8081`);
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
       this.newData = JSON.parse(event.data);

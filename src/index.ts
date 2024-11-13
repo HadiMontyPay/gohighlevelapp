@@ -49,14 +49,14 @@ const port = process.env.PORT;
 // const server = https.createServer(sslOptions, app);
 
 // Load SSL certificates
-// const privateKey = fs.readFileSync("./file.key", "utf8");
-// const certificate = fs.readFileSync("./file.crt", "utf8");
-// const ca = fs.readFileSync("./cabundle.crt", "utf8");
+const privateKey = fs.readFileSync("./file.key", "utf8");
+const certificate = fs.readFileSync("./file.crt", "utf8");
+const ca = fs.readFileSync("./cabundle.crt", "utf8");
 
-// const credentials = { key: privateKey, cert: certificate, ca: ca };
+const credentials = { key: privateKey, cert: certificate, ca: ca };
 
-const server = http.createServer(app);
-// const server = https.createServer(credentials, app);
+// const server = http.createServer(app);
+const server = https.createServer(credentials, app);
 const wss = new WebSocket.Server({ server });
 
 let clients = new Set<WebSocket>(); // Store connected clients
@@ -84,6 +84,11 @@ app.post("/notifications", (req: Request, res: Response) => {
   return res.status(200).json({ data: newData }); // Send appropriate response to client
 });
 
+app.post("/verification", (req: Request, res: Response) => {
+  const newData = req.body;
+  console.log("Verification: ", newData);
+});
+
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
@@ -102,9 +107,9 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
       name: "MontyPay Payment",
       description:
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-      paymentsUrl: `https://${process.env.BACKEND_URL}:8080/payment`,
-      queryUrl: `https://${process.env.BACKEND_URL}:8080/verification`,
-      imageUrl: `https://${process.env.BACKEND_URL}:8080/512x512.png`,
+      paymentsUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/payment`,
+      queryUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/verification`,
+      imageUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/512x512.png`,
     };
 
     await fetch(url, {
@@ -400,20 +405,6 @@ app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
 });
 
-app.post("/verification", (req: Request, res: Response) => {
-  const newData = req.body;
-  console.log("Verification: ", newData);
-  // Broadcast the notification to all connected clients
-  // clients.forEach((client) => {
-  //   if (client.readyState === WebSocket.OPEN) {
-  //     client.send(JSON.stringify({ Verification: newData })); // Send notification as JSON
-  //   } else {
-  //     // Handle closed or closing connections
-  //     clients.delete(client); // Remove closed clients from the Set
-  //   }
-  // });
-});
-
 const syncDatabase = async () => {
   try {
     await sequelize.sync(); // This will create the table if it doesn't exist
@@ -430,13 +421,13 @@ syncDatabase();
 //   cert: fs.readFileSync("./file.crt"),
 // };
 
-// https.createServer(credentials, app).listen(port, () => {
-//   console.log(`Secure server running on port ${port}`);
-// });
-
-server.listen(3001, () => {
-  console.log("Secure WebSocket server is running on port 3001");
-});
-app.listen(port, () => {
+https.createServer(credentials, app).listen(port, () => {
   console.log(`Secure server running on port ${port}`);
 });
+
+server.listen(8081, () => {
+  console.log("Secure WebSocket server is running on port 8081");
+});
+// app.listen(port, () => {
+//   console.log(`Secure server running on port ${port}`);
+// });
