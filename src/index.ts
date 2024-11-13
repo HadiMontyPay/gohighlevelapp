@@ -27,7 +27,7 @@ app.use(bodyParser.raw({ type: "*/*" })); // For any other data type (catch-all)
 // Set up CORS options if needed
 const corsOptions = {
   origin: "*", // You can specify the allowed origin or use '*'
-  methods: ["GET", "POST"], // Specify the allowed HTTP methods
+  methods: "*", // Specify the allowed HTTP methods
   allowedHeaders: "*", // Specify allowed headers
 };
 
@@ -416,12 +416,12 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-// const options = {
-//   key: fs.readFileSync("./file.key"),
-//   cert: fs.readFileSync("./file.crt"),
-// };
+const options = {
+  key: fs.readFileSync("./file.key"),
+  cert: fs.readFileSync("./file.crt"),
+};
 
-https.createServer(credentials, app).listen(port, () => {
+https.createServer(options, app).listen(port, () => {
   console.log(`Secure server running on port ${port}`);
 });
 
