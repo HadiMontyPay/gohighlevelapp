@@ -84,10 +84,10 @@ app.post("/notifications", (req: Request, res: Response) => {
   return res.status(200).json({ data: newData }); // Send appropriate response to client
 });
 
-app.post("/verification", (req: Request, res: Response) => {
-  const newData = req.body;
-  console.log("Verification: ", newData);
-});
+// app.post("/verification", (req: Request, res: Response) => {
+//   const newData = req.body;
+//   console.log("Verification: ", newData);
+// });
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
@@ -108,7 +108,7 @@ app.get("/authorize-handler", async (req: Request, res: Response) => {
       description:
         "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
       paymentsUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/payment`,
-      queryUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/verification`,
+      queryUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/notifications`,
       imageUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/512x512.png`,
     };
 
