@@ -69,27 +69,6 @@ wss.on("connection", function connection(ws) {
   ws.send("Web Socket Received data");
 });
 
-app.post("/notifications", (req: Request, res: Response) => {
-  const newData = req.body;
-  // Broadcast the notification to all connected clients
-  clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(newData)); // Send notification as JSON
-    } else {
-      // Handle closed or closing connections
-      clients.delete(client); // Remove closed clients from the Set
-    }
-  });
-
-  return res.status(200).json({ data: newData }); // Send appropriate response to client
-});
-
-app.post("/verification", (req: Request, res: Response) => {
-  const newData = req.body;
-  console.log("Verification: ", newData);
-  return res.status(200).json({ Verification: newData });
-});
-
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
@@ -404,6 +383,27 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path + "index.html");
+});
+
+app.post("/notifications", (req: Request, res: Response) => {
+  const newData = req.body;
+  // Broadcast the notification to all connected clients
+  clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(newData)); // Send notification as JSON
+    } else {
+      // Handle closed or closing connections
+      clients.delete(client); // Remove closed clients from the Set
+    }
+  });
+
+  return res.status(200).json({ data: newData }); // Send appropriate response to client
+});
+
+app.post("/verification", (req: Request, res: Response) => {
+  const newData = req.body;
+  console.log("Verification: ", newData);
+  return res.status(200).json({ Verification: newData });
 });
 
 const syncDatabase = async () => {
