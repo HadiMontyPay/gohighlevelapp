@@ -417,8 +417,8 @@ const syncDatabase = async () => {
 syncDatabase();
 
 const options = {
-  key: fs.readFileSync("./file.key"),
-  cert: fs.readFileSync("./file.crt"),
+  key: fs.readFileSync("./cert/file.key"),
+  cert: fs.readFileSync("./cert/file.crt"),
 };
 
 https.createServer(options, app).listen(port, () => {
