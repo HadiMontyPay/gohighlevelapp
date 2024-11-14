@@ -387,6 +387,7 @@ app.get("*", (req: Request, res: Response) => {
 
 app.post("/notifications", (req: Request, res: Response) => {
   const newData = req.body;
+  console.log("Notification:", newData);
   // Broadcast the notification to all connected clients
   clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
