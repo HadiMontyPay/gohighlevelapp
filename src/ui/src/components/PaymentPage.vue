@@ -108,33 +108,107 @@ export default {
       // // Add any additional logic to handle the new data
       // console.log("Test ID:", info.id);
 
-      // If Payment Is Successful
-      if (info.status === "success" && info.type === "sale") {
-        window.addEventListener("message", async ({ data }) => {
-          const newdata = JSON.parse(data);
-          console.log("New Data:", newdata);
-        });
-        window.parent.postMessage(
-          JSON.stringify({
-            type: "custom_element_success_response",
-            chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
-          }),
-          "*"
-        );
-      }
+      switch (info.type) {
+        case "sale":
+          this.handleStatus(info.status);
+          break;
+        case "3ds":
+          this.handleStatus(info.status);
+          break;
+        case "redirect":
+          this.handleStatus(info.status);
+          break;
+        case "capture":
+          this.handleStatus(info.status);
+          break;
+        case "refund":
+          this.handleStatus(info.status);
+          break;
+        case "void":
+          this.handleStatus(info.status);
+          break;
+        case "chargeback":
+          this.handleStatus(info.status);
+          break;
+        case "debit":
+          this.handleStatus(info.status);
+          break;
+        case "transfer":
+          this.handleStatus(info.status);
+          break;
 
-      // If Payment Failed
-      if (info.status === "fail" && info.type === "sale") {
-        window.addEventListener("message", async ({ data }) => {
-          const newdata = JSON.parse(data);
-          console.log("New Data:", newdata);
-        });
-        window.parent.postMessage(
-          JSON.stringify({
-            type: "custom_element_close_response",
-          }),
-          "*"
-        );
+        default:
+          this.handleStatus(info.status);
+          break;
+      }
+    },
+    handleStatus(status) {
+      switch (status) {
+        case "success":
+          window.addEventListener("message", async ({ data }) => {
+            const newdata = JSON.parse(data);
+            console.log("New Data:", newdata);
+          });
+          window.parent.postMessage(
+            JSON.stringify({
+              type: "custom_element_success_response",
+              chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+            }),
+            "*"
+          );
+          break;
+        case "fail":
+          window.addEventListener("message", async ({ data }) => {
+            const newdata = JSON.parse(data);
+            console.log("New Data:", newdata);
+          });
+          window.parent.postMessage(
+            JSON.stringify({
+              type: "custom_element_error_response",
+              error: {
+                description: "Payment Failed", // Error message to be shown to the user
+              },
+            }),
+            "*"
+          );
+          break;
+        case "waiting":
+          window.addEventListener("message", async ({ data }) => {
+            const newdata = JSON.parse(data);
+            console.log("New Data:", newdata);
+          });
+          window.parent.postMessage(
+            JSON.stringify({
+              type: "custom_element_close_response",
+            }),
+            "*"
+          );
+          break;
+        case "undefined":
+          window.addEventListener("message", async ({ data }) => {
+            const newdata = JSON.parse(data);
+            console.log("New Data:", newdata);
+          });
+          window.parent.postMessage(
+            JSON.stringify({
+              type: "custom_element_close_response",
+            }),
+            "*"
+          );
+          break;
+
+        default:
+          window.addEventListener("message", async ({ data }) => {
+            const newdata = JSON.parse(data);
+            console.log("New Data:", newdata);
+          });
+          window.parent.postMessage(
+            JSON.stringify({
+              type: "custom_element_close_response",
+            }),
+            "*"
+          );
+          break;
       }
     },
   },
