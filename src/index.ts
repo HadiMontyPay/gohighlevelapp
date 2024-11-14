@@ -406,7 +406,12 @@ app.post("/notifications", (req: Request, res: Response) => {
 app.post("/verification", (req: Request, res: Response) => {
   const newData = req.body;
   console.log("Verification: ", newData);
-  return res.status(200).json({ Verification: newData });
+
+  if (newData.type === "verify") {
+    return res.json({ success: true });
+  } else {
+    return res.json({ success: false });
+  }
 });
 
 const syncDatabase = async () => {
