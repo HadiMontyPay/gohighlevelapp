@@ -37,7 +37,7 @@ app.use(body_parser_1.default.raw({ type: "*/*" })); // For any other data type 
 // Set up CORS options if needed
 const corsOptions = {
     origin: "*", // You can specify the allowed origin or use '*'
-    methods: ["GET", "POST"], // Specify the allowed HTTP methods
+    methods: "*", // Specify the allowed HTTP methods
     allowedHeaders: "*", // Specify allowed headers
 };
 // Apply CORS middleware to all routes
@@ -53,12 +53,13 @@ const port = process.env.PORT;
 // Create an HTTP server
 // const server = https.createServer(sslOptions, app);
 // Load SSL certificates
-const privateKey = fs_1.default.readFileSync("./file.key", "utf8");
-const certificate = fs_1.default.readFileSync("./file.crt", "utf8");
-const ca = fs_1.default.readFileSync("./cabundle.crt", "utf8");
+const privateKey = fs_1.default.readFileSync("./cert/file.key", "utf8");
+const certificate = fs_1.default.readFileSync("./cert/file.crt", "utf8");
+const ca = fs_1.default.readFileSync("./cert/cabundle.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
-// const server = http.createServer(app);
 const server = https_1.default.createServer(credentials, app);
+// const server = http.createServer(app);
+// const server = https.createServer(credentials, app);
 const wss = new ws_1.default.Server({ server });
 let clients = new Set(); // Store connected clients
 wss.on("connection", function connection(ws) {
@@ -67,20 +68,6 @@ wss.on("connection", function connection(ws) {
         console.log("received: %s", data);
     });
     ws.send("Web Socket Received data");
-});
-app.post("/notifications", (req, res) => {
-    const newData = req.body;
-    // Broadcast the notification to all connected clients
-    clients.forEach((client) => {
-        if (client.readyState === ws_1.default.OPEN) {
-            client.send(JSON.stringify(newData)); // Send notification as JSON
-        }
-        else {
-            // Handle closed or closing connections
-            clients.delete(client); // Remove closed clients from the Set
-        }
-    });
-    return res.status(200).json({ data: newData }); // Send appropriate response to client
 });
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -97,9 +84,9 @@ app.get("/authorize-handler", (req, res) => __awaiter(void 0, void 0, void 0, fu
         const data = {
             name: "MontyPay Payment",
             description: "MontyPay allows merchants to collect payments globally with ease. Our multiple plugins, APIs, and SDKs ensure seamless integration with merchants’ websites and apps.",
-            paymentsUrl: "https://lhg.montypaydev.com:8080/payment",
-            queryUrl: "https://lhg.montypaydev.com:8080/verification",
-            imageUrl: "https://lhg.montypaydev.com:8080/512x512.png",
+            paymentsUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/payment`,
+            queryUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/verification`,
+            imageUrl: `https://${process.env.BACKEND_URL}:${process.env.PORT}/512x512.png`,
         };
         yield fetch(url, {
             method: "POST",
@@ -340,18 +327,25 @@ app.post("/getPaymentRedirectURL", (req, res) => __awaiter(void 0, void 0, void 
 app.get("*", (req, res) => {
     res.sendFile(path + "index.html");
 });
+app.post("/notifications", (req, res) => {
+    const newData = req.body;
+    // Broadcast the notification to all connected clients
+    clients.forEach((client) => {
+        if (client.readyState === ws_1.default.OPEN) {
+            client.send(JSON.stringify(newData)); // Send notification as JSON
+        }
+        else {
+            // Handle closed or closing connections
+            clients.delete(client); // Remove closed clients from the Set
+        }
+    });
+    console.log("Notifications:", newData);
+    return res.status(200).send({ data: newData }); // Send appropriate response to client
+});
 app.post("/verification", (req, res) => {
     const newData = req.body;
     console.log("Verification: ", newData);
-    // Broadcast the notification to all connected clients
-    // clients.forEach((client) => {
-    //   if (client.readyState === WebSocket.OPEN) {
-    //     client.send(JSON.stringify({ Verification: newData })); // Send notification as JSON
-    //   } else {
-    //     // Handle closed or closing connections
-    //     clients.delete(client); // Remove closed clients from the Set
-    //   }
-    // });
+    return res.status(200).json({ Verification: newData });
 });
 const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -363,16 +357,16 @@ const syncDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 syncDatabase();
-server.listen(8081, () => {
-    console.log("Secure WebSocket server is running on port 8081");
-});
 // const options = {
-//   key: fs.readFileSync("./file.key"),
-//   cert: fs.readFileSync("./file.crt"),
+//   key: fs.readFileSync("./cert/file.key"),
+//   cert: fs.readFileSync("./cert/file.crt"),
 // };
-https_1.default.createServer(credentials, app).listen(8080, () => {
-    console.log("Secure server running on port 8080");
+server.listen(port, () => {
+    console.log(`Secure server running on port ${port}`);
 });
-// app.listen(8081, () => {
-//   console.log(`GHL app listening on port 8081`);
+// server.listen(8081, () => {
+//   console.log("Secure WebSocket server is running on port 8081");
+// });
+// app.listen(port, () => {
+//   console.log(`Secure server running on port ${port}`);
 // });

@@ -110,39 +110,39 @@ export default {
 
       switch (info.type) {
         case "sale":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "3ds":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "redirect":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "capture":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "refund":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "void":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "chargeback":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "debit":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
         case "transfer":
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
 
         default:
-          this.handleStatus(info.status);
+          this.handleStatus(info.status, info.id);
           break;
       }
     },
-    handleStatus(status) {
+    handleStatus(status, id) {
       switch (status) {
         case "success":
           window.addEventListener("message", async ({ data }) => {
@@ -152,7 +152,7 @@ export default {
           window.parent.postMessage(
             JSON.stringify({
               type: "custom_element_success_response",
-              chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+              chargeId: id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
             }),
             "*"
           );
