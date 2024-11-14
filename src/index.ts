@@ -399,13 +399,13 @@ app.post("/notifications", (req: Request, res: Response) => {
     }
   });
 
-  console.log("Notifications:", newData);
+  // console.log("Notifications:", newData);
   return res.status(200).send({ data: newData }); // Send appropriate response to client
 });
 
 app.post("/verification", (req: Request, res: Response) => {
   const newData = req.body;
-  console.log("Verification: ", newData);
+  // console.log("Verification: ", newData);
   return res.status(200).json({ Verification: newData });
 });
 
