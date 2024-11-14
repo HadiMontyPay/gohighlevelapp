@@ -56,18 +56,18 @@ const ca = fs.readFileSync("./cert/cabundle.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 // const server = http.createServer(app);
-const server = https.createServer(credentials, app);
-const wss = new WebSocket.Server({ server });
+// const server = https.createServer(credentials, app);
+// const wss = new WebSocket.Server({ server });
 
-let clients = new Set<WebSocket>(); // Store connected clients
+// let clients = new Set<WebSocket>(); // Store connected clients
 
-wss.on("connection", function connection(ws) {
-  clients.add(ws); // Add new client to the Set
-  ws.on("message", function message(data) {
-    console.log("received: %s", data);
-  });
-  ws.send("Web Socket Received data");
-});
+// wss.on("connection", function connection(ws) {
+//   clients.add(ws); // Add new client to the Set
+//   ws.on("message", function message(data) {
+//     console.log("received: %s", data);
+//   });
+//   ws.send("Web Socket Received data");
+// });
 
 /*`app.get("/authorize-handler", async (req: Request, res: Response) => { ... })` sets up an example how you can authorization requests */
 app.get("/authorize-handler", async (req: Request, res: Response) => {
@@ -387,18 +387,18 @@ app.get("*", (req: Request, res: Response) => {
 
 app.post("/notifications", (req: Request, res: Response) => {
   const newData = req.body;
-  console.log("Notification:", newData);
   // Broadcast the notification to all connected clients
-  clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(newData)); // Send notification as JSON
-    } else {
-      // Handle closed or closing connections
-      clients.delete(client); // Remove closed clients from the Set
-    }
-  });
+  // clients.forEach((client) => {
+  //   if (client.readyState === WebSocket.OPEN) {
+  //     client.send(JSON.stringify(newData)); // Send notification as JSON
+  //   } else {
+  //     // Handle closed or closing connections
+  //     clients.delete(client); // Remove closed clients from the Set
+  //   }
+  // });
 
-  return res.status(200).json({ data: newData }); // Send appropriate response to client
+  console.log("Notifications:", newData);
+  return res.status(200).send({ data: newData }); // Send appropriate response to client
 });
 
 app.post("/verification", (req: Request, res: Response) => {
@@ -418,17 +418,18 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-server.listen(8081, () => {
-  console.log("Secure WebSocket server is running on port 8081");
-});
-const options = {
-  key: fs.readFileSync("./cert/file.key"),
-  cert: fs.readFileSync("./cert/file.crt"),
-};
+// const options = {
+//   key: fs.readFileSync("./cert/file.key"),
+//   cert: fs.readFileSync("./cert/file.crt"),
+// };
 
-https.createServer(options, app).listen(port, () => {
+https.createServer(credentials, app).listen(port, () => {
   console.log(`Secure server running on port ${port}`);
 });
+
+// server.listen(8081, () => {
+//   console.log("Secure WebSocket server is running on port 8081");
+// });
 
 // app.listen(port, () => {
 //   console.log(`Secure server running on port ${port}`);
