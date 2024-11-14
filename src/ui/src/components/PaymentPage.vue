@@ -168,24 +168,24 @@ export default {
       "*"
     );
 
-    // const socket = new WebSocket(`wss://lhg.montypaydev.com:8081`);
-    // // When the WebSocket receives a message, update `newData`
-    // socket.onmessage = (event) => {
-    //   this.newData = JSON.parse(event.data);
-    //   this.handleNewData(this.newData);
-    // };
+    const socket = new WebSocket(`wss://lhg.montypaydev.com:8080`);
+    // When the WebSocket receives a message, update `newData`
+    socket.onmessage = (event) => {
+      this.newData = JSON.parse(event.data);
+      this.handleNewData(this.newData);
+    };
 
-    // socket.onopen = () => {
-    //   console.log("WebSocket connection established");
-    // };
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
 
-    // socket.onclose = () => {
-    //   console.log("WebSocket connection closed");
-    // };
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
 
-    // socket.onerror = (error) => {
-    //   console.error("WebSocket error:", error);
-    // };
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
   },
   beforeUnmount() {
     // Close the WebSocket connection when the component is destroyed
