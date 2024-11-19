@@ -390,16 +390,29 @@ app.get("*", (req: Request, res: Response) => {
 app.post("/notifications", (req: Request, res: Response) => {
   const newData = req.body;
   // Broadcast the notification to all connected clients
+  // clients.forEach((client) => {
+  //   if (client.readyState === WebSocket.OPEN) {
+  //     client.send(JSON.stringify(newData)); // Send notification as JSON
+  //   } else {
+  //     // Handle closed or closing connections
+  //     clients.delete(client); // Remove closed clients from the Set
+  //   }
+  // });
+  console.log("Notifications:", newData);
+
   clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(newData)); // Send notification as JSON
-    } else {
-      // Handle closed or closing connections
-      clients.delete(client); // Remove closed clients from the Set
+    try {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(newData));
+      } else {
+        clients.delete(client); // Remove closed clients
+      }
+    } catch (err) {
+      console.error("Error broadcasting message:", err);
+      clients.delete(client); // Safely remove faulty client
     }
   });
 
-  console.log("Notifications:", newData);
   return res.status(200).send({ data: newData }); // Send appropriate response to client
 });
 

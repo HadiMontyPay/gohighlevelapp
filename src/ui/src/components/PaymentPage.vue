@@ -247,15 +247,23 @@ export default {
       "*"
     );
 
-    const socket = new WebSocket(`wss://lhg.montypaydev.com:8080`);
+    const socket = new WebSocket(`wss://lhg.montypaydev.com:443`);
     // When the WebSocket receives a message, update `newData`
+    // socket.onmessage = (event) => {
+    //   try {
+    //     this.newData = JSON.parse(event.data); // Try to parse as JSON
+    //     this.handleNewData(this.newData);
+    //   } catch (error) {
+    //     console.error("Failed to parse message as JSON:", error);
+    //     // Handle non-JSON message appropriately
+    //   }
+    // };
     socket.onmessage = (event) => {
       try {
-        this.newData = JSON.parse(event.data); // Try to parse as JSON
+        this.newData = JSON.parse(event.data);
         this.handleNewData(this.newData);
-      } catch (error) {
-        console.error("Failed to parse message as JSON:", error);
-        // Handle non-JSON message appropriately
+      } catch (err) {
+        console.error("Invalid message format:", event.data);
       }
     };
 
