@@ -4,8 +4,12 @@
       <img src="/mp_logo_bg_trans.png" alt="MontyPay Payment" />
     </h1>
 
-    <iframe :src="iframeSrc" v-if="ll === false"></iframe>
-    <div class="loader" v-if="ll === true"></div>
+    <div v-if="ll === false">
+      <iframe :src="iframeSrc"></iframe>
+    </div>
+    <div v-if="ll === true">
+      <div class="loader"></div>
+    </div>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
