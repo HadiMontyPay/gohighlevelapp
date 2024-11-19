@@ -118,7 +118,42 @@ export default {
           this.handleStatus(info.status, info.id);
           break;
         case "3ds":
-          this.handleStatus(info.status, info.id);
+          switch (info.status) {
+            case "success":
+              window.addEventListener("message", async ({ data }) => {
+                const newdata = JSON.parse(data);
+                console.log("New Data:", newdata);
+              });
+              window.parent.postMessage(
+                JSON.stringify({
+                  type: "custom_element_success_response",
+                  chargeId: id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+                }),
+                "*"
+              );
+              axios.post("https://lhg.montypaydev.com:8080/verification", {
+                type: "wait",
+              });
+              break;
+
+            case "fail":
+              window.addEventListener("message", async ({ data }) => {
+                const newdata = JSON.parse(data);
+                console.log("New Data:", newdata);
+              });
+              window.parent.postMessage(
+                JSON.stringify({
+                  type: "custom_element_success_response",
+                  chargeId: id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+                }),
+                "*"
+              );
+              break;
+
+            default:
+              break;
+          }
+
           break;
         case "redirect":
           this.handleStatus(info.status, info.id);
