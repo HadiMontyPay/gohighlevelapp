@@ -408,9 +408,11 @@ app.post("/verification", (req: Request, res: Response) => {
   console.log("Verification: ", newData);
 
   if (newData.type === "verify") {
+    console.log("Success True");
     return res.json({ success: true });
   } else {
-    return res.json({ success: false });
+    console.log("Failed True");
+    return res.json({ failed: true });
   }
 });
 
