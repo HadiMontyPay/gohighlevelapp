@@ -1,7 +1,11 @@
 <template>
   <div id="payment_page" v-if="loading === false">
-    <h1>MontyPay Payment</h1>
-    <iframe :src="iframeSrc"></iframe>
+    <h1>
+      <img src="/mp_logo_bg_trans.png" alt="MontyPay Payment" />
+    </h1>
+
+    <iframe :src="iframeSrc" v-if="ll === false"></iframe>
+    <div class="loader" v-if="ll === true"></div>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -33,6 +37,7 @@ export default {
       newData: null,
       iframeSrc: "about:blank",
       loading: true,
+      ll: true,
       cardNumber: "",
       expiryDate: "",
       cvv: "",
@@ -213,51 +218,59 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("message", async ({ data }) => {
-      data = JSON.parse(data);
-      console.log("Loaded On Mount Data:", data);
-      this.total = data.amount;
+    // window.addEventListener("message", async ({ data }) => {
+    //   data = JSON.parse(data);
+    //   console.log("Loaded On Mount Data:", data);
+    //   this.total = data.amount;
 
-      if (data.currency.toUpperCase() === "JOD") {
-        this.order.amount = this.total.toFixed(3);
-      } else {
-        this.order.amount = this.total.toFixed(2);
-      }
-      this.order.currency = data.currency.toUpperCase();
-      if (data.description === "") {
-        this.order.description = "this product doesn't have a description";
-      } else {
-        this.order.description = data.description;
-      }
-      this.order.number = data.orderId;
-      this.customer.name = data.contact.name;
-      this.customer.email = data.contact.email;
-      this.getSavedInfo(data.locationId);
-    });
-    window.parent.postMessage(
-      JSON.stringify({
-        type: "custom_provider_ready",
-        loaded: true,
-      }),
-      "*"
-    );
+    //   if (data.currency.toUpperCase() === "JOD") {
+    //     this.order.amount = this.total.toFixed(3);
+    //   } else {
+    //     this.order.amount = this.total.toFixed(2);
+    //   }
+    //   this.order.currency = data.currency.toUpperCase();
+    //   if (data.description === "") {
+    //     this.order.description = "this product doesn't have a description";
+    //   } else {
+    //     this.order.description = data.description;
+    //   }
+    //   this.order.number = data.orderId;
+    //   this.customer.name = data.contact.name;
+    //   this.customer.email = data.contact.email;
+    //   this.getSavedInfo(data.locationId);
+    // });
+    // window.parent.postMessage(
+    //   JSON.stringify({
+    //     type: "custom_provider_ready",
+    //     loaded: true,
+    //   }),
+    //   "*"
+    // );
 
     const socket = new WebSocket(`wss://lhg.montypaydev.com:8080`);
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
-      this.newData = JSON.parse(event.data);
-      this.handleNewData(this.newData);
+      try {
+        this.newData = JSON.parse(event.data); // Try to parse as JSON
+        this.handleNewData(this.newData);
+      } catch (error) {
+        console.error("Failed to parse message as JSON:", error);
+        // Handle non-JSON message appropriately
+      }
     };
 
     socket.onopen = () => {
+      this.ll = false;
       console.log("WebSocket connection established");
     };
 
     socket.onclose = () => {
+      this.ll = true;
       console.log("WebSocket connection closed");
     };
 
     socket.onerror = (error) => {
+      this.ll = true;
       console.error("WebSocket error:", error);
     };
   },
@@ -277,6 +290,12 @@ export default {
   h1 {
     border: none;
     font-size: 20px;
+    text-align: center;
+
+    img {
+      max-height: 70px;
+      aspect-ratio: auto;
+    }
   }
 
   iframe {
