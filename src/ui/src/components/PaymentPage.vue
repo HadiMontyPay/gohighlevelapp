@@ -4,12 +4,8 @@
       <img src="/mp_logo_bg_trans.png" alt="MontyPay Payment" />
     </h1>
 
-    <div v-if="ll === false">
-      <iframe :src="iframeSrc"></iframe>
-    </div>
-    <div v-if="ll === true">
-      <div class="loader"></div>
-    </div>
+    <iframe :src="iframeSrc" v-if="ll === false"></iframe>
+    <div class="loader" v-if="ll === true"></div>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -222,34 +218,34 @@ export default {
     },
   },
   mounted() {
-    // window.addEventListener("message", async ({ data }) => {
-    //   data = JSON.parse(data);
-    //   console.log("Loaded On Mount Data:", data);
-    //   this.total = data.amount;
+    window.addEventListener("message", async ({ data }) => {
+      data = JSON.parse(data);
+      console.log("Loaded On Mount Data:", data);
+      this.total = data.amount;
 
-    //   if (data.currency.toUpperCase() === "JOD") {
-    //     this.order.amount = this.total.toFixed(3);
-    //   } else {
-    //     this.order.amount = this.total.toFixed(2);
-    //   }
-    //   this.order.currency = data.currency.toUpperCase();
-    //   if (data.description === "") {
-    //     this.order.description = "this product doesn't have a description";
-    //   } else {
-    //     this.order.description = data.description;
-    //   }
-    //   this.order.number = data.orderId;
-    //   this.customer.name = data.contact.name;
-    //   this.customer.email = data.contact.email;
-    //   this.getSavedInfo(data.locationId);
-    // });
-    // window.parent.postMessage(
-    //   JSON.stringify({
-    //     type: "custom_provider_ready",
-    //     loaded: true,
-    //   }),
-    //   "*"
-    // );
+      if (data.currency.toUpperCase() === "JOD") {
+        this.order.amount = this.total.toFixed(3);
+      } else {
+        this.order.amount = this.total.toFixed(2);
+      }
+      this.order.currency = data.currency.toUpperCase();
+      if (data.description === "") {
+        this.order.description = "this product doesn't have a description";
+      } else {
+        this.order.description = data.description;
+      }
+      this.order.number = data.orderId;
+      this.customer.name = data.contact.name;
+      this.customer.email = data.contact.email;
+      this.getSavedInfo(data.locationId);
+    });
+    window.parent.postMessage(
+      JSON.stringify({
+        type: "custom_provider_ready",
+        loaded: true,
+      }),
+      "*"
+    );
 
     const socket = new WebSocket(`wss://lhg.montypaydev.com:8080`);
     // When the WebSocket receives a message, update `newData`
