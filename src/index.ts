@@ -420,8 +420,12 @@ app.post("/verification", (req: Request, res: Response) => {
   const data = req.body;
   console.log("Verification Status: ", data);
 
-  switch (data.status) {
+  switch (data.type) {
     case "success":
+      console.log("Success True");
+      return res.json({ success: true });
+
+    case "verify":
       console.log("Success True");
       return res.json({ success: true });
 

@@ -132,7 +132,7 @@ export default {
                 "*"
               );
               axios.post("https://lhg.montypaydev.com:8080/verification", {
-                status: "wait",
+                type: "wait",
               });
               break;
 
@@ -151,7 +151,7 @@ export default {
                 "*"
               );
               axios.post("https://lhg.montypaydev.com:8080/verification", {
-                status: "fail",
+                type: "fail",
               });
               break;
 
@@ -170,7 +170,7 @@ export default {
                 "*"
               );
               axios.post("https://lhg.montypaydev.com:8080/verification", {
-                status: "fail",
+                type: "fail",
               });
               break;
           }
@@ -218,7 +218,7 @@ export default {
             "*"
           );
           axios.post("https://lhg.montypaydev.com:8080/verification", {
-            status: "success",
+            type: "success",
           });
           break;
         case "fail":
@@ -236,7 +236,7 @@ export default {
             "*"
           );
           axios.post("https://lhg.montypaydev.com:8080/verification", {
-            status: "fail",
+            type: "fail",
           });
           break;
         case "waiting":
@@ -251,7 +251,7 @@ export default {
             "*"
           );
           axios.post("https://lhg.montypaydev.com:8080/verification", {
-            status: "wait",
+            type: "wait",
           });
           break;
         case "undefined":
@@ -266,7 +266,7 @@ export default {
             "*"
           );
           axios.post("https://lhg.montypaydev.com:8080/verification", {
-            status: "fail",
+            type: "fail",
           });
           break;
 
@@ -282,7 +282,7 @@ export default {
             "*"
           );
           axios.post("https://lhg.montypaydev.com:8080/verification", {
-            status: "fail",
+            type: "fail",
           });
           break;
       }
