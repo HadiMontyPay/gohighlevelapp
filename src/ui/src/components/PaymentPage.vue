@@ -5,7 +5,7 @@
     </h1>
 
     <iframe :src="iframeSrc" v-if="ll === false"></iframe>
-    <div class="loader" v-if="ll === true"></div>
+    <div class="loader" v-if="ll === true">Loading</div>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
