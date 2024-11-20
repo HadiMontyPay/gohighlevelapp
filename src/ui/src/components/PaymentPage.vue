@@ -132,7 +132,7 @@ export default {
                 "*"
               );
               axios.post("https://lhg.montypaydev.com:8080/verification", {
-                type: "wait",
+                status: "wait",
               });
               break;
 
@@ -150,9 +150,28 @@ export default {
                 }),
                 "*"
               );
+              axios.post("https://lhg.montypaydev.com:8080/verification", {
+                status: "fail",
+              });
               break;
 
             default:
+              window.addEventListener("message", async ({ data }) => {
+                const newdata = JSON.parse(data);
+                console.log("New Data:", newdata);
+              });
+              window.parent.postMessage(
+                JSON.stringify({
+                  type: "custom_element_error_response",
+                  error: {
+                    description: "Payment Failed", // Error message to be shown to the user
+                  },
+                }),
+                "*"
+              );
+              axios.post("https://lhg.montypaydev.com:8080/verification", {
+                status: "fail",
+              });
               break;
           }
 
@@ -198,6 +217,9 @@ export default {
             }),
             "*"
           );
+          axios.post("https://lhg.montypaydev.com:8080/verification", {
+            status: "success",
+          });
           break;
         case "fail":
           window.addEventListener("message", async ({ data }) => {
@@ -213,6 +235,9 @@ export default {
             }),
             "*"
           );
+          axios.post("https://lhg.montypaydev.com:8080/verification", {
+            status: "fail",
+          });
           break;
         case "waiting":
           window.addEventListener("message", async ({ data }) => {
@@ -225,6 +250,9 @@ export default {
             }),
             "*"
           );
+          axios.post("https://lhg.montypaydev.com:8080/verification", {
+            status: "wait",
+          });
           break;
         case "undefined":
           window.addEventListener("message", async ({ data }) => {
@@ -237,6 +265,9 @@ export default {
             }),
             "*"
           );
+          axios.post("https://lhg.montypaydev.com:8080/verification", {
+            status: "fail",
+          });
           break;
 
         default:
@@ -250,6 +281,9 @@ export default {
             }),
             "*"
           );
+          axios.post("https://lhg.montypaydev.com:8080/verification", {
+            status: "fail",
+          });
           break;
       }
     },

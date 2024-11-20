@@ -417,18 +417,25 @@ app.post("/notifications", (req: Request, res: Response) => {
 });
 
 app.post("/verification", (req: Request, res: Response) => {
-  const newData = req.body;
-  console.log("Verification: ", newData);
+  const { status } = req.body;
+  console.log("Verification Status: ", status);
 
-  if (newData.type === "verify") {
-    console.log("Success True");
-    return res.json({ success: true });
-  } else if (newData.type === "wait") {
-    console.log("Success False");
-    return res.json({ success: false });
-  } else {
-    console.log("Failed True");
-    return res.json({ failed: true });
+  switch (status) {
+    case "success":
+      console.log("Success True");
+      return res.json({ success: true });
+
+    case "wait":
+      console.log("Success False (Waiting)");
+      return res.json({ success: false });
+
+    case "fail":
+      console.log("Failed True");
+      return res.json({ failed: true });
+
+    default:
+      console.log("Failed True");
+      return res.json({ failed: true });
   }
 });
 
