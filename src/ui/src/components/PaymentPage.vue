@@ -5,7 +5,9 @@
     </h1>
 
     <iframe :src="iframeSrc" v-if="ll === false"></iframe>
-    <div class="loader" v-if="ll === true">Loading</div>
+    <div id="lll" v-if="ll === true">
+      <div class="loader"></div>
+    </div>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -320,15 +322,6 @@ export default {
 
     const socket = new WebSocket(`wss://lhg.montypaydev.com:8080`);
     // When the WebSocket receives a message, update `newData`
-    // socket.onmessage = (event) => {
-    //   try {
-    //     this.newData = JSON.parse(event.data); // Try to parse as JSON
-    //     this.handleNewData(this.newData);
-    //   } catch (error) {
-    //     console.error("Failed to parse message as JSON:", error);
-    //     // Handle non-JSON message appropriately
-    //   }
-    // };
     socket.onmessage = (event) => {
       try {
         this.newData = JSON.parse(event.data);
@@ -366,6 +359,11 @@ export default {
 <style>
 #payment_page {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
   h1 {
     border: none;
     font-size: 20px;
@@ -379,6 +377,7 @@ export default {
 
   iframe {
     min-height: 90%;
+    width: 550px;
   }
 
   p {
