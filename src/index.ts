@@ -417,10 +417,10 @@ app.post("/notifications", (req: Request, res: Response) => {
 });
 
 app.post("/verification", (req: Request, res: Response) => {
-  const { status } = req.body;
-  console.log("Verification Status: ", status);
+  const data = req.body;
+  console.log("Verification Status: ", data);
 
-  switch (status) {
+  switch (data.status) {
     case "success":
       console.log("Success True");
       return res.json({ success: true });
