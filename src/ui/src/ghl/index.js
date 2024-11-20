@@ -39,7 +39,7 @@ export class GHL {
   }
 
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
-    const res = await axios.post(
+    const res = await axios.patch(
       "/save-merchant-info",
       {
         merchantKey: merchantKey,
@@ -57,7 +57,7 @@ export class GHL {
   }
 
   async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
-    const res = await axios.post(
+    const res = await axios.patch(
       "/save-test-merchant-info",
       {
         TestmerchantKey: TestmerchantKey,

@@ -215,9 +215,8 @@ app.get("/getAll", async (req: Request, res: Response) => {
   const all = await ghl.getAll();
   return res.send(all);
 });
-// Adjust path if necessary
 
-app.post("/save-merchant-info", async (req: Request, res: Response) => {
+app.patch("/save-merchant-info", async (req: Request, res: Response) => {
   const { merchantKey, merchantPass, locationId } = req.body;
   const info = await ghl.saveMerchantInfo(
     merchantKey,
@@ -265,7 +264,8 @@ app.post("/save-merchant-info", async (req: Request, res: Response) => {
     });
   // return res.status(200).json({ message: "Merchant Info Added" });
 });
-app.post("/save-test-merchant-info", async (req: Request, res: Response) => {
+
+app.patch("/save-test-merchant-info", async (req: Request, res: Response) => {
   const { TestmerchantKey, TestmerchantPass, locationId } = req.body;
   const info = await ghl.saveTestMerchantInfo(
     TestmerchantKey,

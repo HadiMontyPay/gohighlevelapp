@@ -107,7 +107,7 @@ export default {
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchant_pass = info.merchantPass;
       }
-      this.submitPayment();
+      await this.submitPayment();
     },
     // Define a method to handle the new data
     handleNewData(info) {
