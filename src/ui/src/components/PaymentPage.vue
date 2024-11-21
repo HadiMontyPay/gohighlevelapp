@@ -4,7 +4,10 @@
       <img src="/mp_logo_bg_trans.png" alt="MontyPay Payment" />
     </h1>
 
-    <iframe :src="iframeSrc" v-if="ll === false"></iframe>
+    <iframe
+      :src="iframeSrc"
+      v-if="ll === false && errorState === false"
+    ></iframe>
     <div id="lll" v-if="ll === true">
       <div class="loader"></div>
     </div>
@@ -95,7 +98,7 @@ export default {
           this.loading = false;
           this.ll = false;
           this.errorState = true;
-          this.errorMsg = `${err.code}`;
+          this.errorMsg = `${err.message}`;
         });
     },
     async getSavedInfo(locationId) {
