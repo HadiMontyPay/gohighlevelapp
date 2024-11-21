@@ -65,7 +65,7 @@ export default {
   methods: {
     async submitPayment() {
       // Add payment submission logic here
-      const pay = await axios
+      await axios
         .post("/getPaymentRedirectURL", {
           merchant_key: this.merchant_key,
           merchant_pass: this.merchant_pass,
@@ -84,13 +84,13 @@ export default {
           },
         })
         .then((response) => {
-          return response.data.redirect_url;
+          this.iframeSrc = response.data.redirect_url;
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);
+          this.ll = true;
         });
-      this.iframeSrc = pay;
-      this.loading = false;
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);

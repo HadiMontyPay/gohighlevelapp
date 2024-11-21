@@ -386,11 +386,11 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     })
     .then((responce) => {
       // console.log(responce);
-      return res.json({ redirect_url: responce.data.redirect_url });
+      return res.status(200).json({ redirect_url: responce.data.redirect_url });
     })
     .catch((err) => {
       console.log("Error:", err);
-      return res.json({ Error: err });
+      return res.status(500).json({ Error: err });
     });
 });
 
