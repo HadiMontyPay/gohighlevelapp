@@ -98,7 +98,7 @@ export default {
           this.loading = false;
           this.ll = false;
           this.errorState = true;
-          this.errorMsg = `${err.message}`;
+          this.errorMsg = `${err.message}\n Please try again later`;
         });
     },
     async getSavedInfo(locationId) {
