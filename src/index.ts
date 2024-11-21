@@ -390,7 +390,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     })
     .catch((err) => {
       console.log("Error:", err);
-      return res.status(500).json({ Error: err });
+      return res.json({ Error: err });
     });
 });
 

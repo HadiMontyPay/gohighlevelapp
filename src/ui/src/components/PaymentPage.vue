@@ -8,6 +8,9 @@
     <div id="lll" v-if="ll === true">
       <div class="loader"></div>
     </div>
+    <div v-if="errorState === true">
+      <h1>{{ errorMsg }}</h1>
+    </div>
   </div>
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
@@ -34,8 +37,8 @@ export default {
   // },
   data() {
     return {
-      // socket: null,
-      // messages: [],
+      errorState: false,
+      errorMsg: "",
       newData: null,
       iframeSrc: "about:blank",
       loading: true,
@@ -89,7 +92,10 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.ll = true;
+          this.loading = false;
+          this.ll = false;
+          this.errorState = true;
+          this.errorMsg = `${err.code}`;
         });
     },
     async getSavedInfo(locationId) {
