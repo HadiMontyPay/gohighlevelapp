@@ -8,9 +8,8 @@ import sequelize from "./database"; // Adjust path if necessary
 import { GHL } from "./ghl";
 import cors from "cors";
 import CryptoJS from "crypto-js";
-import http from "http";
 import https from "https";
-import WebSocket, { WebSocketServer } from "ws";
+import WebSocket from "ws";
 import bodyParser from "body-parser";
 import fs from "fs";
 
@@ -366,21 +365,33 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
       email: customer.email,
     },
   };
-  try {
-    const response = await fetch(
-      "https://checkout.montypay.com/api/v1/session",
-      {
-        method: "POST",
-        body: JSON.stringify(endObject),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    const jsonResponse = await response.json();
-    return res.status(200).json(jsonResponse);
-  } catch (err) {
-    console.log("ERROR", err);
-    return res.status(500).json(err);
-  }
+  await axios
+    .post("https://checkout.montypay.com/api/v1/session", {
+      merchant_key: merchant_key,
+      merchant_pass: merchant_pass,
+      operation: operation,
+      cancel_url: cancel_url,
+      success_url: success_url,
+      hash: `${result}`,
+      order: {
+        description: order.description,
+        number: order.number,
+        amount: order.amount,
+        currency: order.currency,
+      },
+      customer: {
+        name: customer.name,
+        email: customer.email,
+      },
+    })
+    .then((responce) => {
+      // console.log(responce);
+      return res.json({ redirect_url: responce.data.redirect_url });
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      return res.json({ Error: err });
+    });
 });
 
 app.get("*", (req: Request, res: Response) => {
