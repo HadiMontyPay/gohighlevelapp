@@ -80,7 +80,7 @@ export default {
           success_url: this.success_url,
           order: {
             description: this.order.description,
-            number: "B07",
+            number: this.order.number,
             amount: this.order.amount,
             currency: this.order.currency,
           },
