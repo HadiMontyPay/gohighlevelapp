@@ -302,7 +302,7 @@ export default {
   mounted() {
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
-      console.log("Loaded On Mount Data:", data);
+      // console.log("Loaded On Mount Data:", data);
       this.total = data.amount;
 
       if (data.currency.toUpperCase() === "JOD") {
