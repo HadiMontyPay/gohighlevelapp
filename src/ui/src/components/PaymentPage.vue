@@ -142,7 +142,7 @@ export default {
                 }),
                 "*"
               );
-              axios.post("https://lhg.montypaydev.com:8080/verification", {
+              axios.post("https://lhg.montypay.com:8080/verification", {
                 type: "wait",
               });
               break;
@@ -161,7 +161,7 @@ export default {
                 }),
                 "*"
               );
-              axios.post("https://lhg.montypaydev.com:8080/verification", {
+              axios.post("https://lhg.montypay.com:8080/verification", {
                 type: "fail",
               });
               break;
@@ -180,7 +180,7 @@ export default {
                 }),
                 "*"
               );
-              axios.post("https://lhg.montypaydev.com:8080/verification", {
+              axios.post("https://lhg.montypay.com:8080/verification", {
                 type: "fail",
               });
               break;
@@ -228,7 +228,7 @@ export default {
             }),
             "*"
           );
-          axios.post("https://lhg.montypaydev.com:8080/verification", {
+          axios.post("https://lhg.montypay.com:8080/verification", {
             type: "success",
           });
           break;
@@ -246,7 +246,7 @@ export default {
             }),
             "*"
           );
-          axios.post("https://lhg.montypaydev.com:8080/verification", {
+          axios.post("https://lhg.montypay.com:8080/verification", {
             type: "fail",
           });
           break;
@@ -261,7 +261,7 @@ export default {
             }),
             "*"
           );
-          axios.post("https://lhg.montypaydev.com:8080/verification", {
+          axios.post("https://lhg.montypay.com:8080/verification", {
             type: "wait",
           });
           break;
@@ -276,7 +276,7 @@ export default {
             }),
             "*"
           );
-          axios.post("https://lhg.montypaydev.com:8080/verification", {
+          axios.post("https://lhg.montypay.com:8080/verification", {
             type: "fail",
           });
           break;
@@ -292,7 +292,7 @@ export default {
             }),
             "*"
           );
-          axios.post("https://lhg.montypaydev.com:8080/verification", {
+          axios.post("https://lhg.montypay.com:8080/verification", {
             type: "fail",
           });
           break;
@@ -329,7 +329,7 @@ export default {
       "*"
     );
 
-    const socket = new WebSocket(`wss://lhg.montypaydev.com:8080`);
+    const socket = new WebSocket(`wss://lhg.montypay.com:8080`);
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
       try {
