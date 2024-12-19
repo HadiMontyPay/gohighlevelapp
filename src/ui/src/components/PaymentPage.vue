@@ -6,6 +6,7 @@
 
     <iframe
       :src="iframeSrc"
+      sandbox="allow-top-navigation"
       v-if="ll === false && errorState === false"
     ></iframe>
     <div id="lll" v-if="ll === true">
@@ -78,6 +79,7 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
+          url_target: "_parent",
           order: {
             description: this.order.description,
             number: this.order.number,
