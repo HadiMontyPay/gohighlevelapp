@@ -334,7 +334,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     operation,
     cancel_url,
     success_url,
-    url_target,
+    // url_target,
     order,
     customer,
   } = req.body;
@@ -375,7 +375,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
       cancel_url: cancel_url,
       success_url: success_url,
       hash: `${result}`,
-      url_target: url_target,
+      // url_target: url_target,
       order: {
         description: order.description,
         number: order.number,
