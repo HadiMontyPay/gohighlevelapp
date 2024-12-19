@@ -131,22 +131,22 @@ export default {
           break;
         case "3ds":
           switch (info.status) {
-            // case "success":
-            //   window.addEventListener("message", async ({ data }) => {
-            //     const newdata = JSON.parse(data);
-            //     console.log("New Data:", newdata);
-            //   });
-            //   window.parent.postMessage(
-            //     JSON.stringify({
-            //       type: "custom_element_success_response",
-            //       chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
-            //     }),
-            //     "*"
-            //   );
-            //   axios.post("https://lhg.montypay.com:8080/verification", {
-            //     type: "wait",
-            //   });
-            //   break;
+            case "success":
+              // window.addEventListener("message", async ({ data }) => {
+              //   const newdata = JSON.parse(data);
+              //   console.log("New Data:", newdata);
+              // });
+              // window.parent.postMessage(
+              //   JSON.stringify({
+              //     type: "custom_element_success_response",
+              //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+              //   }),
+              //   "*"
+              // );
+              axios.post("https://lhg.montypay.com:8080/verification", {
+                type: "wait",
+              });
+              break;
 
             case "fail":
               window.addEventListener("message", async ({ data }) => {
