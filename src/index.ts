@@ -334,7 +334,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     operation,
     cancel_url,
     success_url,
-    // url_target,
     order,
     customer,
   } = req.body;
@@ -348,25 +347,24 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
 
   let hash = CryptoJS.SHA1(CryptoJS.MD5(to_md5.toUpperCase()).toString());
   let result = CryptoJS.enc.Hex.stringify(hash);
-  // const endObject = {
-  //   merchant_key: merchant_key,
-  //   merchant_pass: merchant_pass,
-  //   operation: operation,
-  //   cancel_url: cancel_url,
-  //   success_url: success_url,
-  //   url_target:url_target,
-  //   hash: `${result}`,
-  //   order: {
-  //     description: order.description,
-  //     number: order.number,
-  //     amount: order.amount,
-  //     currency: order.currency,
-  //   },
-  //   customer: {
-  //     name: customer.name,
-  //     email: customer.email,
-  //   },
-  // };
+  const endObject = {
+    merchant_key: merchant_key,
+    merchant_pass: merchant_pass,
+    operation: operation,
+    cancel_url: cancel_url,
+    success_url: success_url,
+    hash: `${result}`,
+    order: {
+      description: order.description,
+      number: order.number,
+      amount: order.amount,
+      currency: order.currency,
+    },
+    customer: {
+      name: customer.name,
+      email: customer.email,
+    },
+  };
   await axios
     .post("https://checkout.montypay.com/api/v1/session", {
       merchant_key: merchant_key,
@@ -375,7 +373,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
       cancel_url: cancel_url,
       success_url: success_url,
       hash: `${result}`,
-      // url_target: url_target,
       order: {
         description: order.description,
         number: order.number,

@@ -78,7 +78,6 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
-          // url_target: "_blank",
           order: {
             description: this.order.description,
             number: this.order.number,
@@ -132,17 +131,17 @@ export default {
         case "3ds":
           switch (info.status) {
             case "success":
-              // window.addEventListener("message", async ({ data }) => {
-              //   const newdata = JSON.parse(data);
-              //   console.log("New Data:", newdata);
-              // });
-              // window.parent.postMessage(
-              //   JSON.stringify({
-              //     type: "custom_element_success_response",
-              //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
-              //   }),
-              //   "*"
-              // );
+              window.addEventListener("message", async ({ data }) => {
+                const newdata = JSON.parse(data);
+                console.log("New Data:", newdata);
+              });
+              window.parent.postMessage(
+                JSON.stringify({
+                  type: "custom_element_success_response",
+                  chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+                }),
+                "*"
+              );
               axios.post("https://lhg.montypay.com:8080/verification", {
                 type: "wait",
               });
