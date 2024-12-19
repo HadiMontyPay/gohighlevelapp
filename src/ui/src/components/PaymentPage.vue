@@ -78,7 +78,7 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
-          url_target: "_parent",
+          url_target: "_top",
           order: {
             description: this.order.description,
             number: this.order.number,
@@ -303,7 +303,7 @@ export default {
   mounted() {
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
-      console.log("Loaded On Mount Data:", data);
+      // console.log("Loaded On Mount Data:", data);
       this.total = data.amount;
 
       if (data.currency.toUpperCase() === "JOD") {
