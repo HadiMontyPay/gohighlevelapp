@@ -388,7 +388,7 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
       },
     })
     .then((responce) => {
-      // console.log(responce);
+      console.log("Redirect URL Responce:", responce);
       return res.status(200).json({ redirect_url: responce.data.redirect_url });
     })
     .catch((err) => {
