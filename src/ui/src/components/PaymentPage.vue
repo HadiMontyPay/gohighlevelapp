@@ -304,7 +304,7 @@ export default {
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       console.log("Loaded On Mount Data:", data);
-      this.total = data.amount;
+      this.total = parseFloat(data.amount);
 
       if (data.currency.toUpperCase() === "JOD") {
         this.order.amount = this.total.toFixed(3);
