@@ -126,12 +126,13 @@ async function saveMerchantInfo() {
     console.log("Merchant Password Invalid");
     return;
   }
-
+  Message.value = " ";
   const data = await window.ghl.saveMerchantInfo(
     merchantKey.value,
     merchantPass.value,
     locationId.value
   );
+  console.log("Data:", data);
 
   Message.value = "";
 
