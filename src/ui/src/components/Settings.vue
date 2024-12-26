@@ -126,19 +126,16 @@ async function saveMerchantInfo() {
     console.log("Merchant Password Invalid");
     return;
   }
-  Message.value = " ";
+
   const data = await window.ghl.saveMerchantInfo(
     merchantKey.value,
     merchantPass.value,
     locationId.value
   );
-  console.log("Data:", data);
-
-  Message.value = "";
-
+  Message.value = data;
   if (!data) {
     console.log("error:", data);
-    Message.value = "Merchant Key and Password Already In Use";
+    Message.value = data;
   }
 }
 
@@ -158,17 +155,17 @@ async function saveTestMerchantInfo() {
     return;
   }
 
-  Message.value = " ";
   const data = await window.ghl.saveTestMerchantInfo(
     TestmerchantKey.value,
     TestmerchantPass.value,
     locationId.value
   );
-  console.log("Data:", data);
+  // console.log("Data:", data);
+  Message.value = data;
   // found.value = data;
   if (!data) {
     console.log("error:", data);
-    Message.value = "Merchant Test Key and Password Already In Use";
+    Message.value = data;
   }
 }
 </script>

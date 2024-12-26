@@ -55,7 +55,7 @@ export class GHL {
         }
       )
       .then((resp) => {
-        return resp.data;
+        return resp.data.message;
       })
       .catch((err) => {
         return err.response.data.message;
@@ -80,7 +80,7 @@ export class GHL {
         }
       )
       .then((resp) => {
-        return resp.data;
+        return resp.data.message;
       })
       .catch((err) => {
         return err.response.data.message;
