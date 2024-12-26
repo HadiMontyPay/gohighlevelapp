@@ -4,7 +4,7 @@
     <p>
       Please update the test and live credentials below to use payment gateway.
     </p>
-    <p>Message:{{ Message }}</p>
+    <div id="message">{{ Message }}</div>
     <form @submit.prevent="saveTestMerchantInfo">
       <fieldset>
         <legend>Test Credentials</legend>
@@ -181,6 +181,8 @@ export default {
 
 <style>
 #settings_page {
+  position: relative;
+
   h1 {
     border: none;
     font-size: 20px;
@@ -232,6 +234,16 @@ export default {
         border-radius: 8px;
       }
     }
+  }
+
+  #message {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 2px solid #155eef;
   }
 }
 
