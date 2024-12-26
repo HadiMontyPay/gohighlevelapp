@@ -58,7 +58,7 @@ export class GHL {
         return resp.data;
       })
       .catch((err) => {
-        return err;
+        return err.response.data.message;
       });
     return res;
   }
@@ -83,7 +83,7 @@ export class GHL {
         return resp.data;
       })
       .catch((err) => {
-        return err;
+        return err.response.data.message;
       });
     return res;
   }
