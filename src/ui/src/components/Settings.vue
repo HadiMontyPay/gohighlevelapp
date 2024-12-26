@@ -157,13 +157,13 @@ async function saveTestMerchantInfo() {
     return;
   }
 
+  Message.value = " ";
   const data = await window.ghl.saveTestMerchantInfo(
     TestmerchantKey.value,
     TestmerchantPass.value,
     locationId.value
   );
 
-  Message.value = "";
   // found.value = data;
   if (!data) {
     console.log("error:", data);
