@@ -227,6 +227,7 @@ app.patch("/save-merchant-info", async (req: Request, res: Response) => {
   );
 
   if (existingInstallation === true) {
+    console.log("Exists");
     return res
       .status(403)
       .json({ message: "Merchant Key and Password already In Use" });
@@ -289,6 +290,7 @@ app.patch("/save-test-merchant-info", async (req: Request, res: Response) => {
   );
 
   if (existingInstallation === true) {
+    console.log("Exists");
     return res
       .status(403)
       .json({ message: "Merchant Test Key and Password already In Use" });
