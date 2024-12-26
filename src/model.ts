@@ -55,51 +55,25 @@ export class Model {
     merchantPass: string,
     locationId: string
   ) {
-    const existingInstallation = await InstallationDetails.findOne({
-      where: {
-        merchantKey: merchantKey,
-        merchantPass: merchantPass,
-      },
-    });
-
-    if (existingInstallation) {
-      return { error: "merchant key and password already in use" };
-    } else {
-      return await InstallationDetails.update(
-        { merchantKey: merchantKey, merchantPass: merchantPass },
-        { where: { locationId: locationId } }
-      );
-    }
+    await InstallationDetails.update(
+      { merchantKey: merchantKey, merchantPass: merchantPass },
+      { where: { locationId: locationId } }
+    );
   }
-
   async saveTestMerchantInfo(
     TestmerchantKey: string,
     TestmerchantPass: string,
     locationId: string
   ) {
-    const existingInstallation = await InstallationDetails.findOne({
+    await InstallationDetails.update(
+      { TestmerchantKey: TestmerchantKey, TestmerchantPass: TestmerchantPass },
+      { where: { locationId: locationId } }
+    );
+    return await InstallationDetails.findOne({
       where: {
-        TestmerchantKey: TestmerchantKey,
-        TestmerchantPass: TestmerchantPass,
+        locationId: locationId,
       },
     });
-
-    if (existingInstallation) {
-      return { error: "merchant test key and password already in use" };
-    } else {
-      await InstallationDetails.update(
-        {
-          TestmerchantKey: TestmerchantKey,
-          TestmerchantPass: TestmerchantPass,
-        },
-        { where: { locationId: locationId } }
-      );
-      return await InstallationDetails.findOne({
-        where: {
-          locationId: locationId,
-        },
-      });
-    }
   }
 
   async getByLocationId(locationId: string) {
@@ -128,5 +102,39 @@ export class Model {
         locationId: locationId,
       },
     });
+  }
+
+  async checkForExistingMerchantInfo(
+    merchantKey: string,
+    merchantPass: string
+  ) {
+    const existingInstallation = await InstallationDetails.findOne({
+      where: {
+        merchantKey: merchantKey,
+        merchantPass: merchantPass,
+      },
+    });
+    if (existingInstallation) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async checkForExistingTestMerchantInfo(
+    TestmerchantKey: string,
+    TestmerchantPass: string
+  ) {
+    const existingInstallation = await InstallationDetails.findOne({
+      where: {
+        TestmerchantKey: TestmerchantKey,
+        TestmerchantPass: TestmerchantPass,
+      },
+    });
+    if (existingInstallation) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

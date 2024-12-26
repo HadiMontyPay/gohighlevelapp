@@ -119,6 +119,21 @@ export class GHL {
       locationId
     );
   }
+
+  checkForExistingMerchantInfo(merchantKey: string, merchantPass: string) {
+    return this.model.checkForExistingMerchantInfo(merchantKey, merchantPass);
+  }
+
+  checkForExistingTestMerchantInfo(
+    TestmerchantKey: string,
+    TestmerchantPass: string
+  ) {
+    return this.model.checkForExistingTestMerchantInfo(
+      TestmerchantKey,
+      TestmerchantPass
+    );
+  }
+
   getByLocationId(locationId: string) {
     return this.model.getByLocationId(locationId);
   }
