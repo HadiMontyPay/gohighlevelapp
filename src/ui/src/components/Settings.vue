@@ -164,7 +164,7 @@ async function saveTestMerchantInfo() {
     TestmerchantPass.value,
     locationId.value
   );
-
+  console.log("Data:", data);
   // found.value = data;
   if (!data) {
     console.log("error:", data);
