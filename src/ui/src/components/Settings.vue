@@ -97,13 +97,12 @@ async function getSavedInfo(locationId) {
 }
 
 onMounted(() => {
-  // animateTtt(top);
   getUserData();
 });
 
 function animateTtt(tttRef) {
   const duration = 300; // Duration for the animation in milliseconds
-  const waitTime = 2000; // Wait time in milliseconds
+  const waitTime = 4000; // Wait time in milliseconds
   const startValue = -100; // Starting value of ttt
   const endValue = 0; // Ending value of ttt
 
