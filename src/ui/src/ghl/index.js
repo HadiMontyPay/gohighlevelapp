@@ -39,40 +39,51 @@ export class GHL {
   }
 
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
-    const res = await axios.patch(
-      "/save-merchant-info",
-      {
-        merchantKey: merchantKey,
-        merchantPass: merchantPass,
-        locationId: locationId,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+    await axios
+      .patch(
+        "/save-merchant-info",
+        {
+          merchantKey: merchantKey,
+          merchantPass: merchantPass,
+          locationId: locationId,
         },
-      }
-    );
-    return res.data;
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
-    const res = await axios.patch(
-      "/save-test-merchant-info",
-      {
-        TestmerchantKey: TestmerchantKey,
-        TestmerchantPass: TestmerchantPass,
-        locationId: locationId,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+    await axios
+      .patch(
+        "/save-test-merchant-info",
+        {
+          TestmerchantKey: TestmerchantKey,
+          TestmerchantPass: TestmerchantPass,
+          locationId: locationId,
         },
-      }
-    );
-
-    return res.data;
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 
   async getSavedInfo(locationId) {
