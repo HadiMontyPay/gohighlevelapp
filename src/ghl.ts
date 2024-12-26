@@ -131,6 +131,10 @@ export class GHL {
     return this.model.updateProviderConfig(locationId, providerConfig);
   }
 
+  deleteInstallationInfo(locationId: string) {
+    return this.model.deleteInstallationInfo(locationId);
+  }
+
   private async refreshAccessToken(resourceId: string) {
     try {
       const resp = await axios.post(

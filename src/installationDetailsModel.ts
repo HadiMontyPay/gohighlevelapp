@@ -104,6 +104,7 @@ InstallationDetails.init(
   {
     sequelize,
     tableName: "installation_details",
+    paranoid: true,
   }
 );
 

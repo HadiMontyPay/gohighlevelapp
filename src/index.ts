@@ -183,7 +183,9 @@ app.get("/api-call-location", async (req: Request, res: Response) => {
 })` sets up a route for handling HTTP POST requests to the "/example-webhook-handler" endpoint. The below POST
 api can be used to subscribe to various webhook events configured for the app. */
 app.post("/webhook-handler", async (req: Request, res: Response) => {
-  console.log("Body:", req.body);
+  if (req.body.type === "UNINSTALL") {
+    await ghl.deleteInstallationInfo(req.body.locationId);
+  }
   return res.send(req.body);
 });
 

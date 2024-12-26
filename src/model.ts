@@ -95,4 +95,12 @@ export class Model {
       { where: { locationId: locationId } }
     );
   }
+
+  async deleteInstallationInfo(locationId: string) {
+    return await InstallationDetails.destroy({
+      where: {
+        locationId: locationId,
+      },
+    });
+  }
 }
