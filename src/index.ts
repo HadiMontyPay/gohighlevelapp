@@ -225,6 +225,10 @@ app.patch("/save-merchant-info", async (req: Request, res: Response) => {
     merchantPass,
     locationId
   );
+
+  if (info.error) {
+    return res.status(403).json({ error: info.error });
+  }
   const row = await ghl.getByLocationId(locationId as string);
   if (!row) {
     return res.status(500).json({ message: "Merchant Info Not Added" });
@@ -274,6 +278,9 @@ app.patch("/save-test-merchant-info", async (req: Request, res: Response) => {
     TestmerchantPass,
     locationId
   );
+  if (info.error) {
+    return res.status(403).json({ error: info.error });
+  }
   const row = await ghl.getByLocationId(locationId as string);
   if (!row) {
     return res.status(500).json({ message: "Merchant Info Not Added" });
