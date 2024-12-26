@@ -132,6 +132,9 @@ async function saveMerchantInfo() {
     merchantPass.value,
     locationId.value
   );
+
+  Message.value = "";
+
   if (!data) {
     console.log("error:", data);
     Message.value = "Merchant Key and Password Already In Use";
@@ -159,6 +162,8 @@ async function saveTestMerchantInfo() {
     TestmerchantPass.value,
     locationId.value
   );
+
+  Message.value = "";
   // found.value = data;
   if (!data) {
     console.log("error:", data);
