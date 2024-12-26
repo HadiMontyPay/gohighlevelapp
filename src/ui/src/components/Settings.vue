@@ -4,7 +4,7 @@
     <p>
       Please update the test and live credentials below to use payment gateway.
     </p>
-    <div id="message">{{ Message }}</div>
+    <div id="message" :style="{ top: top + 'px' }">{{ Message }}</div>
     <form @submit.prevent="saveTestMerchantInfo">
       <fieldset>
         <legend>Test Credentials</legend>
@@ -63,6 +63,7 @@ const locationId = ref("");
 
 const TestmerchantKey = ref("");
 const TestmerchantPass = ref("");
+const top = ref(-100);
 
 const Message = ref("");
 
@@ -96,8 +97,44 @@ async function getSavedInfo(locationId) {
 }
 
 onMounted(() => {
+  // animateTtt(top);
   getUserData();
 });
+
+function animateTtt(tttRef) {
+  const duration = 300; // Duration for the animation in milliseconds
+  const waitTime = 2000; // Wait time in milliseconds
+  const startValue = -100; // Starting value of ttt
+  const endValue = 0; // Ending value of ttt
+
+  let startTime = null;
+
+  // Helper function to animate the value from start to end
+  const animate = (from, to, onComplete) => {
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      tttRef.value = from + (to - from) * progress;
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        startTime = null;
+        onComplete && onComplete();
+      }
+    };
+    requestAnimationFrame(step);
+  };
+
+  // Start the animation sequence
+  animate(startValue, endValue, () => {
+    // Wait for 500ms
+    setTimeout(() => {
+      // Animate back to the start value
+      animate(endValue, startValue);
+    }, waitTime);
+  });
+}
 
 function validateMerchantKey(str) {
   let regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -133,9 +170,11 @@ async function saveMerchantInfo() {
     locationId.value
   );
   Message.value = data;
+  animateTtt(top);
   if (!data) {
     console.log("error:", data);
     Message.value = data;
+    animateTtt(top);
   }
 }
 
@@ -162,10 +201,12 @@ async function saveTestMerchantInfo() {
   );
   // console.log("Data:", data);
   Message.value = data;
+  animateTtt(top);
   // found.value = data;
   if (!data) {
     console.log("error:", data);
     Message.value = data;
+    animateTtt(top);
   }
 }
 </script>
@@ -238,7 +279,7 @@ export default {
 
   #message {
     position: absolute;
-    top: 0;
+    /* top: -100px; */
     right: 30px;
     padding: 1rem;
     background-color: #ffffff;
