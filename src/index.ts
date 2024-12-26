@@ -462,7 +462,7 @@ app.post("/verification", (req: Request, res: Response) => {
 
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ force: false, alter: true }); // This will create the table if it doesn't exist
+    await sequelize.sync({ force: false, alter: false }); // This will create the table if it doesn't exist
     console.log("Database synchronized.");
   } catch (error) {
     console.error("Error synchronizing the database:", error);
