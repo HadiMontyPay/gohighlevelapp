@@ -4,6 +4,7 @@
     <p>
       Please update the test and live credentials below to use payment gateway.
     </p>
+    <p>Message:{{ Message }}</p>
     <form @submit.prevent="saveTestMerchantInfo">
       <fieldset>
         <legend>Test Credentials</legend>
@@ -63,6 +64,8 @@ const locationId = ref("");
 const TestmerchantKey = ref("");
 const TestmerchantPass = ref("");
 
+const Message = ref("");
+
 async function getUserData() {
   const data = await window.ghl.getUserData();
   locationId.value = data.activeLocation;
@@ -91,6 +94,7 @@ async function getSavedInfo(locationId) {
     loading.value = false;
   }
 }
+
 onMounted(() => {
   getUserData();
 });
@@ -131,6 +135,7 @@ async function saveMerchantInfo() {
   if (!data) {
     console.log("error:", data);
   }
+  Message.value = data.message;
 }
 
 async function saveTestMerchantInfo() {
