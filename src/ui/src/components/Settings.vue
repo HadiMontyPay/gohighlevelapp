@@ -163,6 +163,7 @@ async function saveTestMerchantInfo() {
   if (!data) {
     console.log("error:", data);
   }
+  Message.value = data.message;
 }
 </script>
 

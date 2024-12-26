@@ -72,7 +72,7 @@ export class GHL {
       }
     );
 
-    return res.data.userInfo;
+    return res.data;
   }
 
   async getSavedInfo(locationId) {
