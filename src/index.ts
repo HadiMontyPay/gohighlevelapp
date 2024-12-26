@@ -74,6 +74,8 @@ wss.on("connection", function connection(ws) {
 app.get("/authorize-handler", async (req: Request, res: Response) => {
   const { code } = req.query;
   const rs = await ghl.authorizationHandler(code as string);
+
+  console.log("Body:", req.body);
   try {
     const url = `https://services.leadconnectorhq.com/payments/custom-provider/provider?locationId=${rs?.locationId}`;
 
