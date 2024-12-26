@@ -39,7 +39,7 @@ export class GHL {
   }
 
   async saveMerchantInfo(merchantKey, merchantPass, locationId) {
-    await axios
+    const res = await axios
       .patch(
         "/save-merchant-info",
         {
@@ -54,16 +54,17 @@ export class GHL {
           },
         }
       )
-      .then((res) => {
-        return res.data;
+      .then((resp) => {
+        return resp.data;
       })
       .catch((err) => {
         return err;
       });
+    return res;
   }
 
   async saveTestMerchantInfo(TestmerchantKey, TestmerchantPass, locationId) {
-    await axios
+    const res = await axios
       .patch(
         "/save-test-merchant-info",
         {
@@ -78,12 +79,13 @@ export class GHL {
           },
         }
       )
-      .then((res) => {
-        return res.data;
+      .then((resp) => {
+        return resp.data;
       })
       .catch((err) => {
         return err;
       });
+    return res;
   }
 
   async getSavedInfo(locationId) {
