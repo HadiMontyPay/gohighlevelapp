@@ -147,6 +147,7 @@ function validateMerchantPass(str) {
     return true;
   }
 }
+
 async function saveMerchantInfo() {
   if (locationId.value === "") {
     console.log("LocationID Empty");
