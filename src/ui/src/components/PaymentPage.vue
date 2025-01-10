@@ -189,7 +189,62 @@ export default {
 
           break;
         case "redirect":
-          this.handleStatus(info.status, info.id);
+          switch (info.status) {
+            case "success":
+              // window.addEventListener("message", async ({ data }) => {
+              //   const newdata = JSON.parse(data);
+              //   console.log("New Data:", newdata);
+              // });
+              // window.parent.postMessage(
+              //   JSON.stringify({
+              //     type: "custom_element_success_response",
+              //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+              //   }),
+              //   "*"
+              // );
+              axios.post("https://lhg.montypay.com:8080/verification", {
+                type: "wait",
+              });
+              break;
+
+            case "fail":
+              window.addEventListener("message", async ({ data }) => {
+                const newdata = JSON.parse(data);
+                console.log("New Data:", newdata);
+              });
+              window.parent.postMessage(
+                JSON.stringify({
+                  type: "custom_element_error_response",
+                  error: {
+                    description: "Payment Failed", // Error message to be shown to the user
+                  },
+                }),
+                "*"
+              );
+              axios.post("https://lhg.montypay.com:8080/verification", {
+                type: "fail",
+              });
+              break;
+
+            default:
+              window.addEventListener("message", async ({ data }) => {
+                const newdata = JSON.parse(data);
+                console.log("New Data:", newdata);
+              });
+              window.parent.postMessage(
+                JSON.stringify({
+                  type: "custom_element_error_response",
+                  error: {
+                    description: "Payment Failed", // Error message to be shown to the user
+                  },
+                }),
+                "*"
+              );
+              axios.post("https://lhg.montypay.com:8080/verification", {
+                type: "fail",
+              });
+              break;
+          }
           break;
         case "capture":
           this.handleStatus(info.status, info.id);
