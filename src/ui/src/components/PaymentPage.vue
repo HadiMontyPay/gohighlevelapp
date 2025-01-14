@@ -362,17 +362,9 @@ export default {
       this.total = parseFloat(data.amount);
 
       if (data.currency.toUpperCase() === "JOD") {
-        if (typeof this.total === "string") {
-          this.order.amount = parseFloat(this.total).toFixed(3);
-        } else {
-          this.order.amount = this.total.toFixed(3);
-        }
+        this.order.amount = this.total.toFixed(3);
       } else {
-        if (typeof this.total === "string") {
-          this.order.amount = parseFloat(this.total).toFixed(2);
-        } else {
-          this.order.amount = this.total.toFixed(2);
-        }
+        this.order.amount = this.total.toFixed(2);
       }
       this.order.currency = data.currency.toUpperCase();
       if (data.description === "") {
