@@ -373,8 +373,18 @@ export default {
         this.order.description = data.description;
       }
       this.order.number = data.orderId;
-      this.customer.name = data.contact.name;
-      this.customer.email = data.contact.email;
+      if (data.contact.name) {
+        this.customer.name = data.contact.name;
+      } else {
+        this.customer.name = "";
+      }
+      if (data.contact.email) {
+        this.customer.email = data.contact.email;
+      } else {
+        this.customer.email = "";
+      }
+      // this.customer.name = data.contact.name;
+      // this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
     });
     window.parent.postMessage(
