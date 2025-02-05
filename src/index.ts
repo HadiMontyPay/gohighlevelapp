@@ -433,15 +433,6 @@ app.get("*", (req: Request, res: Response) => {
 
 app.post("/notifications", (req: Request, res: Response) => {
   const newData = req.body;
-  // Broadcast the notification to all connected clients
-  // clients.forEach((client) => {
-  //   if (client.readyState === WebSocket.OPEN) {
-  //     client.send(JSON.stringify(newData)); // Send notification as JSON
-  //   } else {
-  //     // Handle closed or closing connections
-  //     clients.delete(client); // Remove closed clients from the Set
-  //   }
-  // });
   console.log("Notifications:", newData);
 
   clients.forEach((client) => {
