@@ -125,165 +125,151 @@ export default {
       // // Add any additional logic to handle the new data
       // console.log("Info:", info);
 
-      if (info.order_number !== this.order.number) {
-        window.addEventListener("message", async ({ data }) => {
-          const newdata = JSON.parse(data);
-          console.log("New Data:", newdata);
-        });
-        window.parent.postMessage(
-          JSON.stringify({
-            type: "custom_element_close_response",
-          }),
-          "*"
-        );
-        axios.post("https://lhg.montypay.com:8080/verification", {
-          type: "wait",
-        });
-      }
+      if (info.order_number === this.order.number) {
+        switch (info.type) {
+          case "sale":
+            this.handleStatus(info.status, info.id);
+            break;
+          case "3ds":
+            switch (info.status) {
+              case "success":
+                // window.addEventListener("message", async ({ data }) => {
+                //   const newdata = JSON.parse(data);
+                //   console.log("New Data:", newdata);
+                // });
+                // window.parent.postMessage(
+                //   JSON.stringify({
+                //     type: "custom_element_success_response",
+                //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+                //   }),
+                //   "*"
+                // );
+                axios.post("https://lhg.montypay.com:8080/verification", {
+                  type: "wait",
+                });
+                break;
 
-      switch (info.type) {
-        case "sale":
-          this.handleStatus(info.status, info.id);
-          break;
-        case "3ds":
-          switch (info.status) {
-            case "success":
-              // window.addEventListener("message", async ({ data }) => {
-              //   const newdata = JSON.parse(data);
-              //   console.log("New Data:", newdata);
-              // });
-              // window.parent.postMessage(
-              //   JSON.stringify({
-              //     type: "custom_element_success_response",
-              //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
-              //   }),
-              //   "*"
-              // );
-              axios.post("https://lhg.montypay.com:8080/verification", {
-                type: "wait",
-              });
-              break;
+              case "fail":
+                window.addEventListener("message", async ({ data }) => {
+                  const newdata = JSON.parse(data);
+                  console.log("New Data:", newdata);
+                });
+                window.parent.postMessage(
+                  JSON.stringify({
+                    type: "custom_element_error_response",
+                    error: {
+                      description: "Payment Failed", // Error message to be shown to the user
+                    },
+                  }),
+                  "*"
+                );
+                axios.post("https://lhg.montypay.com:8080/verification", {
+                  type: "fail",
+                });
+                break;
 
-            case "fail":
-              window.addEventListener("message", async ({ data }) => {
-                const newdata = JSON.parse(data);
-                console.log("New Data:", newdata);
-              });
-              window.parent.postMessage(
-                JSON.stringify({
-                  type: "custom_element_error_response",
-                  error: {
-                    description: "Payment Failed", // Error message to be shown to the user
-                  },
-                }),
-                "*"
-              );
-              axios.post("https://lhg.montypay.com:8080/verification", {
-                type: "fail",
-              });
-              break;
+              default:
+                window.addEventListener("message", async ({ data }) => {
+                  const newdata = JSON.parse(data);
+                  console.log("New Data:", newdata);
+                });
+                window.parent.postMessage(
+                  JSON.stringify({
+                    type: "custom_element_error_response",
+                    error: {
+                      description: "Payment Failed", // Error message to be shown to the user
+                    },
+                  }),
+                  "*"
+                );
+                axios.post("https://lhg.montypay.com:8080/verification", {
+                  type: "fail",
+                });
+                break;
+            }
 
-            default:
-              window.addEventListener("message", async ({ data }) => {
-                const newdata = JSON.parse(data);
-                console.log("New Data:", newdata);
-              });
-              window.parent.postMessage(
-                JSON.stringify({
-                  type: "custom_element_error_response",
-                  error: {
-                    description: "Payment Failed", // Error message to be shown to the user
-                  },
-                }),
-                "*"
-              );
-              axios.post("https://lhg.montypay.com:8080/verification", {
-                type: "fail",
-              });
-              break;
-          }
+            break;
+          case "redirect":
+            switch (info.status) {
+              case "success":
+                // window.addEventListener("message", async ({ data }) => {
+                //   const newdata = JSON.parse(data);
+                //   console.log("New Data:", newdata);
+                // });
+                // window.parent.postMessage(
+                //   JSON.stringify({
+                //     type: "custom_element_success_response",
+                //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
+                //   }),
+                //   "*"
+                // );
+                axios.post("https://lhg.montypay.com:8080/verification", {
+                  type: "wait",
+                });
+                break;
 
-          break;
-        case "redirect":
-          switch (info.status) {
-            case "success":
-              // window.addEventListener("message", async ({ data }) => {
-              //   const newdata = JSON.parse(data);
-              //   console.log("New Data:", newdata);
-              // });
-              // window.parent.postMessage(
-              //   JSON.stringify({
-              //     type: "custom_element_success_response",
-              //     chargeId: info.id, // Payment gateway chargeId for given transaction (Will be shown in order/transaction/subscription details page
-              //   }),
-              //   "*"
-              // );
-              axios.post("https://lhg.montypay.com:8080/verification", {
-                type: "wait",
-              });
-              break;
+              case "fail":
+                window.addEventListener("message", async ({ data }) => {
+                  const newdata = JSON.parse(data);
+                  console.log("New Data:", newdata);
+                });
+                window.parent.postMessage(
+                  JSON.stringify({
+                    type: "custom_element_error_response",
+                    error: {
+                      description: "Payment Failed", // Error message to be shown to the user
+                    },
+                  }),
+                  "*"
+                );
+                axios.post("https://lhg.montypay.com:8080/verification", {
+                  type: "fail",
+                });
+                break;
 
-            case "fail":
-              window.addEventListener("message", async ({ data }) => {
-                const newdata = JSON.parse(data);
-                console.log("New Data:", newdata);
-              });
-              window.parent.postMessage(
-                JSON.stringify({
-                  type: "custom_element_error_response",
-                  error: {
-                    description: "Payment Failed", // Error message to be shown to the user
-                  },
-                }),
-                "*"
-              );
-              axios.post("https://lhg.montypay.com:8080/verification", {
-                type: "fail",
-              });
-              break;
+              default:
+                window.addEventListener("message", async ({ data }) => {
+                  const newdata = JSON.parse(data);
+                  console.log("New Data:", newdata);
+                });
+                window.parent.postMessage(
+                  JSON.stringify({
+                    type: "custom_element_error_response",
+                    error: {
+                      description: "Payment Failed", // Error message to be shown to the user
+                    },
+                  }),
+                  "*"
+                );
+                axios.post("https://lhg.montypay.com:8080/verification", {
+                  type: "fail",
+                });
+                break;
+            }
+            break;
+          case "capture":
+            this.handleStatus(info.status, info.id);
+            break;
+          case "refund":
+            this.handleStatus(info.status, info.id);
+            break;
+          case "void":
+            this.handleStatus(info.status, info.id);
+            break;
+          case "chargeback":
+            this.handleStatus(info.status, info.id);
+            break;
+          case "debit":
+            this.handleStatus(info.status, info.id);
+            break;
+          case "transfer":
+            this.handleStatus(info.status, info.id);
+            break;
 
-            default:
-              window.addEventListener("message", async ({ data }) => {
-                const newdata = JSON.parse(data);
-                console.log("New Data:", newdata);
-              });
-              window.parent.postMessage(
-                JSON.stringify({
-                  type: "custom_element_error_response",
-                  error: {
-                    description: "Payment Failed", // Error message to be shown to the user
-                  },
-                }),
-                "*"
-              );
-              axios.post("https://lhg.montypay.com:8080/verification", {
-                type: "fail",
-              });
-              break;
-          }
-          break;
-        case "capture":
-          this.handleStatus(info.status, info.id);
-          break;
-        case "refund":
-          this.handleStatus(info.status, info.id);
-          break;
-        case "void":
-          this.handleStatus(info.status, info.id);
-          break;
-        case "chargeback":
-          this.handleStatus(info.status, info.id);
-          break;
-        case "debit":
-          this.handleStatus(info.status, info.id);
-          break;
-        case "transfer":
-          this.handleStatus(info.status, info.id);
-          break;
-
-        default:
-          this.handleStatus(info.status, info.id);
-          break;
+          default:
+            this.handleStatus(info.status, info.id);
+            break;
+        }
       }
     },
     handleStatus(status, id) {
