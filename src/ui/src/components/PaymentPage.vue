@@ -123,7 +123,23 @@ export default {
     handleNewData(info) {
       // console.log("New data received in Vue.js:", info);
       // // Add any additional logic to handle the new data
-      console.log("Info:", info);
+      // console.log("Info:", info);
+
+      if (info.order_number !== this.order.number) {
+        window.addEventListener("message", async ({ data }) => {
+          const newdata = JSON.parse(data);
+          console.log("New Data:", newdata);
+        });
+        window.parent.postMessage(
+          JSON.stringify({
+            type: "custom_element_close_response",
+          }),
+          "*"
+        );
+        axios.post("https://lhg.montypay.com:8080/verification", {
+          type: "wait",
+        });
+      }
 
       switch (info.type) {
         case "sale":
