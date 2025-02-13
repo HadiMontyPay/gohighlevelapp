@@ -113,13 +113,9 @@ export default {
       }
       if (info.merchantKey !== "" || info.merchantKey !== null) {
         this.merchant_key = info.merchantKey;
-        console.log("Merchant Key:", this.merchant_key);
-        console.log("Key Type:", typeof this.merchant_key);
       }
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchant_pass = info.merchantPass;
-        console.log("Merchant Pass:", this.merchant_pass);
-        console.log("Pass Type:", typeof this.merchant_pass);
       }
       await this.submitPayment();
     },
