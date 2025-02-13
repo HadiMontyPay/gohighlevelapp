@@ -375,7 +375,11 @@ export default {
         this.order.description = data.description;
       }
       this.order.number = data.orderId;
-      this.customer.name = data.contact.name;
+      if (data.contact.name === "") {
+        this.customer.name = "Customer";
+      } else {
+        this.customer.name = data.contact.name;
+      }
       this.customer.email = data.contact.email;
       this.getSavedInfo(data.locationId);
     });
