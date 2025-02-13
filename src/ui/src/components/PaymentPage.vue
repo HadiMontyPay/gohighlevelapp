@@ -362,12 +362,16 @@ export default {
       data = JSON.parse(data);
       console.log("Loaded On Mount Data:", data);
       this.total = parseFloat(data.amount);
-      console.log("Total:", this.total);
+      console.log("Total before:", this.total);
 
       if (data.currency.toUpperCase() === "JOD") {
         this.order.amount = this.total.toFixed(3);
+        console.log("Total after:", this.total);
+        console.log("Total after:", typeof this.total);
       } else {
         this.order.amount = this.total.toFixed(2);
+        console.log("Total after:", this.total);
+        console.log("Total after:", typeof this.total);
       }
       this.order.currency = data.currency.toUpperCase();
       if (data.description === "") {
