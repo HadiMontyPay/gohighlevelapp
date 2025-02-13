@@ -104,7 +104,7 @@ export default {
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
-      // console.log(info);
+      console.log("info:", info);
       if (info.TestmerchantKey) {
         this.merchant_key = info.TestmerchantKey;
       }
@@ -365,12 +365,8 @@ export default {
 
       if (data.currency.toUpperCase() === "JOD") {
         this.order.amount = this.total.toFixed(3);
-        console.log("Order Amount:", this.order.amount);
-        console.log("Order Number Type", typeof this.order.amount);
       } else {
         this.order.amount = this.total.toFixed(2);
-        console.log("Order Amount:", this.order.amount);
-        console.log("Order Number Type", typeof this.order.amount);
       }
       this.order.currency = data.currency.toUpperCase();
       if (data.description === "") {
