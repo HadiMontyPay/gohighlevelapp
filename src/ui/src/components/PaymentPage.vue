@@ -362,6 +362,7 @@ export default {
       data = JSON.parse(data);
       console.log("Loaded On Mount Data:", data);
       this.total = parseFloat(data.amount);
+      console.log("Total:", this.total);
 
       if (data.currency.toUpperCase() === "JOD") {
         this.order.amount = this.total.toFixed(3);
