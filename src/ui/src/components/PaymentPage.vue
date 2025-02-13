@@ -104,7 +104,7 @@ export default {
     },
     async getSavedInfo(locationId) {
       const info = await window.ghl.getSavedInfo(locationId);
-      console.log("info:", info);
+      // console.log("info:", info);
       if (info.TestmerchantKey) {
         this.merchant_key = info.TestmerchantKey;
       }
@@ -113,9 +113,11 @@ export default {
       }
       if (info.merchantKey !== "" || info.merchantKey !== null) {
         this.merchant_key = info.merchantKey;
+        console.log("Merchant Key:", this.merchant_key);
       }
       if (info.merchantPass !== "" || info.merchantPass !== null) {
         this.merchant_pass = info.merchantPass;
+        console.log("Merchant Pass:", this.merchant_pass);
       }
       await this.submitPayment();
     },
