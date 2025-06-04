@@ -8,7 +8,6 @@
       :src="iframeSrc"
       v-if="ll === false && errorState === false"
       allow="payment *; fullscreen"
-      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-top-navigation-by-user-activation"
     ></iframe>
     <div id="lll" v-if="ll === true">
       <div class="loader"></div>
