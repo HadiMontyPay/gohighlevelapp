@@ -80,7 +80,7 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
-          url_target: "_parent",
+          url_target: "_self",
           order: {
             description: this.order.description,
             number: this.order.number,
