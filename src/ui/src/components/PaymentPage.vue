@@ -7,8 +7,6 @@
     <iframe
       :src="iframeSrc"
       v-if="ll === false && errorState === false"
-      allow="payment *; fullscreen"
-      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-top-navigation-by-user-activation"
     ></iframe>
     <div id="lll" v-if="ll === true">
       <div class="loader"></div>
@@ -80,7 +78,7 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
-          url_target: "_self",
+          url_target: "_parent",
           order: {
             description: this.order.description,
             number: this.order.number,
