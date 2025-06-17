@@ -375,7 +375,12 @@ export default {
       } else {
         this.order.description = data.description;
       }
-      this.order.number = data.orderId;
+      if (data.orderId === "") {
+        this.order.number = data.transactionId;
+      } else {
+        this.order.number = data.orderId;
+      }
+
       if (data.contact.name === "") {
         this.customer.name = "Customer";
       } else {
