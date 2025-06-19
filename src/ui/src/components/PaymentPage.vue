@@ -7,7 +7,7 @@
     <iframe
       :src="iframeSrc"
       v-if="ll === false && errorState === false"
-      allow="payment *; fullscreen"
+      allow="payment *; cookies; fullscreen"
     ></iframe>
     <div id="lll" v-if="ll === true">
       <div class="loader"></div>
