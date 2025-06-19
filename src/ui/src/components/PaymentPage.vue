@@ -359,6 +359,28 @@ export default {
     },
   },
   mounted() {
+    if (document.hasStorageAccess) {
+      document.hasStorageAccess().then((hasAccess) => {
+        if (!hasAccess) {
+          // Request access after user interaction (button, click, etc.)
+          document.body.addEventListener(
+            "click",
+            () => {
+              document
+                .requestStorageAccess()
+                .then(() => {
+                  console.log("Storage access granted.");
+                })
+                .catch(() => {
+                  console.warn("Storage access denied.");
+                });
+            },
+            { once: true }
+          ); // Add once to avoid multiple prompts
+        }
+      });
+    }
+    document.cookie = "my_cookie=value; SameSite=None; Secure";
     window.addEventListener("message", async ({ data }) => {
       data = JSON.parse(data);
       console.log("Loaded On Mount Data:", data);
