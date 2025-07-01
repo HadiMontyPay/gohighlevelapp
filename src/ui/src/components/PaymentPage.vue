@@ -55,7 +55,7 @@ export default {
       merchant_pass: "",
       operation: "purchase",
       cancel_url: "",
-      success_url: "https://merchantapp.montypay.com/paysuccess",
+      success_url: "https://portal.montypay.com/success",
       // hash: "",
       order: {
         description: "",
@@ -386,7 +386,10 @@ export default {
       console.log("Loaded On Mount Data:", data);
       this.total = parseFloat(data.amount);
 
-      if (data.currency.toUpperCase() === "JOD") {
+      if (
+        data.currency.toUpperCase() === "JOD" ||
+        data.currency.toUpperCase() === "BHD"
+      ) {
         this.order.amount = this.total.toFixed(3);
       } else {
         this.order.amount = this.total.toFixed(2);
