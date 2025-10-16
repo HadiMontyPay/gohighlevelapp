@@ -382,6 +382,7 @@ export default {
     }
     document.cookie = "my_cookie=value; SameSite=None; Secure";
     window.addEventListener("message", async ({ data }) => {
+      console.log("Data:", data);
       data = JSON.parse(data);
       console.log("Loaded On Mount Data:", data);
       this.total = parseFloat(data.amount);
@@ -426,7 +427,9 @@ export default {
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
       try {
+        console.log("Event Data:", event.data);
         this.newData = JSON.parse(event.data);
+        console.log("New Data:", this.newData);
         this.handleNewData(this.newData);
       } catch (err) {
         console.error("Invalid message format:", event.data);
