@@ -408,10 +408,6 @@ app.post("/getPaymentRedirectURL", async (req: Request, res: Response) => {
     });
 });
 
-app.get("*", (req: Request, res: Response) => {
-  res.sendFile(path + "index.html");
-});
-
 app.post("/notifications", (req: Request, res: Response) => {
   const newData = req.body;
   console.log("Notifications:", newData);
@@ -457,6 +453,10 @@ app.post("/verification", (req: Request, res: Response) => {
       console.log("Failed True");
       return res.json({ failed: true });
   }
+});
+
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path + "index.html");
 });
 
 const syncDatabase = async () => {
