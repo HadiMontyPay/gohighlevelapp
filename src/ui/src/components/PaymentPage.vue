@@ -19,6 +19,16 @@
   <div id="lll" v-if="loading === true">
     <div class="loader"></div>
   </div>
+  <!-- <div id="app">
+    <h1>Webhook Data</h1>
+    <div v-if="newData">
+      <p><strong>New Data Received:</strong></p>
+      <pre>{{ newData }}</pre>
+    </div>
+    <div v-else>
+      <p>No data yet...</p>
+    </div>
+  </div> -->
 </template>
 
 <script>
@@ -26,6 +36,9 @@ import axios from "axios";
 
 export default {
   name: "PaymentPage",
+  // props: {
+  //   msg: String,
+  // },
   data() {
     return {
       errorState: false,
@@ -80,7 +93,9 @@ export default {
         })
         .then((response) => {
           this.iframeSrc = response.data.redirect_url;
+          console.log("URL:", this.iframeSrc);
           this.loading = false;
+          console.log("Loading:", this.loading);
         })
         .catch((err) => {
           console.log(err);
@@ -111,7 +126,7 @@ export default {
     handleNewData(info) {
       // console.log("New data received in Vue.js:", info);
       // // Add any additional logic to handle the new data
-      console.log("Handle New Info:", info);
+      // console.log("Info:", info);
 
       if (info.order_number === this.order.number) {
         switch (info.type) {
@@ -413,8 +428,14 @@ export default {
     const socket = new WebSocket(`wss://lhg.montypay.com:8080`);
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
-      this.newData = JSON.parse(event.data);
-      this.handleNewData(this.newData);
+      try {
+        console.log("Event Data:", event.data);
+        this.newData = JSON.parse(event.data);
+        console.log("New Data:", this.newData);
+        this.handleNewData(this.newData);
+      } catch (err) {
+        console.error("Invalid message format:", err.data);
+      }
     };
 
     socket.onopen = () => {
