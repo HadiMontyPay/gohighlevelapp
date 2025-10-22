@@ -432,7 +432,7 @@ export default {
         console.log("New Data:", this.newData);
         this.handleNewData(this.newData);
       } catch (err) {
-        console.error("Invalid message format:", JSON.parse(err));
+        console.error("Invalid message format:", JSON.parse(err.data));
       }
     };
 
