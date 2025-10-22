@@ -428,14 +428,10 @@ export default {
     const socket = new WebSocket(`wss://lhg.montypay.com:8080`);
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = async (event) => {
-      try {
-        console.log("Event Data:", event.data);
-        this.newData = JSON.parse(event.data);
-        console.log("New Data:", this.newData);
-        await this.handleNewData(this.newData);
-      } catch (err) {
-        console.error("Invalid message format:", err.data);
-      }
+      console.log("Event Data:", JSON.parse(event.data));
+      this.newData = JSON.parse(event.data);
+      console.log("New Data:", this.newData);
+      await this.handleNewData(this.newData);
     };
 
     socket.onopen = () => {
