@@ -427,7 +427,7 @@ export default {
     // When the WebSocket receives a message, update `newData`
     socket.onmessage = (event) => {
       try {
-        console.log("Event Data:", event.data);
+        console.log("Event Data:", JSON.parse(event.data));
         this.newData = JSON.parse(event.data);
         console.log("New Data:", this.newData);
         this.handleNewData(this.newData);
