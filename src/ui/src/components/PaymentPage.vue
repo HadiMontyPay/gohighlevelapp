@@ -79,7 +79,7 @@ export default {
           operation: this.operation,
           cancel_url: this.cancel_url,
           success_url: this.success_url,
-          url_target: "_parent",
+          url_target: "_self",
           order: {
             description: this.order.description,
             number: this.order.number,
@@ -123,7 +123,7 @@ export default {
       await this.submitPayment();
     },
     // Define a method to handle the new data
-    handleNewData(info) {
+    async handleNewData(info) {
       // console.log("New data received in Vue.js:", info);
       // // Add any additional logic to handle the new data
       // console.log("Info:", info);
@@ -131,7 +131,7 @@ export default {
       if (info.order_number === this.order.number) {
         switch (info.type) {
           case "sale":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
           case "3ds":
             switch (info.status) {
@@ -251,31 +251,31 @@ export default {
             }
             break;
           case "capture":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
           case "refund":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
           case "void":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
           case "chargeback":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
           case "debit":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
           case "transfer":
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
 
           default:
-            this.handleStatus(info.status, info.id);
+            await this.handleStatus(info.status, info.id);
             break;
         }
       }
     },
-    handleStatus(status, id) {
+    async handleStatus(status, id) {
       switch (status) {
         case "success":
           window.addEventListener("message", async ({ data }) => {
@@ -427,12 +427,12 @@ export default {
 
     const socket = new WebSocket(`wss://lhg.montypay.com:8080`);
     // When the WebSocket receives a message, update `newData`
-    socket.onmessage = (event) => {
+    socket.onmessage = async (event) => {
       try {
         console.log("Event Data:", event.data);
         this.newData = JSON.parse(event.data);
         console.log("New Data:", this.newData);
-        this.handleNewData(this.newData);
+        await this.handleNewData(this.newData);
       } catch (err) {
         console.error("Invalid message format:", err.data);
       }
